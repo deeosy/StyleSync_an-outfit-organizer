@@ -4,10 +4,14 @@ import Navbar from './components/Navbar'
 import Home from './pages/Home'
 import Wardrobe from './pages/Wardrobe'
 import Outfits from './components/Outfits'
-
-
-
 import './App.css'
+
+
+
+// things you should know
+// the use of Zustand for state management
+// the use of React-router-dom for page routing
+
 
 function App() {
   return (

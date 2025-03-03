@@ -1,19 +1,19 @@
-// store/wardrobeStore.js
+// store for setting up Zustand 
 import { create } from 'zustand';
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuid } from 'uuid';
 
 const useWardrobeStore = create((set) => ({
   // Wardrobe items
   wardrobeItems: [
-    { id: uuidv4(), name: 'White T-Shirt', category: 'tops', color: '#ffffff', lastWorn: '2 days ago', imageUrl: null, notes: '' },
-    { id: uuidv4(), name: 'Blue Jeans', category: 'bottoms', color: '#0e4f8b', lastWorn: 'Yesterday', imageUrl: null, notes: 'Slim fit, size 32' },
-    { id: uuidv4(), name: 'Black Blazer', category: 'outerwear', color: '#222222', lastWorn: 'Last week', imageUrl: null, notes: 'From H&M' },
-    { id: uuidv4(), name: 'Brown Boots', category: 'shoes', color: '#663300', lastWorn: '3 days ago', imageUrl: 'https://i.ebayimg.com/images/g/QVQAAOSwb6xlB-~R/s-l1600.webp', notes: 'Size 10' },
-    { id: uuidv4(), name: 'Red Blouse', category: 'tops', color: '#cc0000', lastWorn: 'Never', imageUrl: null, notes: '' },
-    { id: uuidv4(), name: 'Khaki Pants', category: 'bottoms', color: '#c3b091', lastWorn: '5 days ago', imageUrl: null, notes: '' },
-    { id: uuidv4(), name: 'Winter Coat', category: 'outerwear', color: '#444444', lastWorn: 'Last month', imageUrl: null, notes: 'Down filled, very warm' },
-    { id: uuidv4(), name: 'Gold Necklace', category: 'accessories', color: '#ffd700', lastWorn: 'Yesterday', imageUrl: null, notes: '18K gold' },
-    { id: uuidv4(), name: 'Blue Jeans', category: 'bottoms', color: '#0e4f8b', lastWorn: 'Yesterday', imageUrl: null, notes: 'Slim fit, size 32' },
+    { id: uuid(), name: 'White T-Shirt', category: 'tops', color: '#ffffff', lastWorn: '2 days ago', imageUrl: null, notes: '' },
+    { id: uuid(), name: 'Blue Jeans', category: 'bottoms', color: '#0e4f8b', lastWorn: 'Yesterday', imageUrl: null, notes: 'Slim fit, size 32' },
+    { id: uuid(), name: 'Black Blazer', category: 'outerwear', color: '#222222', lastWorn: 'Last week', imageUrl: null, notes: 'From H&M' },
+    { id: uuid(), name: 'Brown Boots', category: 'shoes', color: '#663300', lastWorn: '3 days ago', imageUrl: 'https://i.ebayimg.com/images/g/QVQAAOSwb6xlB-~R/s-l1600.webp', notes: 'Size 10' },
+    { id: uuid(), name: 'Red Blouse', category: 'tops', color: '#cc0000', lastWorn: 'Never', imageUrl: null, notes: '' },
+    { id: uuid(), name: 'Khaki Pants', category: 'bottoms', color: '#c3b091', lastWorn: '5 days ago', imageUrl: null, notes: '' },
+    { id: uuid(), name: 'Winter Coat', category: 'outerwear', color: '#444444', lastWorn: 'Last month', imageUrl: null, notes: 'Down filled, very warm' },
+    { id: uuid(), name: 'Gold Necklace', category: 'accessories', color: '#ffd700', lastWorn: 'Yesterday', imageUrl: null, notes: '18K gold' },
+    { id: uuid(), name: 'Blue Jeans', category: 'bottoms', color: '#0e4f8b', lastWorn: 'Yesterday', imageUrl: null, notes: 'Slim fit, size 32' },
 
   ],
   
@@ -31,7 +31,7 @@ const useWardrobeStore = create((set) => ({
   
   // Add new clothing item
   addClothingItem: (item) => set((state) => ({
-    wardrobeItems: [...state.wardrobeItems, { ...item, id: uuidv4() }]
+    wardrobeItems: [...state.wardrobeItems, { ...item, id: uuid() }]
   })),
   
   // Update clothing item
@@ -72,7 +72,7 @@ const useWardrobeStore = create((set) => ({
     savedOutfits: [
       ...state.savedOutfits, 
       { 
-        id: uuidv4(), 
+        id: uuid(), 
         name, 
         items: { ...state.currentOutfit },
         createdAt: new Date().toISOString()
