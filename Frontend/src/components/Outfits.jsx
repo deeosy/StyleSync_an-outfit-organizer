@@ -1,3 +1,5 @@
+// components/Outfits.jsx
+
 import React from 'react'
 import OutfitBuilder from '../pages/OutfitBuilder'
 
