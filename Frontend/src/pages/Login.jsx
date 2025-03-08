@@ -11,22 +11,29 @@ import instagram from '../icons/instagram.png'
 import Footer from '../components/Footer'
 
 export default function Login() {
+	const [user, setUser ] = useState({
+			username: '',
+			email: '',
+			password: '',
+		})
 
     const [isSignUp , useSignUp] = useState(false)
-    const handleSignUp = () => useSignUp(true)
-    const handleSignIn = () => useSignUp(false)
+    const handleSignUp = () => {
+			useSignUp(true);
+			setUser({ username: '', email: '', password: '' })
+		}
+    const handleSignIn = () => {
+			useSignUp(false);
+			setUser({ username: '', email: '', password: '' })
+		}
 
-    const [user, setUser ] = useState({
-        username: '',
-        email: '',
-        password: '',
-      })
     
       const handleChange = (e) => {
           const {name, value} = e.target;
           setUser((previousValue) =>({...previousValue, [name]:value}))
         }
-console.log(user);
+
+			const isPasswordValid = user.password.length >= 8;
 
   return (
         <div className="relative overflow-hidden w-full h-full manrope">
@@ -40,15 +47,30 @@ console.log(user);
                 <form >
                     {isSignUp ? 
                         <div className="flex flex-col mx-4 sm:mx-10 gap-[16px] text-gray-400">
-                            <InputField icon={mailLogo} placeholder='Email' handleChange={handleChange} />
-                            <Password userPassword={user.password} passwordLength={user.password.length} handleChange={handleChange} />
-                            <button type='submit' className='bg-[#B1D2F1] text-[#212529] w-full py-[13px] rounded-[5px] font-bold hover:cursor-pointer ' >Sign In</button>	
+                            <InputField icon={mailLogo} name='email' placeholder='Email' handleChange={handleChange} />
+                            <Password name='password' userPassword={user.password} passwordLength={user.password.length} handleChange={handleChange} />
+
+                            <button type='submit' className='bg-[#B1D2F1] text-[#212529] w-full py-[13px] rounded-[5px] font-bold hover:cursor-pointer '>Log In</button>
+														<p className=' text-center text-sm md:text-[20px] text-[#212529]'>or sign in with:</p>	
+                            <div className="flex justify-around sm:justify-between gap-[4px] md:gap-[24px] ">
+                                <SignUpOptions icon={google} />
+                                <SignUpOptions icon={facebook} />
+                                <SignUpOptions icon={instagram} />
+                            </div>	
                         </div> 
                         : <div className="flex flex-col mx-4 sm:mx-10 gap-[16px] text-gray-400">
-                            <InputField icon={userLogo} placeholder='Username' handleChange={handleChange} />
-                            <InputField icon={mailLogo} placeholder='Email' handleChange={handleChange} />
-                            <Password userPassword={user.password} passwordLength={user.password.length} handleChange={handleChange} />
-                            <button type='submit' className='bg-[#B1D2F1] text-[#212529] w-full py-[13px] rounded-[5px] font-bold hover:cursor-pointer ' >Sign In</button>
+                            <InputField icon={userLogo} name='username' placeholder='Username' handleChange={handleChange} />
+                            <InputField icon={mailLogo} name='email' placeholder='Email' handleChange={handleChange} />
+                            <Password name='password' userPassword={user.password} passwordLength={user.password.length} handleChange={handleChange} />
+
+                            <button 
+															type='submit' 
+															className={`w-full py-[13px] rounded-[5px] font-bold hover:cursor-pointer transition-opacity ${
+                              isPasswordValid ? 'bg-[#B1D2F1] text-[#212529]' : 'bg-gray-300 text-gray-600 opacity-50 cursor-not-allowed'}`} 
+															disabled={!isPasswordValid} 
+														>
+															Submit
+														</button>
                             <p className=' text-center text-sm md:text-[20px] text-[#212529]'>or sign up with:</p>	
                             <div className="flex justify-around sm:justify-between gap-[4px] md:gap-[24px] ">
                                 <SignUpOptions icon={google} />
