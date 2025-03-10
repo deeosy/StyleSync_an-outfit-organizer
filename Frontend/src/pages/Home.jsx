@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import useWardrobeStore from '../store/wardrobeStore';
 
 function Home() {
-  const wardrobeItems = useWardrobeStore(state => state.wardrobeItems);
+  const wardrobeItems = useWardrobeStore(state => state.wardrobeItems);  
   const savedOutfits = useWardrobeStore(state => state.savedOutfits);
   
   // Count items by category
@@ -78,13 +78,13 @@ function Home() {
       <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
         <h2 className="text-lg font-semibold mb-4">Recently Added Items</h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
-          {wardrobeItems.slice(-5).reverse().map(item => (
+          {wardrobeItems.slice(-5).reverse().map(item => (   // Recent added wordrobe items 
             <div key={item.id} className="bg-gray-50 p-3 rounded-lg border border-gray-200">
               <div 
                 className="h-24 rounded mb-2 flex items-center justify-center text-xs"
                 style={{ backgroundColor: item.color }}
               >
-                {item.name}
+                <img src={item.imageUrl} alt={item.name} className="w-full h-full object-cover rounded-lg" />
               </div>
               <p className="text-sm font-medium truncate">{item.name}</p>
               <p className="text-xs text-gray-600">Last worn: {item.lastWorn || 'Never'}</p>

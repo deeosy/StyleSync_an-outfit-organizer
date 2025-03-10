@@ -1,3 +1,4 @@
+// pages/OutfitBuilder.jsx
 import React, {useState} from 'react'
 import useWardrobeStore from '../store/wardrobeStore'
 import ClothingItem from '../components/ClothingItem';
