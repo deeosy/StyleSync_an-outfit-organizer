@@ -16,10 +16,15 @@ export default function SignIn() {
         updateUser(name, value); // Update Zustand state
     }
 
-    const handleSubmit = (e) => {
-      e.preventDefault();
-      console.log(user);
-      resetUser();
+    const handleSignUp = async (e) => {
+                e.preventDefault();
+                try {
+                  await signUp(email, password);
+                 navigate('/Home');
+                  alert("Sign up successful!");
+                } catch (err) {
+                  setError(err.message);
+                }
     }
 
     const isPasswordValid = user.password.length >= 8
