@@ -20,20 +20,15 @@ export default function SignIn() {
         setCredentials(prev => ({...prev, [name]:value}))
     }
 
-    const handleSubmit = (e) => { // handle form submission
-      e.preventDefault();
-
-      const userFound = users.find(user => user.email === credentials.email && user.password ===credentials.password ) //check if the user exists in the store  with matching email and password
-      
-      if(userFound){
-        console.log('Login successful: ', userFound); // if found Log
-        setError('');        //and clear any previous error messages
-      }else{ 
-        setError('Invalid email or password')// display error if credentials dont match
-        setTimeout(() => setError(''), 4000)
-      }
-
-      console.log(credentials);
+    const handleSignUp = async (e) => {
+                e.preventDefault();
+                try {
+                  await signUp(email, password);
+                 navigate('/Home');
+                  alert("Sign up successful!");
+                } catch (err) {
+                  setError(err.message);
+                }
     }
 
     const isPasswordValid = credentials.password.length >= 8
