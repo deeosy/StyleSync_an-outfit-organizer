@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import InputField from '../components/InputField'
 import PasswordInputField from '../Components/PasswordInputField'
 import SignUpOptions from '../components/SignUpOptions'
@@ -10,25 +10,43 @@ import useAuthencationStore from '../store/userStore'
 
 
 export default function SignIn() {
-    const {user, updateUser, resetUser} = useAuthencationStore()
-    const handleChange = (e) => {
+    const {users} = useAuthencationStore() // get users array from zustand
+    const [credentials, setCredentials] = useState({email:'', password:''}); //state to hold user input (email and password)
+    const [error, setError] = useState('')  // state to track login errors
+
+
+    const handleChange = (e) => {  //handle input field changes and update the credentials state
         const {name, value} = e.target;
-        updateUser(name, value); // Update Zustand state
+        setCredentials(prev => ({...prev, [name]:value}))
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e) => { // handle form submission
       e.preventDefault();
-      console.log(user);
-      resetUser();
+
+      const userFound = users.find(user => user.email === credentials.email && user.password ===credentials.password ) //check if the user exists in the store  with matching email and password
+      
+      if(userFound){
+        console.log('Login successful: ', userFound); // if found Log
+        setError('');        //and clear any previous error messages
+      }else{ 
+        setError('Invalid email or password')// display error if credentials dont match
+        setTimeout(() => setError(''), 4000)
+      }
+
+      console.log(credentials);
     }
 
-    const isPasswordValid = user.password.length >= 8
+    const isPasswordValid = credentials.password.length >= 8
 
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col mx-4 sm:mx-10 gap-[16px] text-gray-400">
         <InputField icon={mailLogo} name='email' placeholder='Email' handleChange={handleChange} />
-        <PasswordInputField name='password' userPassword={user.password} passwordLength={user.password.length} handleChange={handleChange} />
+        <div className="">
+          <PasswordInputField name='password' userPassword={credentials.password} passwordLength={credentials.password.length} handleChange={handleChange} />
+          {/* field to display error message if credentials dont match */}
+          {error && <p className='text-[12px] text-[#ED4F9D]'>{error}</p> } 
+        </div>
 
         <button type='submit' 
             className={`w-full py-[13px] rounded-[5px] font-bold hover:cursor-pointer transition-opacity ${
@@ -36,7 +54,7 @@ export default function SignIn() {
             disabled={!isPasswordValid}        >
             Continue
         </button>
-            <p className=' text-center text-sm md:text-[20px] text-[#212529]'>or sign in with:</p>	
+        <p className=' text-center text-sm  text-gray-500'>or sign up with:</p>	
         <div className="flex justify-around sm:justify-between gap-[4px] md:gap-[24px] ">
             <SignUpOptions icon={google} />
             <SignUpOptions icon={facebook} />
