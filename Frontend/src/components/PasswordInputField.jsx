@@ -25,6 +25,7 @@ export default function PasswordInputField({ name, userPassword, handleChange })
             onChange={handleChange}
             name={name} // Ensure this correctly updates state
             value={userPassword}
+            required
           />
         </div>
   
