@@ -28,7 +28,6 @@ export default function SignUpDetails() {
     const handleSubmit =(e) => { //adding a newUser upon submit
         e.preventDefault();
         addUser();
-        console.log(user);
     }
 
   return (
@@ -70,10 +69,6 @@ export default function SignUpDetails() {
                 />
             </div>
             <PasswordInputField name='password' userPassword={user.password} passwordLength={user.password.length} handleChange={handleChange} />
-            {/* <input type="date" placeholder='Date of birth' 
-                name="date" value={user.date} onChange={handleChange}
-                className='text-[14px] text-gray-900 font-medium outline-none py-[12px] px-[16px] border border-gray-400 rounded-[5px] h-auto w-full ' 
-            /> */}
             <Link to='/sign-up-reason' >
                 <button 
                     type='submit'

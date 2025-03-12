@@ -11,13 +11,10 @@ export default function SignUpLanguage() {
     const {user,updateUser} = useAuthencationStore()
     const handleChange = (e) => {
         const {name, value} = e.target;
-        updateUser(name, value); // Update Zustand state
-        console.log(value);
-        
+        updateUser(name, value); // Update Zustand state        
     }
     const handleSubmit = (e) => {
         e.preventDefault()
-      console.log('User Data: ', user);
     }
 
     const isCountryValid = user.country.length >= 2
