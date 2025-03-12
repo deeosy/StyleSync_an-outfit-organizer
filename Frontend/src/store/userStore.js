@@ -9,6 +9,7 @@ const useAuthencationStore =create((set) => ({
     password: '',
     date:'',
     gender: '',
+    reason:''
   },
 
   //update user State
@@ -17,14 +18,19 @@ const useAuthencationStore =create((set) => ({
   })),
 
   // add user to the users array
-  addUser: () => set((state) =>({
-    users:[...state.users, state.user], //add current users to user array
-    user: { country: '', username: '', email: '', password: '', date: '', gender: ''} //Reset user input
-  })),
+  addUser: () => set((state) =>{
+    const userExists = state.users.some((u)=>u.email === state.user.email) //prevent duplicate users via email
+    if(userExists) return state; //Do nothing if user already exists
+    return{
+      users:[...state.users.map((u) => ({ ...u })), { ...state.user }], //add current users to user array without mutating previous array
+      user: { country: '', username: '', email: '', password: '', date: '', gender: ''} //Reset user input
+    }
+  }),
 
   //reset user state
-  resetUser: () => set({user:{username:'', email: '', password: '', country:'', date:'', gender:''}}),
-  
+  resetUser: () => set(() => ({
+    user: { country: '', username: '', email: '', password: '', date: '', gender: '' }
+  })),  
 }))
 
 export default useAuthencationStore;

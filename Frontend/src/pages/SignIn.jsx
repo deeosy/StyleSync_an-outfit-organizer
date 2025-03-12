@@ -52,7 +52,7 @@ export default function SignIn() {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col mx-4 sm:mx-10 gap-[16px] text-gray-400">
-        <InputField icon={mailLogo} name='email' placeholder='Email' handleChange={handleChange} />
+        <InputField icon={mailLogo} name='email'  placeholder='Email' handleChange={handleChange} value={credentials.email}  />
         <div className="">
           <PasswordInputField name='password' userPassword={credentials.password} passwordLength={credentials.password.length} handleChange={handleChange} />
           {/* field to display error message if credentials dont match */}
