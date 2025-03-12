@@ -1,9 +1,9 @@
-// pages/Home.jsx
+// pages/Dashboard.jsx
 import React from "react";
 import { Link } from "react-router-dom";
 import useWardrobeStore from "../store/wardrobeStore";
 
-function Home() {
+function Dashboard() {
   const wardrobeItems = useWardrobeStore((state) => state.wardrobeItems);
   const savedOutfits = useWardrobeStore((state) => state.savedOutfits);
 
@@ -127,4 +127,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default Dashboard;
