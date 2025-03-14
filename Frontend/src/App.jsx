@@ -10,7 +10,7 @@ import SignUpLanguage from './pages/SignUpLanguage';
 import SignIn from './pages/SignIn';
 import SignUpDetails from './pages/SignUpDetails';
 import SignUpReason from './pages/SignUpReason';
-
+import Footer from './components/Footer'; 
 
 
 // things you should know
@@ -37,6 +37,7 @@ function App() {
               <Route path='/outfits' element={<Outfits />} />
             </Routes>
           </div>
+          <Footer />
         </div>
       </Router>
     </>
