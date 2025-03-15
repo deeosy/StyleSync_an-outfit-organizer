@@ -10,6 +10,8 @@ import SignIn from './pages/SignIn';
 import SignUpDetails from './pages/SignUpDetails';
 import SignUpReason from './pages/SignUpReason';
 import './App.css'
+import Footer from './components/Footer'; 
+
 
 // things you should know
 // the use of Zustand for state management
@@ -35,6 +37,7 @@ function App() {
               <Route path='/outfits' element={<Outfits />} />
             </Routes>
           </div>
+          <Footer />
         </div>
       </Router>
     </>
