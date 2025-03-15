@@ -8,7 +8,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import calendar from '../icons/calendar.svg'
 import { Link, Outlet } from 'react-router-dom'
-import prevArrow from '../icons/weui_arrow-outlined.png'
+import prevArrow from '../icons/leftArrow.png'
 import { motion } from "framer-motion";
 
 

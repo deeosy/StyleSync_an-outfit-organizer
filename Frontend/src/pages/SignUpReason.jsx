@@ -1,6 +1,6 @@
 import React from 'react'
 import { motion } from "framer-motion";
-import prevArrow from '../icons/weui_arrow-outlined.png'
+import prevArrow from '../icons/leftArrow.png'
 import wardrobe from '../icons/wardrobe-outline.png'
 import SignUpReasonButton from '../components/SignUpReasonButton';
 import brain from '../icons/brain-outline.png'

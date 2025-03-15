@@ -21,7 +21,7 @@ export default function Authentication() {
                     {/* Sign in / Sign Out Navigation  */}
                     <div className=" sm:mx-10 flex justify-around  px-3 md:gap-[30px] mt-[20px] md:mt-[58px] mb-[33px] ">
                         <Link to='/sign-in' onClick={resetUser} >
-                            <button className='rounded-[5px] px-4 py-2 sm:px-6 sm:py-3 text-[16px] sm:text-2xl bg-white cursor-pointer  focus-within:bg-[#B1D2F1] '>Sign In</button>
+                            <button className={`rounded-[5px] px-4 py-2 sm:px-6 sm:py-3 text-[16px] sm:text-2xl cursor-pointer ${location.pathname === '/sign-in' ? 'bg-[#B1D2F1]' : 'bg-white'}`}>Sign In</button>
                         </Link>
                         <Link to='/' onClick={resetUser} >
                             <button className={`rounded-[5px] px-4 py-2 sm:px-6 sm:py-3 text-[16px] sm:text-2xl cursor-pointer ${location.pathname === '/' ? 'bg-[#B1D2F1]' : 'bg-white'} `} >Sign Up</button>

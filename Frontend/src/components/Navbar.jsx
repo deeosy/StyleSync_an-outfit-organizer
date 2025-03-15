@@ -12,7 +12,7 @@ export default function Navbar() {
           <div className="flex justify-center items-center py-4 text-[#212529] manrope">
             <ul className='flex space-x-6'>
               <li>
-                <Link to='/' className='hover:bg-[#F06D99] px-3 py-2 rounded transition-colors' >
+                <Link to='/dashboard' className='hover:bg-[#F06D99] px-3 py-2 rounded transition-colors' >
                   Dashboard
                 </Link>
               </li>
@@ -28,7 +28,9 @@ export default function Navbar() {
               </li>
             </ul>
           </div>
-          <button className='rounded-[3px] bg-[#F06D99] manrope h-[57px] w-[140px] ' >Sign In</button>
+          <Link to='/sign-in' >
+            <button className='rounded-[3px] bg-[#F06D99] manrope h-[57px] w-[140px] ' >Sign In</button>
+          </Link>
         </div>
       </div>
     </nav>
