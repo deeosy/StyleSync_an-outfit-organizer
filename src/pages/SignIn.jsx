@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import InputField from '../components/InputField'
-import PasswordInputField from '../Components/PasswordInputField'
+import PasswordInputField from '../components/PasswordInputField'
 import SignUpOptions from '../components/SignUpOptions'
 import google from '../icons/google.png'
 import facebook from '../icons/facebook.png'
