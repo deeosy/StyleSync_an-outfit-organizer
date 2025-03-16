@@ -1,6 +1,6 @@
 import React from 'react'
 import InputField from '../components/InputField'
-import PasswordInputField from '../Components/PasswordInputField'
+import PasswordInputField from '../components/PasswordInputField'
 import userLogo from '../icons/user.png'
 import mailLogo from '../icons/mail.png'
 import useAuthencationStore from '../store/userStore'
