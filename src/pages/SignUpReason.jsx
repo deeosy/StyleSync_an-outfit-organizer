@@ -24,7 +24,7 @@ export default function SignUpReason() {
     <div>
         <div className="mx-4 sm:mx-10 py-[30px]">
           <div className="flex items-center justify-between w-full">
-            <Link to='/sign-up-details'>
+            <Link to='/authenticaion/sign-up-details'>
               <img src={prevArrow} alt="previous button" className='h-[30px] p-0.5' />
             </Link>
           <p className='text-center sm:text-[20px] font-bold '>Why are you here?</p>

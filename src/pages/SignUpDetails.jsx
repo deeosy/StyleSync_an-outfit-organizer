@@ -33,7 +33,7 @@ export default function SignUpDetails() {
   return (
     <div className="mx-4 sm:mx-10 py-[30px]">
         <div className="flex items-center justify-between w-full">
-            <Link to='/'>
+            <Link to='/authenticaion'>
                 <img src={prevArrow} alt="previous button" className='h-[30px] p-0.5 ' />
             </Link>
             <p className='text-center sm:text-[20px] font-bold '>Tell us who you are</p>
@@ -69,7 +69,7 @@ export default function SignUpDetails() {
                 />
             </div>
             <PasswordInputField name='password' userPassword={user.password} passwordLength={user.password.length} handleChange={handleChange} />
-            <Link to='/sign-up-reason' >
+            <Link to='/authenticaion/sign-up-reason' >
                 <button 
                     type='submit'
                     className={`w-full py-[13px] rounded-[5px] font-bold hover:cursor-pointer transition-opacity ${

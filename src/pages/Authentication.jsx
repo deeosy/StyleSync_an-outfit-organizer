@@ -8,7 +8,7 @@ import { Link, Outlet, useLocation } from 'react-router-dom'
 export default function Authentication() {
     const { resetUser } = useAuthencationStore(); //get reset function from Zustand
     const location = useLocation()  // get current route pathname
-    const hideButtons = ['/sign-up-reason', '/sign-up-details'].includes(location.pathname)    // hide buttons if user is on these pages
+    const hideButtons = ['/authenticaion/sign-up-reason', '/authenticaion/sign-up-details'].includes(location.pathname)    // hide buttons if user is on these pages
     
   return (
     <div className="relative overflow-hidden w-full h-full manrope text-[#212529] ">
@@ -20,11 +20,11 @@ export default function Authentication() {
                     <p className='text-center sm:text-[27px] font-bold '>Welcome to StyleSync</p>
                     {/* Sign in / Sign Out Navigation  */}
                     <div className=" sm:mx-10 flex justify-around  px-3 md:gap-[30px] mt-[20px] md:mt-[58px] mb-[33px] ">
-                        <Link to='/sign-in' onClick={resetUser} >
-                            <button className={`rounded-[5px] px-4 py-2 sm:px-6 sm:py-3 text-[16px] sm:text-2xl cursor-pointer ${location.pathname === '/sign-in' ? 'bg-[#B1D2F1]' : 'bg-white'}`}>Sign In</button>
+                        <Link to='/authenticaion/sign-in' onClick={resetUser} >
+                            <button className={`rounded-[5px] px-4 py-2 sm:px-6 sm:py-3 text-[16px] sm:text-2xl cursor-pointer ${location.pathname === '/authenticaion/sign-in' ? 'bg-[#B1D2F1]' : 'bg-white'}`}>Sign In</button>
                         </Link>
-                        <Link to='/' onClick={resetUser} >
-                            <button className={`rounded-[5px] px-4 py-2 sm:px-6 sm:py-3 text-[16px] sm:text-2xl cursor-pointer ${location.pathname === '/' ? 'bg-[#B1D2F1]' : 'bg-white'} `} >Sign Up</button>
+                        <Link to='/authenticaion' onClick={resetUser} >
+                            <button className={`rounded-[5px] px-4 py-2 sm:px-6 sm:py-3 text-[16px] sm:text-2xl cursor-pointer ${location.pathname === '/authenticaion' ? 'bg-[#B1D2F1]' : 'bg-white'} `} >Sign Up</button>
                         </Link>
                     </div>
                 </>

@@ -28,7 +28,7 @@ export default function Navbar() {
               </li>
             </ul>
           </div>
-          <Link to='/sign-in' >
+          <Link to='/authenticaion/sign-in' >
             <button className='rounded-[3px] bg-[#F06D99] manrope h-[57px] w-[140px] ' >Sign In</button>
           </Link>
         </div>

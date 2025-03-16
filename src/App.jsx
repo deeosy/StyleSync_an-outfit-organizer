@@ -11,6 +11,7 @@ import SignUpDetails from './pages/SignUpDetails';
 import SignUpReason from './pages/SignUpReason';
 import './App.css'
 import Footer from './components/Footer'; 
+import Home from './pages/Home';
 
 
 // things you should know
@@ -26,7 +27,8 @@ function App() {
           <Navbar />
           <div className="container max-w-screen ">
             <Routes>
-              <Route path='/' element={<Authentication />} >
+              <Route path='/' element={<Home />} />
+              <Route path='/authenticaion' element={<Authentication />} >
                 <Route index element={<SignUpLanguage />} />
                 <Route path='sign-up-details' element={<SignUpDetails />} />
                 <Route path='sign-up-reason' element={<SignUpReason />} />

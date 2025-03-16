@@ -27,7 +27,7 @@ export default function SignUpLanguage() {
             <p className='text-[12px] text-gray-500 ' >Select your country so we can tailor your experience . You can change the country & language in your profile settings anytime</p>
         </div>
         <div className="flex flex-col gap-[16px] ">
-            <Link to='/sign-up-details'>
+            <Link to='/authenticaion/sign-up-details'>
                 <button 
                     type='submit'
                     className={`w-full py-[13px] rounded-[5px] font-bold hover:cursor-pointer transition-opacity ${
