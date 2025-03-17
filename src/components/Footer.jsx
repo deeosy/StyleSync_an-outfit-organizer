@@ -5,14 +5,14 @@ const Footer = () => {
   return (
     <footer className="bg-black text-white py-6">
       <div className="container mx-auto px-4">
-        <div className="flex flex-col md:flex-row justify-between items-center">
+        <div className="flex md:flex-row justify-around items-center">
           <div className="mb-4 md:mb-0">
             <h2 className="text-xl font-bold">StyleSync</h2>
             <p className="text-gray-300 text-sm mt-1">Your personal wardrobe assistant</p>
           </div>
           
-          <div className="flex flex-col mb-4 md:mb-0">
-            <h3 className="text-lg font-semibold mb-2">Quick Links</h3>
+          <div className="hidden sm:flex sm:flex-col sm:mb-4 ">
+            <h3 className="hidden md:block text-lg font-semibold mb-2">Quick Links</h3>
             <div className="flex flex-col space-y-1">
               <Link to="/dashboard" className="text-gray-300 hover:text-white">Dashboard</Link>
               <Link to="/wardrobe" className="text-gray-300 hover:text-white">My StyleSync</Link>
@@ -20,8 +20,8 @@ const Footer = () => {
             </div>
           </div>
           
-          <div className="flex flex-col mb-4 md:mb-0">
-            <h3 className="text-lg font-semibold mb-2">Style Services</h3>
+          <div className="hidden sm:flex sm:flex-col sm:mb-4">
+            <h3 className="hidden md:block text-lg font-semibold mb-2">Style Services</h3>
             <div className="flex flex-col space-y-1">
               <Link to="/style-tips" className="text-gray-300 hover:text-white">Style Tips</Link>
               <Link to="/seasonal-trends" className="text-gray-300 hover:text-white">Seasonal Trends</Link>
@@ -31,8 +31,8 @@ const Footer = () => {
           </div>
           
           <div className="flex flex-col">
-            <h3 className="text-lg font-semibold mb-2">Connect With Us</h3>
-            <div className="flex space-x-4">
+            <h3 className="hidden md:block text-lg font-semibold mb-2">Connect With Us</h3>
+            <div className="flex space-x-3">
               <a href="#" className="text-gray-300 hover:text-white">
                 <span className="sr-only">Instagram</span>
                 <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
