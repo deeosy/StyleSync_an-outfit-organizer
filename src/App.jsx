@@ -25,7 +25,7 @@ function App() {
       <Router>
         <div className="min-h-screen bg-gray-50">
           <Navbar />
-          <div className="container max-w-screen ">
+          <div className="container max-w-screen bg-[#f5f5f5] ">
             <Routes>
               <Route path='/' element={<Home />} />
               <Route path='/authenticaion' element={<Authentication />} >

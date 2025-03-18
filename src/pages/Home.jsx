@@ -5,20 +5,23 @@ import wardrobe from '../icons/wardrobe-outline.png'
 import brain from '../icons/brain-outline.png'
 import camera from '../icons/camera-outline.png'
 import SmartFeaturesCard from '../components/SmartFeaturesCard'
+import { Link } from 'react-router-dom'
 
 
 export default function Home() {
   return (
     <div className="text-[#212529] manrope ">
         <div className='w-full bg-[#E5E5E5]  ' >
-            <div className=" py-[80px] flex flex-col md:mx-auto max-w-[1300px] px-10 lg:px-20 sm:flex-row sm:justify-between sm:items-center sm:gap-[100px] ">
+            <div className=" py-[80px] flex flex-col md:mx-auto max-w-[1300px] px-10 sm:flex-row sm:justify-between sm:items-center sm:gap-[100px] ">
                 <div className="w-full ">
                     <h1 className='uppercase font-bold text-[20px] md:text-[28px] xl:text-[34px] ' >YOUR SMART DIGITAL WARDROBE ASSISTANT</h1>
                     <p className='text-[14px] py-[22px] md:text-[20px] xl:text-[24px]' >Organise your clothing collection, get AI powered outfit recommendations and revolutionize your style game</p>
-                    <button className='bg-white py-2 px-5 rounded-[5px] flex gap-3 items-center md:text-[20px]' >
-                        Get Started 
-                        <img src={nextArrow} alt="next-page icon" className='h-[14px] pt-[2px] ' />
-                    </button>
+                    <Link to='/authenticaion' >
+                        <button className='bg-white py-2 px-5 rounded-[5px] flex gap-3 items-center md:text-[20px] hover:cursor-pointer' >
+                            Get Started 
+                            <img src={nextArrow} alt="next-page icon" className='h-[14px] pt-[2px] ' />
+                        </button>
+                    </Link>
                 </div>
                 <div className="">
                     <SliderHeroSection />
