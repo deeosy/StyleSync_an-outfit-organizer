@@ -24,7 +24,7 @@ function Dashboard() {
       <div className="px-3 flex flex-col gap-10 ">
         <CenteredTabs />
 
-        <div className="bg-white rounded-lg shadow-sm p-6 mb-8 w-full h-full mx-auto max-w-[1200px]">
+        <div className="bg-white rounded-lg shadow-xl p-6 mb-8 w-full h-full mx-auto max-w-[1200px]">
           <h2 className="text-lg font-semibold mb-4 manrope md:mb-[20px] ">Recently Added Items</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 h-full gap-4 md:gap-8 ">
             {wardrobeItems
