@@ -6,7 +6,11 @@ export default function Navbar() {
   return (
     <nav className='bg-[#f5f5f5] text-black manrope  ' >
       <div className="container mx-auto px-3">
-        <div className="bagel text-black text-[48px] pt-[20px] pb-[20px] sm:pb-[0px] sm:text-center  ">StyleSync</div>
+        <div className="bagel text-black text-[48px] pt-[20px] pb-[20px] sm:pb-[0px] sm:text-center  ">
+          <Link to='/'>
+            StyleSync
+          </Link>
+        </div>
         <div className="hidden sm:flex justify-between items-center gap-[4px] lg:gap-[74px]xl:gap-[174px] text-[16px] md:text-[24px] w-full py-[33px] ">
           <div className=""></div>
           <div className="flex justify-center items-center py-4 text-[#212529] manrope">
@@ -29,7 +33,7 @@ export default function Navbar() {
             </ul>
           </div>
           <Link to='/authenticaion/sign-in' >
-            <button className='rounded-[3px] bg-[#F06D99] manrope h-[57px] w-[140px] ' >Sign In</button>
+            <button className='rounded-[3px] bg-[#F06D99] manrope h-[57px] w-[140px] hover:cursor-pointer ' >Sign In</button>
           </Link>
         </div>
       </div>
