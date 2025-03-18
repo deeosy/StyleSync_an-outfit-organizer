@@ -1,6 +1,9 @@
 // store for setting up Zustand 
 import { create } from 'zustand';
 import { v4 as uuid } from 'uuid';
+import longSkirt from '../images/straight-jeans-skirt.png'
+import blackBlouse from '../images/black-silk-blouse.png'
+import shortSkirt from '../images/a-line-skirt.png'
 
 const useWardrobeStore = create((set) => ({
   // Wardrobe items
@@ -11,10 +14,9 @@ const useWardrobeStore = create((set) => ({
     { id: uuid(), name: 'Brown Boots', category: 'shoes', color: '#663300', lastWorn: '3 days ago', imageUrl: 'https://i.ebayimg.com/images/g/QVQAAOSwb6xlB-~R/s-l1600.webp', notes: 'Size 10' },
     { id: uuid(), name: 'Red Blouse', category: 'tops', color: '#cc0000', lastWorn: 'Never', imageUrl: 'https://res.cloudinary.com/wolfandbadger/image/upload/f_auto,q_auto:best,c_pad,h_1200,w_1200/products/hwi4uxwpheavlhclq5mh', notes: '' },
     { id: uuid(), name: 'Khaki Pants', category: 'bottoms', color: '#c3b091', lastWorn: '5 days ago', imageUrl: null, notes: '' },
-    { id: uuid(), name: 'Winter Coat', category: 'outerwear', color: '#444444', lastWorn: 'Last month', imageUrl: null, notes: 'Down filled, very warm' },
-    { id: uuid(), name: 'Gold Necklace', category: 'accessories', color: '#ffd700', lastWorn: 'Yesterday', imageUrl: null, notes: '18K gold' },
-    { id: uuid(), name: 'Straight Jeans Skirt', category: 'bottoms', color: '#0e4f8b', lastWorn: 'Yesterday', imageUrl: '../images/straight-jeans-skirt.png', notes: 'long skirts, size 32' },
-
+    { id: uuid(), name: 'A-Line Skirt', category: 'outerwear', color: '#444444', lastWorn: 'Last month', imageUrl: shortSkirt, notes: 'A-Lined, very short' },
+    { id: uuid(), name: 'Black Silk Blouse', category: 'accessories', color: '#ffd700', lastWorn: 'Yesterday', imageUrl: blackBlouse, notes: 'blouse with ribbon' },
+    { id: uuid(), name: 'Straight Jeans Skirt', category: 'bottoms', color: '#0e4f8b', lastWorn: 'Yesterday', imageUrl: longSkirt, notes: 'long skirts, size 28' },
   ],
   
   // Current outfit

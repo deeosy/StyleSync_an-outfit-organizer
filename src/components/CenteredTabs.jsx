@@ -69,8 +69,8 @@ export default function CenteredTabs() {
         </TabPanel>
         <TabPanel value="2" sx={{padding: '16px 0px', position: 'relative'}}>
           <QuickActionBtn />
-        <div className="h-[300px] overflow-scroll ">
-          <div className="bg-white rounded-lg shadow-sm p-8 h-full no-scrollbar drop-shadow-xl ">
+        <div className="h-[300px] drop-shadow-xl">
+          <div className="bg-white rounded-lg shadow-sm p-8 h-full no-scrollbar overflow-scroll">
               {unusedItems.length > 0 ? (
                 <ul className="space-y-3">
                   {unusedItems.slice(0, 5).map((item) => (
