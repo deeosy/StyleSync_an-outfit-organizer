@@ -105,8 +105,8 @@ export default function SignIn() {
         </button>
         <p className=' text-center text-sm  text-gray-500'>or sign up with:</p>	
         <div className="flex justify-around sm:justify-between gap-[4px] md:gap-[24px] ">
-            <SignUpOptions icon={google} />
-            <SignUpOptions icon={facebook} />
+            <SignUpOptions icon={google} onClick={handleGoogleSignIn} />
+            <SignUpOptions icon={facebook} onClick={handleFacebookSignIn} />
             <SignUpOptions icon={instagram} />
         </div>	
     </form> 
