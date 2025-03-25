@@ -7,44 +7,36 @@ import facebook from '../icons/facebook.png'
 import instagram from '../icons/instagram.png'
 import mailLogo from '../icons/mail.png'
 import useAuthencationStore from '../store/userStore'
+import { useNavigate } from 'react-router-dom'
 
 
-export default function SignIn() {
-    const {users} = useAuthencationStore() // get users array from zustand
+export default function SignIn() { 
+    const {users, login} = useAuthencationStore() // get users array and login function from zustand
+    const navigate = useNavigate()  // hook for navigation
+
     const [credentials, setCredentials] = useState({email:'', password:''}); //state to hold user input (email and password)
     const [error, setError] = useState('')  // state to track login errors
 
-
     const handleChange = (e) => {  //handle input field changes and update the credentials state
         const {name, value} = e.target;
-        setCredentials(prev => ({...prev, [name]:value}))
+        setCredentials(prev => ({ ...prev, [name]: value }))
     }
 
-    const handleSubmit = () => {
+    const handleSubmit = (e) => {
       e.preventDefault();
 
       const userFound = users.find(user => user.email === credentials.email && user.password ===credentials.password ) //check if the user exists in the store  with matching email and password
       
       if(userFound){
         console.log('Login successful: ', userFound); // if found Log
+        login(userFound); // this update the state of user, passes the user data to login function and displays the navbar Links (dashboard, wardrobe and custom outfit)
         setError('');        //and clear any previous error messages
+        navigate('./dashboard') // redirect to dashboard after login is confirmed
       }else{ 
         setError('Invalid email or password')// display error if credentials dont match
         setTimeout(() => setError(''), 4000)
       }
-
       console.log(credentials);
-    }
-
-    const handleSignUp = async (e) => {
-                e.preventDefault();
-                try {
-                  await signUp(email, password);
-                 navigate('/Home');
-                  alert("Sign up successful!");
-                } catch (err) {
-                  setError(err.message);
-                }
     }
 
     const isPasswordValid = credentials.password.length >= 8

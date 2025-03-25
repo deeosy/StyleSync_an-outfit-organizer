@@ -1,3 +1,5 @@
+// pages/Home.jsx
+
 import React from 'react'
 import nextArrow from '../icons/right-arrow.png'
 import SliderHeroSection from '../components/SliderHeroSection'

@@ -11,8 +11,12 @@ const useAuthencationStore =create((set) => ({
     gender: '',
     reason:''
   },
+  
+  isAuthenticated : false, // default user is logged out
+  login: (user)=> set({isAuthenticated: true, currentUser: user}),  //  call this function when user is logged in
+  logout: ()=> set({isAuthenticated: false}), //  call this function when user is logged out
 
-  //update user State
+  //update user State 
   updateUser: (name, value) => set((state) => ({
     user: {...state.user, [name]: value}
   })),

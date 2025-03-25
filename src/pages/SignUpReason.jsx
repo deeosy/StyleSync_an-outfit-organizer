@@ -8,15 +8,22 @@ import camera from '../icons/camera-outline.png'
 import discover from '../icons/discover-outline.png'
 import bar from '../icons/bar-chart-outline.png'
 import picture from '../icons/picture-outline.png'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import useAuthencationStore from '../store/userStore';
 
 export default function SignUpReason() {
   const {user, updateUser} = useAuthencationStore();
   const isReasonSelected = Boolean(user.reason); // Check if a reason is selected
+  const navigate = useNavigate();
 
   const handleReason =(e) => { 
     updateUser("reason", e.currentTarget.dataset.reason )
+  }
+
+  const handleContinue = (e) => {
+    if(isReasonSelected){
+      navigate('./dashboard')
+    }
   }
   console.log(user);
 
@@ -34,10 +41,10 @@ export default function SignUpReason() {
             <div className="w-full border border-[#F06D99] "></div>
             <div className="w-full border border-[#F06D99] "></div>
             <motion.div
-                initial={{ x: "-100%", border:'1px solid black',  }} // Starts from right
-                animate={{ x: "0%", border:'1px solid #F06D99', }} // Moves to original position
-                transition={{ duration: 1, ease: "linear" }} // 3s linear transition
-                className="w-full "                
+              initial={{ x: "-100%", border:'1px solid black',  }} // Starts from right
+              animate={{ x: "0%", border:'1px solid #F06D99', }} // Moves to original position
+              transition={{ duration: 1, ease: "linear" }} // 3s linear transition
+              className="w-full "                
             />
         </div>
         <p className='text-[12px] text-gray-500 mb-[25px]'>Select your main reason for signing up to StyleSync and we’ll customize your experience so you can get the most out of your wardrobe.</p>
@@ -56,19 +63,14 @@ export default function SignUpReason() {
           </div>          
         </div>
         <div className="flex flex-col mt-[27px] ">
-          {/* Routing extra security in case btn styling of btn is over written */}
-          <Link to={isReasonSelected ? "/dashboard" : "#"} > 
-            <button 
-              type='submit' disabled={!isReasonSelected}
-              className={`w-full py-[13px] rounded-[5px] font-bold hover:cursor-pointer transition-opacity ${
-              isReasonSelected ? 'bg-[#B1D2F1] text-[#212529]' : 'bg-gray-300 text-gray-600 opacity-50 cursor-not-allowed'}`} 
-            >
-              Continue
-            </button>
-          </Link>
-          <Link to='/dashboard' >
-              <p className='text-center pt-[13px] font-bold '>Skip</p>
-          </Link>
+          <button 
+            type='button' onClick={handleContinue}  disabled={!isReasonSelected}
+            className={`w-full py-[13px] rounded-[5px] font-bold hover:cursor-pointer transition-opacity ${
+            isReasonSelected ? 'bg-[#B1D2F1] text-[#212529]' : 'bg-gray-300 text-gray-600 opacity-50 cursor-not-allowed'}`} 
+          >
+            Continue
+          </button>
+          <p onClick={()=>navigate('/dashboard')} className='text-center pt-[13px] font-bold '>Skip</p>
         </div>
     </div>
     </div>
