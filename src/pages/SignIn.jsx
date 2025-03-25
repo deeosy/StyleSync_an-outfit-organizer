@@ -8,6 +8,9 @@ import instagram from '../icons/instagram.png'
 import mailLogo from '../icons/mail.png'
 import useAuthencationStore from '../store/userStore'
 import { useNavigate } from 'react-router-dom'
+import { signIn } from '../services/authService'
+import {auth} from '../config/firebase'
+import { GoogleAuthProvider, FacebookAuthProvider, signInWithPopup } from 'firebase/auth'
 
 
 export default function SignIn() { 
@@ -22,24 +25,67 @@ export default function SignIn() {
         setCredentials(prev => ({ ...prev, [name]: value }))
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
       e.preventDefault();
+      setLoading(true);
 
-      const userFound = users.find(user => user.email === credentials.email && user.password ===credentials.password ) //check if the user exists in the store  with matching email and password
-      
-      if(userFound){
-        console.log('Login successful: ', userFound); // if found Log
-        login(userFound); // this update the state of user, passes the user data to login function and displays the navbar Links (dashboard, wardrobe and custom outfit)
-        setError('');        //and clear any previous error messages
-        navigate('./dashboard') // redirect to dashboard after login is confirmed
-      }else{ 
-        setError('Invalid email or password')// display error if credentials dont match
-        setTimeout(() => setError(''), 4000)
+       try {
+        const userCredential = await signIn(credentials.email, credentials.password);
+        const user = userCredential.user;
+        console.log('Login successful: ', user);
+        login(user); // Update your state management with the user data
+        setError('');
+        navigate('./dashboard');
+      } catch (error) {
+        console.error('Login error:', error);
+        setError(error.message || 'Invalid email or password');
+        setTimeout(() => setError(''), 4000);
+      } finally {
+        setLoading(false);
       }
-      console.log(credentials);
+    }
+   
+
+    //Google sign in
+    const handleGoogleSignIn = async () => {
+      setLoading(true);
+      try {
+        const provider = new GoogleAuthProvider();
+        const result = await signInWithPopup(auth, provider);
+        const user = result.user;
+        login(user);
+        navigate('./dashboard');
+      } catch (error) {
+        console.error('Google sign-in error:', error);
+        setError(error.message || 'Failed to sign in with Google');
+        setTimeout(() => setError(''), 4000);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+
+    //Facebook sign in
+
+    const handleFacebookSignIn = async () => {
+      setLoading(true);
+      try {
+        const provider = new FacebookAuthProvider();
+        const result = await signInWithPopup(auth, provider);
+        const user = result.user;
+        login(user);
+        navigate('./dashboard');
+      } catch (error) {
+        console.error('Facebook sign-in error:', error);
+        setError(error.message || 'Failed to sign in with Facebook');
+        setTimeout(() => setError(''), 4000);
+      } finally {
+        setLoading(false);
+      }
     }
 
     const isPasswordValid = credentials.password.length >= 8
+    const isEmailValid = credentials.email.includes('@')
 
 
   return (
