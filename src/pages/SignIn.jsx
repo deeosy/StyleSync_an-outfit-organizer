@@ -19,6 +19,7 @@ export default function SignIn() {
 
     const [credentials, setCredentials] = useState({email:'', password:''}); //state to hold user input (email and password)
     const [error, setError] = useState('')  // state to track login errors
+    const [loading, setLoading] = useState(false)
 
     const handleChange = (e) => {  //handle input field changes and update the credentials state
         const {name, value} = e.target;
