@@ -4,6 +4,7 @@ import useWardrobeStore from "../store/wardrobeStore";
 import DisplayImage from "../components/DisplayImage";
 import CenteredTabs from "../components/CenteredTabs";
 
+
 function Dashboard() {
   const wardrobeItems = useWardrobeStore((state) => state.wardrobeItems); // remove
   // Find unused items (never worn)
