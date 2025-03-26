@@ -52,9 +52,7 @@ export default function SignUpDetails() {
                 throw new Error('Please fill in all fields');
             }
             
-            if (user.password !== user.confirmPassword) {
-                throw new Error('Passwords do not match');
-            }
+           
             
             // Sign up with Firebase Authentication
             const userCredential = await signUp(user.email, user.password);
