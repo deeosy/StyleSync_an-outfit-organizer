@@ -125,6 +125,7 @@ export default function SignUpDetails() {
                         type='submit'
                         className={`w-full py-[13px] rounded-[5px] font-bold hover:cursor-pointer transition-opacity ${isPasswordValid ? 'bg-[#B1D2F1] text-[#212529]' : 'bg-gray-300 text-gray-600 opacity-50 cursor-not-allowed'}`} 
                         disabled={!isPasswordValid}
+                        onClick={handleSubmit}
                     >
                         Continue
                     </button>
