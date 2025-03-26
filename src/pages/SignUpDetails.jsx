@@ -120,7 +120,7 @@ export default function SignUpDetails() {
                     />
                 </div>
                 <PasswordInputField name='password' userPassword={user.password} passwordLength={user.password.length} handleChange={handleChange} />
-                <Link to='/authenticaion/sign-up-reason'>
+                
                     <button 
                         type='submit'
                         className={`w-full py-[13px] rounded-[5px] font-bold hover:cursor-pointer transition-opacity ${isPasswordValid ? 'bg-[#B1D2F1] text-[#212529]' : 'bg-gray-300 text-gray-600 opacity-50 cursor-not-allowed'}`} 
@@ -128,7 +128,7 @@ export default function SignUpDetails() {
                     >
                         Continue
                     </button>
-                </Link>
+                
                 <Outlet />
             </form>
         </div>
