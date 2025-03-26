@@ -17,8 +17,8 @@ const firebaseConfig = {
   measurementId: "G-Q04S0X181S"
 };
 
-console.log("Firebase API Key:", import.meta.env.VITE_FIREBASE_API_KEY);
-console.log("Auth Domain:", import.meta.env.VITE_AUTH_DOMAIN);
+console.log("Firebase API Key:", firebaseConfig.apiKey);
+console.log("Auth Domain:", firebaseConfig.authDomain);
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
