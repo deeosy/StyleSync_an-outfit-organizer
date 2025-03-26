@@ -13,7 +13,7 @@ import { motion } from "framer-motion";
 import { signUp } from '../services/authService';
 import { useNavigate } from 'react-router-dom';
 import { getFirestore, collection, addDoc } from 'firebase/firestore';
-import { app } from '../config/firebase';  
+import {db}  from '../config/firebase';
 
 
 export default function SignUpDetails() {
@@ -44,10 +44,12 @@ export default function SignUpDetails() {
             
             // Sign up with Firebase Authentication
             const userCredential = await signUp(user.email, user.password);
-            
+            const uid = userCredential.user.uid;
+
             // Save user data to Firestore after successful signup
-            const db = getFirestore(app); // Get Firestore instance
+            
             await addDoc(collection(db, "users"), {
+                uid: uid,  // Store the Firebase Auth UID
                 username: user.username,
                 email: user.email,
                 gender: user.gender,
