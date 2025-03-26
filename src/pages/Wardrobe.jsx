@@ -4,7 +4,6 @@ import useWardrobeStore from '../store/wardrobeStore';
 
 function Wardrobe() {
   const [filter, setFilter] = useState('all');
-  const [showAddForm, setShowAddForm] = useState(false);
   const [newItem, setNewItem] = useState({
     name: '',
     category: 'tops',
@@ -18,6 +17,8 @@ function Wardrobe() {
   
   const wardrobeItems = useWardrobeStore(state => state.wardrobeItems);
   const addClothingItem = useWardrobeStore(state => state.addClothingItem);
+  const showAddForm = useWardrobeStore(state => state.showAddForm);
+  const toggleAddForm = useWardrobeStore( state => state.toggleAddForm)
   
   const handleAddItem = (e) => {
     e.preventDefault();
@@ -32,7 +33,7 @@ function Wardrobe() {
         notes: ''
       });
       setImagePreview(null);
-      setShowAddForm(false);
+      toggleAddForm(false);
     }
   };
   
@@ -60,19 +61,19 @@ function Wardrobe() {
     : wardrobeItems.filter(item => item.category === filter);
   
   return (
-    <div>
-      <div className="flex justify-between items-center mb-6">
+    <div className='px-3'>
+      <div className="flex justify-between items-center mb-6 mx-auto max-w-[1200px]">
         <h1 className="text-3xl font-bold">My Wardrobe</h1>
         <button
-          onClick={() => setShowAddForm(!showAddForm)}
-          className="px-4 py-2 bg-purple-700 text-white rounded hover:bg-purple-800 transition-colors"
+          onClick={() => toggleAddForm(!showAddForm)}
+          className="px-4 py-2 bg-pink-400 hover:cursor-pointer text-white rounded transition-colors"
         >
           {showAddForm ? 'Cancel' : 'Add New Item'}
         </button>
       </div>
       
       {showAddForm && (
-        <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
+        <div className="bg-white rounded-lg shadow-sm p-6 mb-6 mx-auto max-w-[1200px]">
           <h2 className="text-lg font-semibold mb-4">Add New Item</h2>
           <form onSubmit={handleAddItem}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -212,7 +213,7 @@ function Wardrobe() {
             <div className="mt-6 flex justify-end space-x-3">
               <button
                 type="button"
-                onClick={() => setShowAddForm(false)}
+                onClick={() => toggleAddForm(false)}
                 className="px-4 py-2 border border-gray-300 text-gray-700 rounded hover:bg-gray-50 transition-colors"
               >
                 Cancel
@@ -228,7 +229,7 @@ function Wardrobe() {
         </div>
       )}
       
-      <div className="bg-white rounded-lg shadow-sm p-6">
+      <div className="bg-white rounded-lg shadow-xl p-6 mb-8 w-full h-full mx-auto max-w-[1200px]">
         <div className="flex border-b border-gray-200 mb-6 overflow-x-auto">
           <button 
             className={`px-4 py-2 font-medium transition-colors whitespace-nowrap ${
@@ -255,23 +256,29 @@ function Wardrobe() {
           ))}
         </div>
         
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 h-full gap-4 md:gap-8 my-5">
           {filteredItems.map(item => (
-            <div key={item.id} className="bg-gray-50 p-3 rounded-lg border border-gray-200">
+            <div key={item.id} className="bg-gray-50 p-3 flex flex-col rounded-[5px] border border-gray-200">
+              
               <div 
-                className="h-32 rounded mb-2 flex items-center justify-center text-sm overflow-hidden"
+                className="h-full rounded-[5px] mb-2 md:mb-4 flex text-xs"
                 style={{ backgroundColor: item.color }}
               >
-                {item.imageUrl ? (
-                  <img src={item.imageUrl} alt={item.name} className="w-full h-full object-cover" />
-                ) : (
+                {/* {item.imageUrl ? ( */}
+                  <img 
+                    src={item.imageUrl} 
+                    alt={item.name} 
+                    className="w-full h-full object-cover rounded" />
+                {/* ) : (
                   <span>{item.name}</span>
-                )}
+                )} */}
               </div>
-              <p className="text-sm font-medium truncate">{item.name}</p>
-              <p className="text-xs text-gray-600">Last worn: {item.lastWorn || 'Never'}</p>
-              <p className="text-xs text-gray-600 capitalize">{item.category}</p>
-              {item.notes && <p className="text-xs text-gray-500 mt-1 line-clamp-2">{item.notes}</p>}
+              <p className="text-sm font-medium pb-2 truncate">{item.name}</p>
+              <div className="flex justify-between">
+                <p className="text-xs text-gray-600 capitalize">{item.category}</p>
+                <p className="text-xs text-gray-600 ">Last worn: {item.lastWorn || 'Never'}</p>
+              </div>
+              {item.notes && <p className="text-xs pb-2 truncate text-gray-500">{item.notes}</p>}
             </div>
           ))}
           

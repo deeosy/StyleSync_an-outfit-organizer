@@ -20,17 +20,17 @@ export default function Navbar() {
               <div className=" hidden sm:flex justify-center items-center py-4 text-[#212529] manrope">
                 <ul className='flex space-x-6'>
                   <li>
-                    <Link to='/dashboard' className='hover:bg-[#F06D99] px-3 py-2 rounded transition-colors' >
+                    <Link to='/dashboard' className='hover:bg-pink-400  px-3 py-2 rounded transition-colors' >
                       Dashboard
                     </Link>
                   </li>
                   <li>
-                    <Link to='/wardrobe' className='hover:bg-[#F06D99] px-3 py-2 rounded transition-colors' >
+                    <Link to='/wardrobe' className='hover:bg-pink-400  px-3 py-2 rounded transition-colors' >
                       My StyleSync
                     </Link>
                   </li>
                   <li>
-                    <Link to='/outfits' className='hover:bg-[#F06D99] px-3 py-2 rounded transition-colors' >
+                    <Link to='/outfits' className='hover:bg-pink-400  px-3 py-2 rounded transition-colors' >
                       Outfit Builder
                     </Link>
                   </li>
@@ -41,7 +41,7 @@ export default function Navbar() {
           { // removes sign in button when user is logged in
             !isAuthenticated && (
               <Link to='/authenticaion/sign-in' >
-                <button className='rounded-[3px] bg-[#F06D99] manrope px-4 py-3 md:px-10 md:py-4 hover:cursor-pointer ' >Sign In</button>
+                <button className='text-white rounded-[3px] bg-pink-400 manrope px-4 py-3 md:px-10 md:py-4 hover:cursor-pointer ' >Sign In</button>
               </Link>
             )
           }

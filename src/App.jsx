@@ -29,10 +29,10 @@ function App() {
             <Routes>
               <Route path='/' element={<Home />} />
               <Route path='/authenticaion' element={<Authentication />} >
+                <Route path='sign-in' element={<SignIn />} />
                 <Route index element={<SignUpLanguage />} />
                 <Route path='sign-up-details' element={<SignUpDetails />} />
                 <Route path='sign-up-reason' element={<SignUpReason />} />
-                <Route path='sign-in' element={<SignIn />} />
               </Route>
               <Route path='/dashboard' element={<Dashboard />} />
               <Route path='/wardrobe' element={<Wardrobe />} />

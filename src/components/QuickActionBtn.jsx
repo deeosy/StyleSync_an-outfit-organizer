@@ -5,11 +5,14 @@ import SpeedDialAction from '@mui/material/SpeedDialAction';
 import CheckroomIcon from '@mui/icons-material/Checkroom';
 import OutfitLogo from './OutfitLogo';
 import { useNavigate } from 'react-router-dom';
+import useWardrobeStore from '../store/wardrobeStore';
 
 export default function QuickActionBtn() {
     const navigate = useNavigate() // call navigate from router dom
+    const toggleAddForm = useWardrobeStore( state => state.toggleAddForm)
+
     const actions = [
-      { icon: <CheckroomIcon />, name: 'Add Item', onclick: ()=>navigate('/wardrobe') }, // added on click actions for navigating
+      { icon: <CheckroomIcon />, name: 'Add Item', onclick: ()=> { navigate('/wardrobe'); toggleAddForm(true) }}, // added on click actions for navigating and toggle function to open form after navigating
       { icon: <OutfitLogo />, name: 'Create Outfit', onclick: ()=>navigate('/outfits') }, // added on click actions for navigating
     ];
 

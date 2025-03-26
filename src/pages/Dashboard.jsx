@@ -3,11 +3,13 @@ import React from "react";
 import useWardrobeStore from "../store/wardrobeStore";
 import DisplayImage from "../components/DisplayImage";
 import CenteredTabs from "../components/CenteredTabs";
+import { useNavigate } from "react-router-dom";
 
 function Dashboard() {
   const wardrobeItems = useWardrobeStore((state) => state.wardrobeItems); // remove
   // Find unused items (never worn)
   const unusedItems = wardrobeItems.filter((item) => item.lastWorn === "Never"); //remove
+  const navigate = useNavigate()
 
   return (
     <>
@@ -33,7 +35,7 @@ function Dashboard() {
               .map(
                 (
                   item // Recent added wordrobe items
-                ) => (
+                ) => ( 
                   <div
                     key={item.id}
                     className="bg-gray-50 p-3 flex flex-col rounded-[5px] border border-gray-200"

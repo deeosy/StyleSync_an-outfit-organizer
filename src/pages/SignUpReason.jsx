@@ -48,7 +48,7 @@ export default function SignUpReason() {
             />
         </div>
         <p className='text-[12px] text-gray-500 mb-[25px]'>Select your main reason for signing up to StyleSync and we’ll customize your experience so you can get the most out of your wardrobe.</p>
-        <div className="flex flex-col gap-4 h-[300px] sm:h-full md:overflow-scroll no-scrollbar   ">
+        <div className="flex flex-col gap-4 h-[300px] sm:h-full overflow-scroll no-scrollbar   ">
           <div className="flex flex-col gap-8 sm:flex-row justify-between ">
               <SignUpReasonButton handleReason={handleReason} reason='Organise' icon={wardrobe} text='Organise my wardrobe' />
               <SignUpReasonButton handleReason={handleReason} reason='AI recommendations' icon={brain} text='Get Personalised AI recommendations' />
