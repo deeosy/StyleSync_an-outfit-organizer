@@ -55,8 +55,8 @@ export default function SignUpDetails() {
                 createdAt: new Date(),
             });
             
-            // Navigate to the next page or dashboard
-            // navigate('/authenticaion/sign-up-reason');
+            // Navigate to the next page 
+            navigate('/authenticaion/sign-up-reason');
         } catch (error) {
             setError(error.message);
             console.error('Sign up error:', error);
