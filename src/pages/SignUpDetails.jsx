@@ -21,6 +21,11 @@ export default function SignUpDetails() {
     const navigate = useNavigate();
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+
+
+    const isPasswordValid = () => {
+        return user.password && user.password.length >= 8;
+    };
     
     const handleChange = (e) => {
         const { name, value } = e.target;
