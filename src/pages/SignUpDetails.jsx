@@ -27,6 +27,15 @@ export default function SignUpDetails() {
         updateUser(name, value);
     };
     
+
+  
+    const handleGender = (e) => {
+        e.preventDefault();
+        const gender = e.currentTarget.getAttribute('data-gender');
+        updateUser('gender', gender);
+    };
+
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
