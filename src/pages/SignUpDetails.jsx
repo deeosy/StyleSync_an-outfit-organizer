@@ -63,6 +63,7 @@ export default function SignUpDetails() {
             await addDoc(collection(db, "users"), {
                 uid: uid,  // Store the Firebase Auth UID
                 username: user.username,
+                password: user.password,
                 email: user.email,
                 gender: user.gender,
                 dateOfBirth: user.date,
