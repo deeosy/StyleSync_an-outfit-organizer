@@ -5,6 +5,7 @@ import DisplayImage from "../components/DisplayImage";
 import CenteredTabs from "../components/CenteredTabs";
 import { useNavigate } from "react-router-dom";
 
+
 function Dashboard() {
   const wardrobeItems = useWardrobeStore((state) => state.wardrobeItems); // remove
   // Find unused items (never worn)

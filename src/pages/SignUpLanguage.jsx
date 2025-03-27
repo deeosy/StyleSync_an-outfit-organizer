@@ -7,6 +7,7 @@ import instagram from '../icons/instagram.png'
 import useAuthencationStore from '../store/userStore'
 import { Link, Outlet } from 'react-router-dom'
 
+
 export default function SignUpLanguage() {
     const {user,updateUser} = useAuthencationStore()
     const handleChange = (e) => {

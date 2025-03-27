@@ -1,13 +1,35 @@
-import React from 'react'
+import React from "react";
+import PropTypes from 'prop-types';
 
-export default function SignUpOptions({icon}) {
+const SignUpOptions = ({ icon, onClick }) => {
   return (
-    <>
-        <button className='bg-white w-[100px] h-[40px] sm:w-[160px] sm:h-[61px] rounded-[5px] flex justify-center items-center hover:cursor-pointer' >
-            <img src={icon} alt={`${icon}-icon`} className='h-[20px] w-[20px]  sm:h-[25px] sm:w-[25px]' />
-        </button>
-    </>
-  )
-}
+    <div 
+      className={`
+        flex items-center justify-center 
+        w-full max-w-[100px] 
+        p-3 
+        border border-gray-200 
+        rounded-[5px] 
+        hover:bg-gray-100 
+        transition duration-300 
+        cursor-pointer
+        ${onClick ? 'hover:shadow-md' : 'opacity-50 cursor-not-allowed'}
+      `}
+      onClick={onClick}
+    >
+      <img 
+        src={icon} 
+        alt="Sign up option" 
+        className="w-6 h-6 object-contain"
+      />
+    </div>
+  );
+};
 
-// w-[105px] h-[40px] sm:w-[275px] sm:h-[71px] md:text-[24px]
+// Add prop type validation
+SignUpOptions.propTypes = {
+  icon: PropTypes.string.isRequired,
+  onClick: PropTypes.func
+};
+
+export default SignUpOptions;
