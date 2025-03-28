@@ -26,8 +26,10 @@ export default function QuickActionBtn() {
     <SpeedDial
     ariaLabel="SpeedDial basic example"
     sx={{ position: 'absolute', bottom: -10, right: 20, 
-      "& .MuiFab-primary": { backgroundColor: user?.gender === 'male' ? "#daeaff" : "#fc64b6", "&:hover": { backgroundColor: user?.gender === 'male' ? "#bedbff" : "#e054a3" } }, 
-      
+      "& .MuiFab-primary": { 
+        backgroundColor: `${user?.gender === 'male' ? '#bedbff' : '#fc64b6'} !important`,
+        "&:hover": { backgroundColor: `${user?.gender === 'male' ? '#bedbff' : '#e054a3'} !important`, },
+      },      
     }}
     className='!z-10'
     icon={<SpeedDialIcon />}

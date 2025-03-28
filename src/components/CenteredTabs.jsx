@@ -40,7 +40,7 @@ export default function CenteredTabs() {
             centered onChange={handleChange} aria-label="lab API tabs example"
             sx={{
               "& .Mui-selected": { color: '#030200 !important'  }, // Black text for selected tab
-              "& .MuiTabs-indicator":{ backgroundColor: user?.gender === 'male' ? "#daeaff" : "#fc64b6" } // Pink underline
+              "& .MuiTabs-indicator":{ backgroundColor: user?.gender === 'male' ? "#bedbff" : "#fc64b6" } // Pink underline
             }}
           >
             <Tab label="Wardrobe Stats" value="1"  />
