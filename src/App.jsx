@@ -12,6 +12,7 @@ import SignUpReason from "./pages/SignUpReason";
 import "./App.css";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
+// import Account from "./pages/Account";
 
 // things you should know
 // the use of Zustand for state management
@@ -26,15 +27,17 @@ function App() {
           <div className="container max-w-screen bg-[#f5f5f5] ">
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/authenticaion" element={<Authentication />}>
+              <Route path="/authentication" element={<Authentication />}>
+                <Route path="sign-in" element={<SignIn />} />
                 <Route index element={<SignUpLanguage />} />
                 <Route path="sign-up-details" element={<SignUpDetails />} />
-                <Route path="sign-up-reason" element={<SignUpReason />} />
-                <Route path="sign-in" element={<SignIn />} />
+                <Route path="sign-up-reason" element={<SignUpReason />} >
+                </Route>
               </Route>
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/wardrobe" element={<Wardrobe />} />
               <Route path="/outfits" element={<Outfits />} />
+              {/* <Route path="/account" element={<Account />} /> */}
             </Routes>
           </div>
           <Footer />

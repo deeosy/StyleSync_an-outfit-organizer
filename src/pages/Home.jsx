@@ -19,7 +19,7 @@ export default function Home() {
                     <h1 className='uppercase font-bold text-[20px] md:text-[28px] xl:text-[34px] ' >YOUR SMART DIGITAL WARDROBE ASSISTANT</h1>
                     <p className='text-[14px] py-[22px] md:text-[20px] xl:text-[24px]' >Organise your clothing collection, get AI powered outfit recommendations and revolutionize your style game</p>
                         <button className='bg-white rounded-[5px] md:text-[20px] hover:cursor-pointer' >
-                            <Link to='/authenticaion' className='flex gap-3 items-center py-2 px-5'>
+                            <Link to='/authentication' className='flex gap-3 items-center py-2 px-5'>
                                 Get Started 
                                 <img src={nextArrow} alt="next-page icon" className='h-[14px] pt-[2px] ' />
                             </Link>

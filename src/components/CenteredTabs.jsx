@@ -6,12 +6,18 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import useWardrobeStore from "../store/wardrobeStore";
 import QuickActionBtn from './QuickActionBtn';
+import useAuthenticationStore from '../store/userStore';
 
 
 export default function CenteredTabs() {
   const [value, setValue] = React.useState('1');
   const wardrobeItems = useWardrobeStore((state) => state.wardrobeItems);
   const savedOutfits = useWardrobeStore((state) => state.savedOutfits);
+  const { user, isAuthenticated } = useAuthenticationStore()
+
+  if(!isAuthenticated){
+    return <p className="text-center mt-10">Please log in to access your wardrobe.</p>;
+  }
   
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -30,11 +36,12 @@ export default function CenteredTabs() {
     <Box sx={{ width: '100%', typography: 'body1',  }} className='mx-auto !max-w-[1200px] '>
       <TabContext value={value} >
         <Box>
-          <TabList  centered onChange={handleChange} aria-label="lab API tabs example"
-              sx={{
-                "& .Mui-selected": { color: '#030200 !important'  }, // Black text for selected tab
-                "& .MuiTabs-indicator": { backgroundColor: "#fc64b6" } // Pink underline
-              }}
+          <TabList  
+            centered onChange={handleChange} aria-label="lab API tabs example"
+            sx={{
+              "& .Mui-selected": { color: '#030200 !important'  }, // Black text for selected tab
+              "& .MuiTabs-indicator":{ backgroundColor: user?.gender === 'male' ? "#daeaff" : "#fc64b6" } // Pink underline
+            }}
           >
             <Tab label="Wardrobe Stats" value="1"  />
             <Tab label="Unworn Items" value="2" />
@@ -71,7 +78,9 @@ export default function CenteredTabs() {
           <QuickActionBtn />
         <div className="h-[300px] drop-shadow-xl">
           <div className="bg-white rounded-lg shadow-sm p-8 h-full no-scrollbar overflow-scroll">
-              {unusedItems.length > 0 ? (
+              {wardrobeItems.length < 1 ? (
+                <p className="text-sm text-gray-600">Currently no clothes in your wardrobe</p>
+              ) : unusedItems.length > 0 ? (
                 <ul className="space-y-3">
                   {unusedItems.slice(0, 5).map((item) => (
                     <li key={item.id} className="text-sm flex items-center">

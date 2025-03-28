@@ -3,26 +3,30 @@ import React from "react";
 import useWardrobeStore from "../store/wardrobeStore";
 import DisplayImage from "../components/DisplayImage";
 import CenteredTabs from "../components/CenteredTabs";
-import { useNavigate } from "react-router-dom";
+import useAuthenticationStore from "../store/userStore";
 
 
 function Dashboard() {
-  const wardrobeItems = useWardrobeStore((state) => state.wardrobeItems); // remove
-  // Find unused items (never worn)
-  const unusedItems = wardrobeItems.filter((item) => item.lastWorn === "Never"); //remove
-  const navigate = useNavigate()
+  const wardrobeItems = useWardrobeStore((state) => state.wardrobeItems);
+  const { user, isAuthenticated } = useAuthenticationStore()
+  if(!isAuthenticated){
+    return <p className="text-center mt-10">Please log in to access your wardrobe.</p>;
+  }
+
+  console.log(user);
+  
 
   return (
     <>
-      <div className={`w-full h-[60px] md:h-[100px] bg-pink-400 relative manrope `}>
-        <div className="relative left-17 top-7 w-fit md:left-30 md:top-14 xl:left-80 xl:top-12  ">
+      <div className={`w-full h-[60px] md:h-[100px] ${user?.gender === 'male' ? 'bg-blue-100' : 'bg-pink-400'}  relative manrope `}>
+        <div className="relative left-17 top-7 w-fit md:left-30 md:top-14 xl:left-80 xl:top-12 bg-gray-300 rounded-full  ">
           <DisplayImage  />
         </div>
       </div>
       <div className="my-6">
         {/* change name to user name from database */}
-        <p className="text-center font-semibold" >Julia</p> 
-        <p className="text-center " >@juliabruce_</p>
+        <p className="text-center font-semibold" >{user?.username}</p> 
+        <p className="text-center " >{`@${user?.username}_`}</p>
       </div>
       <div className="px-3 flex flex-col gap-10 ">
         <CenteredTabs />
@@ -62,7 +66,6 @@ function Dashboard() {
         </div>
       </div>
     </>
-
   );
 }
 

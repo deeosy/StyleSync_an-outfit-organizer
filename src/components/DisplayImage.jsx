@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
-import dP from '../images/displayImage-SS.jpeg'
+import dP from '../images/default-profile-pic.png'
 
 export default function DisplayImage() {
   return (

@@ -15,8 +15,9 @@ const Footer = () => {
             <h3 className="hidden md:block text-lg font-semibold mb-2">Quick Links</h3>
             <div className="flex flex-col space-y-1">
               <Link to="/dashboard" className="text-gray-300 hover:text-white">Dashboard</Link>
-              <Link to="/wardrobe" className="text-gray-300 hover:text-white">My StyleSync</Link>
+              <Link to="/wardrobe" className="text-gray-300 hover:text-white">Wardrobe</Link>
               <Link to="/outfits" className="text-gray-300 hover:text-white">Outfit Builder</Link>
+              <Link to="/account" className="text-gray-300 hover:text-white">Account</Link>
             </div>
           </div>
           

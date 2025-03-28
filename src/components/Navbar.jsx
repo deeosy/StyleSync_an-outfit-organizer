@@ -1,50 +1,72 @@
 // components/Navbar.jsx
 import React from 'react'
 import { Link } from 'react-router-dom'
-import useAuthencationStore from '../store/userStore'
+import useAuthenticationStore from '../store/userStore'
+import Sidebar from './Sidebar'
 
 export default function Navbar() {
-  const { isAuthenticated } = useAuthencationStore()  // this gets authenticated status
+  const { user, isAuthenticated } = useAuthenticationStore() 
 
   return (
     <nav className='bg-[#f5f5f5] text-black manrope  ' >
       <div className="container mx-auto px-3">
-        <div className="flex justify-between items-center gap-[4px] lg:gap-[74px]xl:gap-[174px] text-[16px] md:text-[24px] w-full py-[33px] ">
-          <div className="bagel text-black text-[48px] ">
+        <div className="flex justify-between items-center gap-5 lg:gap-20 xl:gap-[174px] md:text-[24px] w-full py-[20px] ">
+          <div className="bagel text-black text-[42px] ">
             <Link to='/'>
               StyleSync
             </Link>
           </div>
           { // shows links only if the user is logged in
-            isAuthenticated && (
-              <div className=" hidden sm:flex justify-center items-center py-4 text-[#212529] manrope">
-                <ul className='flex space-x-6'>
-                  <li>
-                    <Link to='/dashboard' className='hover:bg-pink-400  px-3 py-2 rounded transition-colors' >
-                      Dashboard
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to='/wardrobe' className='hover:bg-pink-400  px-3 py-2 rounded transition-colors' >
-                      My StyleSync
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to='/outfits' className='hover:bg-pink-400  px-3 py-2 rounded transition-colors' >
-                      Outfit Builder
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-            )
-          }
-          { // removes sign in button when user is logged in
-            !isAuthenticated && (
-              <Link to='/authenticaion/sign-in' >
-                <button className='text-white rounded-[3px] bg-pink-400 manrope px-4 py-3 md:px-10 md:py-4 hover:cursor-pointer ' >Sign In</button>
+            isAuthenticated ? (
+              <>
+                <div className="sm:hidden relative ">
+                  <Sidebar />
+                </div>
+                <div className=" hidden sm:flex  items-center text-[12px] md:text-[20px] py-4 text-[#212529] manrope">
+                  <ul className='flex '>
+                    <li>
+                      <Link to='/dashboard' className='px-3 py-2 relative group transition-all duration-300 ease-in-out' >
+                        <span className='relative border-r-2 px-3 py-1'>
+                          Dashboard
+                          <span className={`absolute bottom-0 left-3 w-0 h-0.5 ${user?.gender === 'male' ? "bg-blue-100": "bg-pink-500" } group-hover:w-[80%] transition-all duration-300 ease-in-out`}></span>
+                        </span>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to='/wardrobe' className='px py-2 relative group transition-all duration-300 ease-in-out' >
+                        <span className='relative py-1'>
+                        Wardrobe
+                          <span className={`absolute bottom-0 left-0 w-0 h-0.5 ${user?.gender === 'male' ? "bg-blue-100": "bg-pink-500" } group-hover:w-full transition-all duration-300 ease-in-out`}></span>
+                        </span>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to='/outfits' className='px-3 py-2 relative group transition-all duration-300 ease-in-out' >
+                        <span className='relative  border-x-2 px-3 py-1'>
+                        Outfit Builder
+                          <span className={`absolute bottom-0 left-3 w-0 h-0.5 ${user?.gender === 'male' ? "bg-blue-100": "bg-pink-500" } group-hover:w-[78%] md:group-hover:w-[85%] transition-all duration-300 ease-in-out`}></span>
+                        </span>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to='/account' className=' py-2 relative group transition-all duration-300 ease-in-out' >
+                        <span className='relative py-1'>
+                        Account
+                          <span className={`absolute bottom-0 left-0 w-0 h-0.5 ${user?.gender === 'male' ? "bg-blue-100": "bg-pink-500" } group-hover:w-full transition-all duration-300 ease-in-out`}></span>
+                        </span>
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
+              </>
+            ) : ( // removes sign in button when user is logged in
+              <Link to='/authentication/sign-in' >
+                <button className='text-white rounded-[3px] bg-pink-400 manrope px-4 py-3 md:px-10 md:py-4 hover:bg-pink-500 hover:cursor-pointer transition-colors ' >Sign In</button>
               </Link>
             )
           }
+          
+          
         </div>
       </div>
     </nav>

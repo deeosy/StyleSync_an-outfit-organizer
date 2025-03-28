@@ -6,10 +6,16 @@ import CheckroomIcon from '@mui/icons-material/Checkroom';
 import OutfitLogo from './OutfitLogo';
 import { useNavigate } from 'react-router-dom';
 import useWardrobeStore from '../store/wardrobeStore';
+import useAuthenticationStore from '../store/userStore';
 
 export default function QuickActionBtn() {
     const navigate = useNavigate() // call navigate from router dom
     const toggleAddForm = useWardrobeStore( state => state.toggleAddForm)
+    const { user, isAuthenticated } = useAuthenticationStore
+    
+    // if(!isAuthenticated){
+    //   return <p className="text-center mt-10">Please log in to access your wardrobe.</p>;
+    // }
 
     const actions = [
       { icon: <CheckroomIcon />, name: 'Add Item', onclick: ()=> { navigate('/wardrobe'); toggleAddForm(true) }}, // added on click actions for navigating and toggle function to open form after navigating
@@ -20,9 +26,10 @@ export default function QuickActionBtn() {
     <SpeedDial
     ariaLabel="SpeedDial basic example"
     sx={{ position: 'absolute', bottom: -10, right: 20, 
-      "& .MuiFab-primary": { backgroundColor: "#fc64b6", "&:hover": { backgroundColor: "#e054a3" } },
+      "& .MuiFab-primary": { backgroundColor: user?.gender === 'male' ? "#daeaff" : "#fc64b6", "&:hover": { backgroundColor: user?.gender === 'male' ? "#bedbff" : "#e054a3" } }, 
       
     }}
+    className='!z-10'
     icon={<SpeedDialIcon />}
   >
         {actions.map((action) => (

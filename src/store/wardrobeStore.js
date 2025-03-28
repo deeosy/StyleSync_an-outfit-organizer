@@ -5,18 +5,24 @@ import longSkirt from '../images/straight-jeans-skirt.png'
 import blackBlouse from '../images/black-silk-blouse.png'
 import shortSkirt from '../images/a-line-skirt.png'
 import grayShortSkirt from '../images/gray-short-skirt.png'
+import blackSilkVest from '../images/Black-Silk-Vest.png'
+import brownMules from '../images/Brown-Mules.png'
+import blackSlipperHeels from "../images/Black-Slipper-Heels.png"
+import offShoulderMaxiDress from "../images/Black-Off-Shoulder-Dress.png"
+import blueJeansTrousers from "../images/Blue-Jeans-Trousers.png"
+
 
 const useWardrobeStore = create((set) => ({
   // Wardrobe items
   wardrobeItems: [
-    { id: uuid(), name: 'White T-Shirt', category: 'tops', color: '#ffffff', lastWorn: '2 days ago', imageUrl: null, notes: '' },
-    { id: uuid(), name: 'Blue Jeans', category: 'bottoms', color: '#0e4f8b', lastWorn: 'Yesterday', imageUrl: null, notes: 'Slim fit, size 32' },
-    { id: uuid(), name: 'Black Blazer', category: 'outerwear', color: '#222222', lastWorn: 'Last week', imageUrl: null, notes: 'From H&M' },
-    { id: uuid(), name: 'Brown Boots', category: 'shoes', color: '#663300', lastWorn: '3 days ago', imageUrl: 'https://i.ebayimg.com/images/g/QVQAAOSwb6xlB-~R/s-l1600.webp', notes: 'Size 10' },
-    { id: uuid(), name: 'Red Blouse', category: 'tops', color: '#cc0000', lastWorn: 'Never', imageUrl: 'https://res.cloudinary.com/wolfandbadger/image/upload/f_auto,q_auto:best,c_pad,h_1200,w_1200/products/hwi4uxwpheavlhclq5mh', notes: '' },
+    { id: uuid(), name: 'Blue Jeans Trousers', category: 'bottoms', color: '#0e4f8b', lastWorn: 'Yesterday', imageUrl: blueJeansTrousers, notes: 'Slim fit, size 32' },
+    { id: uuid(), name: 'Black Off-Shoulder Maxi Dress', category: 'tops', color: '#ffffff', lastWorn: '2 days ago', imageUrl: offShoulderMaxiDress, notes: '' },
+    { id: uuid(), name: 'Black Slipper Heels', category: 'outerwear', color: '#222222', lastWorn: 'Last week', imageUrl: blackSlipperHeels, notes: 'From H&M' },
+    { id: uuid(), name: 'Brown Mules', category: 'shoes', color: '#663300', lastWorn: '3 days ago', imageUrl: brownMules, notes: 'Size 10' },
+    { id: uuid(), name: 'Black Silk Vest', category: 'tops', color: '#cc0000', lastWorn: 'Never', imageUrl: blackSilkVest, notes: '' },
     { id: uuid(), name: 'Gray Short Skirt', category: 'bottoms', color: '#c3b091', lastWorn: '5 days ago', imageUrl: grayShortSkirt, notes: '' },
     { id: uuid(), name: 'A-Line Skirt', category: 'outerwear', color: '#444444', lastWorn: 'Last month', imageUrl: shortSkirt, notes: 'A-Lined, very short' },
-    { id: uuid(), name: 'Black Silk Blouse', category: 'accessories', color: '#ffd700', lastWorn: 'Yesterday', imageUrl: blackBlouse, notes: 'blouse with ribbon' },
+    { id: uuid(), name: 'Black Silk Blouse', category: 'tops', color: '#ffd700', lastWorn: 'Yesterday', imageUrl: blackBlouse, notes: 'blouse with ribbon' },
     { id: uuid(), name: 'Straight Jeans Skirt', category: 'bottoms', color: '#0e4f8b', lastWorn: 'Yesterday', imageUrl: longSkirt, notes: 'long skirts, size 28' },
   ],
   
