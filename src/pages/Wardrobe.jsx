@@ -2,9 +2,12 @@
 import React, { useState } from 'react';
 import useWardrobeStore from '../store/wardrobeStore';
 import AddClotheForm from '../components/AddClotheForm';
+import useAuthenticationStore from '../store/userStore';
 
 function Wardrobe() {
   const [filter, setFilter] = useState('all');
+  const { user } = useAuthenticationStore();
+
   
   const wardrobeItems = useWardrobeStore(state => state.wardrobeItems);
   const showAddForm = useWardrobeStore(state => state.showAddForm);
@@ -20,7 +23,10 @@ function Wardrobe() {
         <h1 className="text-xl sm:text-3xl font-bold">Digital Wardrobe</h1>
         <button
           onClick={() => toggleAddForm(!showAddForm)}
-          className="px-4 py-2 bg-pink-400 text-xs sm:text-lg hover:bg-pink-500 hover:cursor-pointer text-white rounded transition-colors"
+          className={`px-4 py-2 text-xs sm:text-lg hover:cursor-pointer text-white rounded transition-colors
+            ${ user?.gender === 'male' ? 'bg-blue-200' : 'bg-pink-400'}  
+            ${ user?.gender === 'male' ? 'hover:bg-blue-300' : 'hover:bg-pink-600'}
+          `}
         >
           {showAddForm ? 'Cancel' : 'Add New Item'}
         </button>
@@ -33,11 +39,13 @@ function Wardrobe() {
       <div className="bg-white rounded-lg shadow-xl p-6 mb-8 w-full h-full mx-auto max-w-[1200px]">
         <div className="flex sm:justify-center mb-6 overflow-x-auto no-scrollbar">
           <button 
-            className={`px-4 py-2 font-medium transition-colors   whitespace-nowrap ${
-              filter === 'all' 
-                ? 'text-gray-900 md:text-xl border-b-2 border-pink-400' 
+            className={`px-4 py-2 font-medium transition-colors whitespace-nowrap 
+              ${ filter === 'all' 
+                ? 'text-gray-900 md:text-xl border-b-2' 
                 : 'text-gray-500 md:text-xl hover:cursor-pointer'
-            }`}
+              }
+              ${ user?.gender === 'male' ? 'border-blue-300' : 'bg-pink-400'}  
+            `}
             onClick={() => setFilter('all')}
           >
             All
@@ -45,11 +53,13 @@ function Wardrobe() {
           {['tops', 'bottoms', 'outerwear', 'shoes', 'accessories'].map(category => (
             <button 
               key={category}
-              className={`px-4 py-2 font-medium transition-colors whitespace-nowrap ${
-                filter === category 
-                  ? 'text-gray-900 md:text-xl border-b-2 border-pink-400' 
-                  : 'text-gray-500 md:text-xl hover:cursor-pointer '
-              }`}
+              className={`px-4 py-2 font-medium transition-colors whitespace-nowrap 
+                ${ filter === category 
+                ? 'text-gray-900 md:text-xl border-b-2' 
+                : 'text-gray-500 md:text-xl hover:cursor-pointer'
+                }
+                ${ user?.gender === 'male' ? 'border-blue-300' : 'bg-pink-400'}
+              `}
               onClick={() => setFilter(category)}
             >
               {category.charAt(0).toUpperCase() + category.slice(1)}

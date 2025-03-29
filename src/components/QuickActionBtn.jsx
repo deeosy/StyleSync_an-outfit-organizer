@@ -11,11 +11,11 @@ import useAuthenticationStore from '../store/userStore';
 export default function QuickActionBtn() {
     const navigate = useNavigate() // call navigate from router dom
     const toggleAddForm = useWardrobeStore( state => state.toggleAddForm)
-    const { user, isAuthenticated } = useAuthenticationStore
+    const { user, isAuthenticated } = useAuthenticationStore()    
     
-    // if(!isAuthenticated){
-    //   return <p className="text-center mt-10">Please log in to access your wardrobe.</p>;
-    // }
+    if(!isAuthenticated){
+      return <p className="text-center mt-10">Please log in to access your wardrobe.</p>;
+    }
 
     const actions = [
       { icon: <CheckroomIcon />, name: 'Add Item', onclick: ()=> { navigate('/wardrobe'); toggleAddForm(true) }}, // added on click actions for navigating and toggle function to open form after navigating
@@ -27,8 +27,8 @@ export default function QuickActionBtn() {
     ariaLabel="SpeedDial basic example"
     sx={{ position: 'absolute', bottom: -10, right: 20, 
       "& .MuiFab-primary": { 
-        backgroundColor: `${user?.gender === 'male' ? '#bedbff' : '#fc64b6'} !important`,
-        "&:hover": { backgroundColor: `${user?.gender === 'male' ? '#bedbff' : '#e054a3'} !important`, },
+        backgroundColor: `${user?.gender === 'male' ? '#bedbff' : '#fc64b6'}`,
+        "&:hover": { backgroundColor: `${user?.gender === 'male' ? '#8ec5ff' : '#e054a3'}`},
       },      
     }}
     className='!z-10'

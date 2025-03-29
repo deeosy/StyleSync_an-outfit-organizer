@@ -1,7 +1,9 @@
 import React, { useState, useRef } from 'react'
 import useWardrobeStore from '../store/wardrobeStore';
+import useAuthenticationStore from '../store/userStore';
 
 export default function AddClotheForm() {
+  const { user } = useAuthenticationStore();
     const toggleAddForm = useWardrobeStore( state => state.toggleAddForm)
     const addClothingItem = useWardrobeStore(state => state.addClothingItem);
 
@@ -67,7 +69,9 @@ export default function AddClotheForm() {
                 id="name"
                 value={newItem.name}
                 onChange={(e) => setNewItem({...newItem, name: e.target.value})}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-pink-400 focus:border-pink-400"
+                className={`w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1
+                  ${ user?.gender === 'male' ? 'focus:border-blue-300 focus:ring-blue-300' : 'focus:border-pink-400 focus:ring-pink-400'} 
+               `}                
                 placeholder="White T-Shirt"
                 required
               />
@@ -81,7 +85,9 @@ export default function AddClotheForm() {
                 id="category"
                 value={newItem.category}
                 onChange={(e) => setNewItem({...newItem, category: e.target.value})}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-pink-400 focus:border-pink-400"
+                className={`w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1
+                   ${ user?.gender === 'male' ? 'focus:border-blue-300 focus:ring-blue-300' : 'focus:border-pink-400 focus:ring-pink-400'} 
+                `}
               >
                 <option value="tops">Tops</option>
                 <option value="bottoms">Bottoms</option>
@@ -101,7 +107,9 @@ export default function AddClotheForm() {
                   id="color"
                   value={newItem.color}
                   onChange={(e) => setNewItem({...newItem, color: e.target.value})}
-                  className="w-10 h-10 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-pink-400 focus:border-pink-400"
+                  className={`w-10 h-10 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1
+                    ${ user?.gender === 'male' ? 'focus:border-blue-300 focus:ring-blue-300' : 'focus:border-pink-400 focus:ring-pink-400'} 
+                  `}
                 />
                 <span className="text-sm">{newItem.color}</span>
               </div>
@@ -115,7 +123,9 @@ export default function AddClotheForm() {
                 id="notes"
                 value={newItem.notes}
                 onChange={(e) => setNewItem({...newItem, notes: e.target.value})}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-pink-400 focus:border-pink-400"
+                className={`w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 
+                ${ user?.gender === 'male' ? 'focus:border-blue-300 focus:ring-blue-300' : 'focus:border-pink-400 focus:ring-pink-400'}
+                `}
                 rows="3"
                 placeholder="Add details about this item, like brand, fabric, size, etc."
               />
@@ -200,7 +210,9 @@ export default function AddClotheForm() {
           </button>
           <button
             type="submit"
-            className="px-4 py-2 bg-pink-400 text-white rounded hover:cursor-pointer hover:bg-pink-500 transition-colors"
+            className={`px-4 py-2 text-white rounded hover:cursor-pointer transition-colors
+              ${ user?.gender === 'male' ? 'bg-blue-200 hover:bg-blue-300' : 'bg-pink-400 hover:bg-pink-500'}
+            `}
           >
             Add Item
           </button>
