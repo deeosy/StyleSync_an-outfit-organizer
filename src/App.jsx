@@ -12,7 +12,7 @@ import SignUpReason from "./pages/SignUpReason";
 import "./App.css";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
-// import Account from "./pages/Account";
+ import Account from "./pages/Account";
 
 // things you should know
 // the use of Zustand for state management
@@ -37,7 +37,7 @@ function App() {
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/wardrobe" element={<Wardrobe />} />
               <Route path="/outfits" element={<Outfits />} />
-              {/* <Route path="/account" element={<Account />} /> */}
+               <Route path="/account" element={<Account />} /> 
             </Routes>
           </div>
           <Footer />

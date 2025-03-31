@@ -2,6 +2,8 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
+import { getStorage } from "firebase/storage";
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -14,16 +16,16 @@ const firebaseConfig = {
   storageBucket: "wardrobe-organizer-58e51.firebasestorage.app",
   messagingSenderId: "206741799482",
   appId: "1:206741799482:web:0f38bb2150596d58c3eb03",
-  measurementId: "G-Q04S0X181S"
+  measurementId: "G-Q04S0X181S",
 };
 
-console.log("Firebase API Key:", firebaseConfig.apiKey);
-console.log("Auth Domain:", firebaseConfig.authDomain);
+// Remove console logs for security
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-//Initialized firestore
+// Initialized firestore
 const db = getFirestore(app);
 const auth = getAuth(app);
+const storage = getStorage(app);
 
-export { app, db, auth };
+export { app, db, auth, storage };
