@@ -13,6 +13,7 @@ import "./App.css";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
  import Account from "./pages/Account";
+import ResetPassword from "./pages/ResetPassword";
 
 // things you should know
 // the use of Zustand for state management
@@ -31,8 +32,8 @@ function App() {
                 <Route path="sign-in" element={<SignIn />} />
                 <Route index element={<SignUpLanguage />} />
                 <Route path="sign-up-details" element={<SignUpDetails />} />
-                <Route path="sign-up-reason" element={<SignUpReason />} >
-                </Route>
+                <Route path="sign-up-reason" element={<SignUpReason />} />
+                <Route path="reset-password" element={<ResetPassword />} />
               </Route>
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/wardrobe" element={<Wardrobe />} />

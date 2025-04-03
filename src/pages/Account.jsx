@@ -1,36 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { doc, getDoc, updateDoc, setDoc } from "firebase/firestore"; // Added setDoc import
 import { auth, db, storage } from "../config/firebase";
-import {
-  updateEmail,
-  updatePassword,
-  EmailAuthProvider,
-  reauthenticateWithCredential,
-} from "firebase/auth";
+import { updateEmail, updatePassword, EmailAuthProvider, reauthenticateWithCredential} from "firebase/auth";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { useNavigate } from "react-router-dom";
 
 const Account = () => {
   const navigate = useNavigate();
-  const [profile, setProfile] = useState({
-    firstName: "",
-    lastName: "",
-    username: "",
-    email: "",
-    dateOfBirth: "",
-  });
-
+  const [profile, setProfile] = useState({ firstName: "", lastName: "", username: "", email: "", dateOfBirth: "" });
   const [photoPreview, setPhotoPreview] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
   // For password change
-  const [passwordData, setPasswordData] = useState({
-    currentPassword: "",
-    newPassword: "",
-    confirmPassword: "",
-  });
+  const [passwordData, setPasswordData] = useState({ currentPassword: "", newPassword: "", confirmPassword: "" });
   const [showPasswordModal, setShowPasswordModal] = useState(false);
 
   // Load user data from Firestore on component mount

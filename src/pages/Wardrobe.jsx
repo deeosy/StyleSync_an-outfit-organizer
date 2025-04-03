@@ -20,7 +20,7 @@ function Wardrobe() {
   return (
     <div className='px-3'>
       <div className="flex justify-between items-center mb-6 mx-auto max-w-[1200px]">
-        <h1 className="text-xl sm:text-3xl font-bold">Digital Wardrobe</h1>
+        <h1 className="text-xl sm:text-3xl font-bold">My Wardrobe</h1>
         <button
           onClick={() => toggleAddForm(!showAddForm)}
           className={`px-4 py-2 text-xs sm:text-lg hover:cursor-pointer text-white rounded transition-colors
@@ -28,7 +28,7 @@ function Wardrobe() {
             ${ user?.gender === 'male' ? 'hover:bg-blue-300' : 'hover:bg-pink-600'}
           `}
         >
-          {showAddForm ? 'Cancel' : 'Add New Item'}
+          {showAddForm ? 'Cancel' : '+ New Item'}
         </button>
       </div>
       

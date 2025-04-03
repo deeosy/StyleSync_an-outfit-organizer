@@ -40,10 +40,10 @@ export default function Navbar() {
                         to="/dashboard"
                         className="px-3 py-2 relative group transition-all duration-300 ease-in-out"
                       >
-                        <span className="relative border-r-2 px-3 py-1">
+                        <span className="relative  border-r-2  px-3  border-gray-400">
                           Dashboard
                           <span
-                            className={`absolute bottom-0 left-3 w-0 h-0.5 ${
+                            className={`absolute -bottom-2 left-3 w-0 h-1.5 ${
                               user?.gender === 'male' ? 'bg-blue-200' : 'bg-pink-500'
                             } group-hover:w-[80%] transition-all duration-300 ease-in-out`}
                           ></span>
@@ -55,10 +55,10 @@ export default function Navbar() {
                         to="/wardrobe"
                         className="px py-2 relative group transition-all duration-300 ease-in-out"
                       >
-                        <span className="relative py-1">
+                        <span className="relative ">
                           Wardrobe
                           <span
-                            className={`absolute bottom-0 left-0 w-0 h-0.5 ${
+                            className={`absolute -bottom-2 left-0 w-0 h-1.5 ${
                               user?.gender === 'male' ? 'bg-blue-200' : 'bg-pink-500'
                             } group-hover:w-full transition-all duration-300 ease-in-out`}
                           ></span>
@@ -70,10 +70,10 @@ export default function Navbar() {
                         to="/outfits"
                         className="px-3 py-2 relative group transition-all duration-300 ease-in-out"
                       >
-                        <span className="relative border-x-2 px-3 py-1">
+                        <span className="relative border-x-2 px-3 border-gray-400">
                           Outfit Builder
                           <span
-                            className={`absolute bottom-0 left-3 w-0 h-0.5 ${
+                            className={`absolute -bottom-2 left-3 w-0 h-1.5 ${
                               user?.gender === 'male' ? 'bg-blue-200' : 'bg-pink-500'
                             } group-hover:w-[78%] md:group-hover:w-[85%] transition-all duration-300 ease-in-out`}
                           ></span>
@@ -85,10 +85,10 @@ export default function Navbar() {
                         to="/account"
                         className="py-2 relative group transition-all duration-300 ease-in-out"
                       >
-                        <span className="relative py-1">
+                        <span className="relative ">
                           Account
                           <span
-                            className={`absolute bottom-0 left-0 w-0 h-0.5 ${
+                            className={`absolute -bottom-2 left-0 w-0 h-1.5 ${
                               user?.gender === 'male' ? 'bg-blue-200' : 'bg-pink-500'
                             } group-hover:w-full transition-all duration-300 ease-in-out`}
                           ></span>
