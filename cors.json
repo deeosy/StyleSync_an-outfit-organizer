@@ -1,11 +1,7 @@
 [
   {
-    "origin": [
-      "http://localhost:5173",
-      "https://wardrobe-organizer-58e51.firebaseapp.com"
-    ],
-    "method": ["GET", "POST", "PUT", "DELETE", "HEAD"],
+    "origin": ["https://stylesynce-outfit-oganizer.netlify.app"],
+    "method": ["GET", "POST", "PUT", "DELETE"],
     "maxAgeSeconds": 3600
   }
 ]
-
