@@ -7,7 +7,7 @@ export default function DisplayImage() {
   return (
     <Stack >
       <Avatar
-        alt="Remy Sharp"
+        alt="display image"
         src={dP}
         sx={{ width: 60, height: 60, position:'relative'}}
         className='md:!h-[80px] md:!w-[80px] xl:!h-[100px] xl:!w-[100px]'

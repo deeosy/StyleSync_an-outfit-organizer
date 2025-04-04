@@ -17,56 +17,31 @@ const useAuthenticationStore = create((set) => ({
       return;
     }
 
+    const defaultUser = {
+      uid: firebaseUser.uid,
+      email: firebaseUser.email || '',
+      username: firebaseUser.displayName || 'Anonymous',
+      country: '',
+      date: '',
+      gender: '',
+      reason: '',
+    };
+
     try {
       const userDocRef = doc(db, 'users', firebaseUser.uid);
       const userSnap = await getDoc(userDocRef);
-
-      if (!userSnap.exists()) {
-        console.warn('User document does not exist in Firestore.');
-        // Fallback to basic Firebase data
-        set({
-          user: {
-            uid: firebaseUser.uid,
-            email: firebaseUser.email || '',
-            username: firebaseUser.displayName || 'Anonymous',
-            country: '',
-            date: '',
-            gender: '',
-            reason: '',
-          },
-          isAuthenticated: true,
-        });
-        return;
-      }
-
-      const userData = userSnap.data() || {};
+      const userData = userSnap.exists() ? userSnap.data() : {};
       set({
         user: {
-          uid: firebaseUser.uid,
-          email: firebaseUser.email || '',
-          username: userData.username || firebaseUser.displayName || 'Anonymous',
-          country: userData.country || '',
-          date: userData.dateOfBirth || '', // Consistent with Firestore naming
-          gender: userData.gender || '',
-          reason: userData.reason || '',
+          ...defaultUser,
+          ...userData,
+          date: userData.dateOfBirth || '',
         },
         isAuthenticated: true,
       });
     } catch (error) {
       console.error('Failed to fetch user data:', error);
-      // Fallback to basic Firebase data on error
-      set({
-        user: {
-          uid: firebaseUser.uid,
-          email: firebaseUser.email || '',
-          username: firebaseUser.displayName || 'Anonymous',
-          country: '',
-          date: '',
-          gender: '',
-          reason: '',
-        },
-        isAuthenticated: true,
-      });
+      set({ user: defaultUser, isAuthenticated: true });
     }
   },
 
@@ -78,13 +53,8 @@ const useAuthenticationStore = create((set) => ({
   updateUser: (name, value) => set((state) => ({
     user: { ...state.user, [name]: value },
   })),
-
-  resetUser: () => set({
-    user: { uid: '', country: '', username: '', email: '', date: '', gender: '', reason: '' },
-  }),
 }));
 
-// Firebase Auth Listener
 onAuthStateChanged(auth, (user) => {
   if (user) {
     useAuthenticationStore.getState().login(user);

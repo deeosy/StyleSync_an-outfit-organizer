@@ -19,7 +19,7 @@ function Dashboard() {
   return (
     <>
       <div className={`w-full h-[60px] md:h-[100px] ${user?.gender === 'male' ? 'bg-blue-200' : 'bg-pink-400'}  relative manrope `}>
-        <div className="relative left-17 top-7 w-fit md:left-30 md:top-14 xl:left-80 xl:top-12 bg-gray-300 rounded-full  ">
+        <div className="relative left-17 top-7 w-fit md:left-30 md:top-14 xl:left-80 xl:top-12 bg-gray-200 rounded-full  ">
           <DisplayImage  />
         </div>
       </div>

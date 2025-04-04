@@ -1,4 +1,3 @@
-// store for setting up Zustand 
 import { create } from 'zustand';
 import { v4 as uuid } from 'uuid';
 import longSkirt from '../images/straight-jeans-skirt.png'

@@ -44,7 +44,7 @@ function Wardrobe() {
                 ? 'text-gray-900 md:text-xl border-b-2' 
                 : 'text-gray-500 md:text-xl hover:cursor-pointer'
               }
-              ${ user?.gender === 'male' ? 'border-blue-300' : 'bg-pink-400'}  
+              ${ user?.gender === 'male' ? 'border-blue-300' : 'border-pink-400'}  
             `}
             onClick={() => setFilter('all')}
           >
@@ -58,7 +58,7 @@ function Wardrobe() {
                 ? 'text-gray-900 md:text-xl border-b-2' 
                 : 'text-gray-500 md:text-xl hover:cursor-pointer'
                 }
-                ${ user?.gender === 'male' ? 'border-blue-300' : 'bg-pink-400'}
+                ${ user?.gender === 'male' ? 'border-blue-300' : 'border-pink-400'}
               `}
               onClick={() => setFilter(category)}
             >

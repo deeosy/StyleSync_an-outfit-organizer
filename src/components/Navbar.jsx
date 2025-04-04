@@ -43,9 +43,9 @@ export default function Navbar() {
                         <span className="relative  border-r-2  px-3  border-gray-400">
                           Dashboard
                           <span
-                            className={`absolute -bottom-2 left-3 w-0 h-1.5 ${
+                            className={`absolute -bottom-2 left-3 w-0 h-1.5  ${
                               user?.gender === 'male' ? 'bg-blue-200' : 'bg-pink-500'
-                            } group-hover:w-[80%] transition-all duration-300 ease-in-out`}
+                            } group-hover:w-[80%] group-focus:w-[80%] transition-all duration-300 ease-in-out `}
                           ></span>
                         </span>
                       </Link>
@@ -60,7 +60,7 @@ export default function Navbar() {
                           <span
                             className={`absolute -bottom-2 left-0 w-0 h-1.5 ${
                               user?.gender === 'male' ? 'bg-blue-200' : 'bg-pink-500'
-                            } group-hover:w-full transition-all duration-300 ease-in-out`}
+                            } group-hover:w-full group-focus:w-full transition-all duration-300 ease-in-out`}
                           ></span>
                         </span>
                       </Link>
@@ -75,7 +75,7 @@ export default function Navbar() {
                           <span
                             className={`absolute -bottom-2 left-3 w-0 h-1.5 ${
                               user?.gender === 'male' ? 'bg-blue-200' : 'bg-pink-500'
-                            } group-hover:w-[78%] md:group-hover:w-[85%] transition-all duration-300 ease-in-out`}
+                            } group-hover:w-[78%] group-focus:w-[78%] md:group-hover:w-[85%] md:group-focus:w-[85%] transition-all duration-300 ease-in-out`}
                           ></span>
                         </span>
                       </Link>
@@ -90,7 +90,7 @@ export default function Navbar() {
                           <span
                             className={`absolute -bottom-2 left-0 w-0 h-1.5 ${
                               user?.gender === 'male' ? 'bg-blue-200' : 'bg-pink-500'
-                            } group-hover:w-full transition-all duration-300 ease-in-out`}
+                            } group-hover:w-full group-focus:w-full transition-all duration-300 ease-in-out`}
                           ></span>
                         </span>
                       </Link>
@@ -114,3 +114,5 @@ export default function Navbar() {
     </nav>
   );
 }
+
+
