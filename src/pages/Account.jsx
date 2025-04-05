@@ -133,7 +133,9 @@ export default function Account() {
       });
 
       const data = await response.json();
+      console.log('Imgur response:', data); // Debug log: see full Imgur response
       if (!data.success) throw new Error('Image upload failed');
+      console.error('Imgur upload error:', data); // Log detailed error info
 
       // Get the Imgur image URL
       const photoURL = data.data.link;
