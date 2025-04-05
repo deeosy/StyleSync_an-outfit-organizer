@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { doc, getDoc, updateDoc, setDoc } from 'firebase/firestore';
-import { auth, db } from '../config/firebase';
+import { auth, db, storage } from '../config/firebase';
 import { updateEmail, sendPasswordResetEmail } from 'firebase/auth';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { useNavigate } from 'react-router-dom';
 import ProfileForm from '../components/ProfileForm';
 
 const CLIENT_ID = '387ee19ec8efbf6'; // Your Imgur Client ID
+
+
 
 export default function Account() {
   const navigate = useNavigate();
@@ -15,7 +18,7 @@ export default function Account() {
     username: '',
     email: '',
     dateOfBirth: '',
-    country: '',
+    country: '', // Added country field to match the form
   });
   const [photoPreview, setPhotoPreview] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -135,8 +138,8 @@ export default function Account() {
       // Get the Imgur image URL
       const photoURL = data.data.link;
 
-      // Update Firestore with the new photoURL
-      const currentUser = auth.currentUser;
+      
+      const currentUser = auth.currentUser;  //update the photoURL in Firestore
       await updateDoc(doc(db, 'users', currentUser.uid), { photoURL });
       setPhotoPreview(photoURL);
       setSuccess('Profile photo updated!');
@@ -148,6 +151,7 @@ export default function Account() {
       setLoading(false);
     }
   };
+
 
   const handleSignOut = async () => {
     if (window.confirm('Are you sure you want to sign out?')) {
@@ -217,7 +221,7 @@ export default function Account() {
               {success}
             </div>
           )}
-          <div className="flex flex-col gap-6 px-3">
+          <div className=" flex flex-col gap-6 px-3">
             <div className="bg-white rounded-sm shadow p-3 sm:p-6">
               <div className="flex justify-between items-center">
                 <div className="flex flex-col-reverse gap-2.5 sm:flex-row items-center ">
@@ -237,27 +241,49 @@ export default function Account() {
                           viewBox="0 0 20 18"
                           fill="currentColor"
                         >
-                          <path d="M10 3a1 1 0 011 1v2h2a1 1 0 110 2h-3v2h2a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H5a1 1 0 110-2h2V6a1 1 0 112 0v2h2a1 1 0 110 2h-2V6h3a1 1 0 110 2h-3V6h-2V3a1 1 0 011-1z" />
+                          <path d="M10 3a1 1 0 011 1v4h4a1 1 0 110 2h-4v4a1 1 0 11-2 0v-4H5a1 1 0 110-2h4V4a1 1 0 011-1z" />
                         </svg>
-                        <input type="file" className="hidden" accept="image/*" onChange={handlePhotoChange} />
+                        <input
+                          type="file"
+                          className="hidden"
+                          onChange={handlePhotoChange}
+                          accept="image/*"
+                          disabled={loading}
+                        />
                       </label>
                     </div>
                   </div>
-                  <div className="flex flex-col gap-1">
-                    <h1 className="text-2xl font-semibold text-gray-900">{profile.username}</h1>
-                    <p className="text-sm text-gray-600">{profile.email}</p>
-                  </div>
+                  <h2 className="text-xl font-semibold text-gray-900">My Personal Info</h2>
                 </div>
+                <button
+                  onClick={handleSignOut}
+                  disabled={loading}
+                  className="px-2 py-2 sm:px-5 sm:py-3  bg-pink-400 text-white rounded-[5px] text-sm font-medium uppercase hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-pink-500 disabled:opacity-50"
+                >
+                  Sign Out
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-4 w-4 ml-2 inline-block"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M3 3a1 1 0 00-1 1v12a1 1 0 001 1h12a1 1 0 001-1V7.414l-5-5H3zM2 4a2 2 0 012-2h7.586a1 1 0 01.707.293l5 5A1 1 0 0118 8v8a2 2 0 01-2 2H4a2 2 0 01-2-2V4z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </button>
               </div>
             </div>
-            <div>
               <ProfileForm
                 profile={profile}
-                setProfile={setProfile}
-                handleSubmit={handleSubmit}
                 handleChange={handleChange}
+                handleSubmit={handleSubmit}
+                handleResetPassword={handleResetPassword}
+                loading={loading}
               />
-            </div>
+            
           </div>
         </div>
       </main>
