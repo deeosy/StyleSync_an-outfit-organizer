@@ -6,9 +6,7 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { useNavigate } from 'react-router-dom';
 import ProfileForm from '../components/ProfileForm';
 
-const CLIENT_ID = '387ee19ec8efbf6'; // Your Imgur Client ID
-
-
+const CLIENT_ID = '387ee19ec8efbf6'; //  Imgur Client ID
 
 export default function Account() {
   const navigate = useNavigate();
@@ -117,13 +115,29 @@ export default function Account() {
   const handlePhotoChange = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
+    
+    // File validation
+    if (file.size > 5 * 1024 * 1024) {
+      setError('File size exceeds 5MB limit');
+      return;
+    }
+    
+    if (!file.type.match('image.*')) {
+      setError('Only image files are allowed');
+      return;
+    }
+    
     setLoading(true);
     setError('');
+    
     try {
-      // Upload the image to Imgur
+      
+      
+       
+     // Upload to Imgur
       const formData = new FormData();
       formData.append('image', file);
-
+      
       const response = await fetch('https://api.imgur.com/3/image', {
         method: 'POST',
         headers: {
@@ -131,29 +145,35 @@ export default function Account() {
         },
         body: formData,
       });
-
-      const data = await response.json();
-      console.log('Imgur response:', data); // Debug log: see full Imgur response
-      if (!data.success) throw new Error('Image upload failed');
-      console.error('Imgur upload error:', data); // Log detailed error info
-
-      // Get the Imgur image URL
-      const photoURL = data.data.link;
-
       
-      const currentUser = auth.currentUser;  //update the photoURL in Firestore
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      console.log('Imgur response:', data);
+      
+      if (!data.success) {
+        console.error('Imgur upload error:', data);
+        throw new Error(data.data?.error?.message || 'Image upload failed');
+      }
+      
+      const photoURL = data.data.link;
+      
+      // Update Firestore with the new photo URL
+      const currentUser = auth.currentUser;
       await updateDoc(doc(db, 'users', currentUser.uid), { photoURL });
       setPhotoPreview(photoURL);
       setSuccess('Profile photo updated!');
       setTimeout(() => setSuccess(''), 3000);
+      
     } catch (err) {
       console.error('Error uploading photo:', err);
-      setError('Failed to upload photo: ' + err.message);
+      setError('Failed to upload photo: ' + (err.message || 'Unknown error'));
     } finally {
       setLoading(false);
     }
   };
-
 
   const handleSignOut = async () => {
     if (window.confirm('Are you sure you want to sign out?')) {
@@ -214,7 +234,7 @@ export default function Account() {
       <main className="flex-grow">
         <div className="max-w-3xl mx-auto py-6 sm:px-6 lg:px-8">
           {error && (
-            <div className="mb-4 bg-red-100 border border-red-400 pink-red-500 px-4 py-3 rounded">
+            <div className="mb-4 bg-red-100 border border-red-400 text-red-500 px-4 py-3 rounded">
               {error}
             </div>
           )}
@@ -223,17 +243,17 @@ export default function Account() {
               {success}
             </div>
           )}
-          <div className=" flex flex-col gap-6 px-3">
+          <div className="flex flex-col gap-6 px-3">
             <div className="bg-white rounded-sm shadow p-3 sm:p-6">
               <div className="flex justify-between items-center">
                 <div className="flex flex-col-reverse gap-2.5 sm:flex-row items-center ">
                   <div className="flex-shrink-0 mr-4">
                     <div className="relative">
-                      <div className="relative  h-[120px] w-[120px] rounded-full overflow-hidden bg-gray-200 flex items-center justify-center">
+                      <div className="relative h-[120px] w-[120px] rounded-full overflow-hidden bg-gray-200 flex items-center justify-center">
                         {!photoPreview ? (
                           <span className="text-3xl text-gray-600">{getProfileInitials()}</span>
                         ) : (
-                          <img src={photoPreview} alt="Profile" className="h-16 w-16 object-cover" />
+                          <img src={photoPreview} alt="Profile" className="h-full w-full object-cover" />
                         )}
                       </div>
                       <label className="absolute bottom-0 right-0 bg-pink-400 rounded-full p-1 cursor-pointer">
@@ -260,7 +280,7 @@ export default function Account() {
                 <button
                   onClick={handleSignOut}
                   disabled={loading}
-                  className="px-2 py-2 sm:px-5 sm:py-3  bg-pink-400 text-white rounded-[5px] text-sm font-medium uppercase hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-pink-500 disabled:opacity-50"
+                  className="px-2 py-2 sm:px-5 sm:py-3 bg-pink-400 text-white rounded-[5px] text-sm font-medium uppercase hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-pink-500 disabled:opacity-50"
                 >
                   Sign Out
                   <svg
@@ -278,14 +298,13 @@ export default function Account() {
                 </button>
               </div>
             </div>
-              <ProfileForm
-                profile={profile}
-                handleChange={handleChange}
-                handleSubmit={handleSubmit}
-                handleResetPassword={handleResetPassword}
-                loading={loading}
-              />
-            
+            <ProfileForm
+              profile={profile}
+              handleChange={handleChange}
+              handleSubmit={handleSubmit}
+              handleResetPassword={handleResetPassword}
+              loading={loading}
+            />
           </div>
         </div>
       </main>
