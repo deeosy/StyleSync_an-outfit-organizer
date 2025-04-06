@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
-import { Menu, X, Home, Shirt, Palette, UserCircle2 } from 'lucide-react';
-import useAuthenticationStore from '../store/userStore';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { auth } from '../config/firebase';
-import useAuthHandler from '../hooks/useAuthHandler';
+import React, { useState } from 'react';  // Import React and useState hook for managing component state
+import { Menu, X, Home, Shirt, Palette, UserCircle2 } from 'lucide-react';   // Import icons from lucide-react for navigation links
+import useAuthenticationStore from '../store/userStore';  // Import Zustand store for authentication state management
+import { Link, useNavigate, useLocation } from 'react-router-dom';  // Import routing utilities from react-router-dom
+import { auth } from '../config/firebase';   // Import Firebase auth instance
+import useAuthHandler from '../hooks/useAuthHandler';   // Import custom hook for handling authentication actions
 
 const Sidebar = () => {
-  const { user, logout, isAuthenticated } = useAuthenticationStore();
-  const [isOpen, setIsOpen] = useState(false);
-  const navigate = useNavigate();
-  const location = useLocation();
-  const { loading, error, handleAuthAction } = useAuthHandler();
+  const { user, logout, isAuthenticated } = useAuthenticationStore();   // Access user, authentication status, and logout function from the Zustand store
+  const [isOpen, setIsOpen] = useState(false);  // State to manage the sidebar's open/closed status
+  const navigate = useNavigate();  // Hook to programmatically navigate to different routes
+  const location = useLocation();   // Hook to get the current route location
+  const { loading, error, handleAuthAction } = useAuthHandler();   // Access loading state, error state, and auth action handler from the custom hook
 
   // Define paths where sidebar should not be displayed
   const hiddenPaths = [
@@ -23,46 +23,49 @@ const Sidebar = () => {
 
   // Check if sidebar should be hidden
   const shouldHideSidebar = () => {
-    if (location.pathname === '/' && !isAuthenticated) {
+    if (location.pathname === '/' && !isAuthenticated) {  // Hide menu on the homepage if the user is not authenticated
       return true;
     }
-    return hiddenPaths.includes(location.pathname);
+    return hiddenPaths.includes(location.pathname);   // Hide on authentication-related paths
   };
 
-  if (shouldHideSidebar()) {
+  if (shouldHideSidebar()) { // If the sidebar should be hidden, return null to render nothing
     return null;
   }
 
-  const toggleSidebar = () => {
+  const toggleSidebar = () => {  // Function to toggle the sidebar open/closed status
     setIsOpen(!isOpen);
   };
 
-  const sidebarLinks = [
+  const sidebarLinks = [  // Define the sidebar navigation links with their respective icons
     { to: '/dashboard', label: 'Dashboard', icon: <Home className="w-5 h-5 mr-3" /> },
     { to: '/wardrobe', label: 'Wardrobe', icon: <Shirt className="w-5 h-5 mr-3" /> },
     { to: '/outfits', label: 'Outfit Builder', icon: <Palette className="w-5 h-5 mr-3" /> },
     { to: '/account', label: 'Account', icon: <UserCircle2 className="w-5 h-5 mr-3" /> },
   ];
 
-  const handleSignOut = () =>
+  const handleSignOut = () =>  // Function to handle sign-out action
     handleAuthAction(async () => {
-      if (window.confirm('Are you sure you want to sign out?')) {
+      if (window.confirm('Are you sure you want to sign out?')) {  // Confirm with the user before signing out
         await auth.signOut(); // Fully sign out from Firebase
         logout(); // Clear Zustand store
         navigate('/authentication/sign-in'); // Redirect to sign-in page
         setIsOpen(false); // Close sidebar on mobile
       }
-    }, { default: 'Failed to sign out' });
+    }, { default: 'Failed to sign out' });  // Default error message if sign-out fails
 
+    const isMale = user?.gender === 'male'
   return (
     <>
       {/* Mobile Menu Toggle Button */}
       <button
         onClick={toggleSidebar}
         className={`sm:hidden relative z-50 text-white p-2 rounded-full shadow-lg hover:cursor-pointer ${
-          user?.gender === 'male' ? 'bg-blue-200' : 'bg-pink-400'
-        } ${user?.gender === 'male' ? 'hover:bg-blue-300' : 'hover:bg-pink-600'}`}
+          isMale ? 'bg-blue-200 hover:bg-blue-300' : 'bg-pink-400 hover:bg-pink-600'
+        }`}
         disabled={loading}
+        aria-label={isOpen ? 'Close sidebar' : 'Open sidebar'}   // Accessibility attributes for better screen reader support
+        aria-expanded={isOpen}
       >
         {isOpen ? <X /> : <Menu />}
       </button>
@@ -85,14 +88,14 @@ const Sidebar = () => {
                   <Link
                     to={link.to}
                     onClick={toggleSidebar}
-                    className="flex items-center p-3 rounded-lg hover:bg-blue-50 transition-colors group"
+                    className={`flex items-center p-3 rounded-lg transition-colors group ${isMale ? 'hover:bg-blue-50' : 'hover:bg-pink-50' } `}
+                    
+                    aria-current={location.pathname === link.to ? 'page' : undefined}  // Accessibility attribute for better navigation
                   >
                     {link.icon}
                     <span
                       className={`text-gray-700 transition-colors ${
-                        user?.gender === 'male'
-                          ? 'group-hover:text-blue-500'
-                          : 'group-hover:text-blue-500'
+                        isMale ? 'group-hover:text-blue-500' : 'group-hover:text-pink-500'
                       }`}
                     >
                       {link.label}
@@ -105,15 +108,15 @@ const Sidebar = () => {
 
           {/* Sidebar Footer */}
           <div className="absolute bottom-0 left-0 right-0 p-6 border-t">
+            {/* Display error message if sign-out fails */}
             {error && <div className="mb-2 text-red-500 text-sm">{error}</div>}
             <button
               onClick={handleSignOut}
               disabled={loading}
               className={`w-full py-2 text-white rounded-lg transition-colors hover:cursor-pointer ${
-                user?.gender === 'male' ? 'bg-blue-200' : 'bg-pink-400'
-              } ${
-                user?.gender === 'male' ? 'hover:bg-blue-300' : 'hover:bg-pink-600'
-              } ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                isMale ? 'bg-blue-200 hover:bg-blue-300' : 'bg-pink-400 hover:bg-pink-600'
+              } ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}  
+              aria-label="Sign out"
             >
               {loading ? 'Signing Out...' : 'Sign Out'}
             </button>
@@ -124,6 +127,7 @@ const Sidebar = () => {
       {/* Overlay for mobile when sidebar is open */}
       {isOpen && (
         <div
+          aria-hidden="true"
           className="fixed inset-0 bg-black opacity-50 z-30 sm:hidden"
           onClick={toggleSidebar}
         />
@@ -132,4 +136,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
+export default Sidebar;  // Export the Sidebar component as the default export

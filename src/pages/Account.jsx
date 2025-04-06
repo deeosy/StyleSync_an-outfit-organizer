@@ -5,10 +5,12 @@ import { updateEmail, sendPasswordResetEmail } from 'firebase/auth';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { useNavigate } from 'react-router-dom';
 import ProfileForm from '../components/ProfileForm';
+import useAuthenticationStore from '../store/userStore';
 
 const CLIENT_ID = '387ee19ec8efbf6'; //  Imgur Client ID
 
 export default function Account() {
+  const { user  } = useAuthenticationStore();   // Access user from the Zustand store
   const navigate = useNavigate();
   const [profile, setProfile] = useState({
     firstName: '',
@@ -229,6 +231,8 @@ export default function Account() {
     );
   }
 
+  const isMale = user?.gender === 'male';
+
   return (
     <div className="min-h-screen bg-gray-100 font-sans">
       <main className="flex-grow">
@@ -256,7 +260,7 @@ export default function Account() {
                           <img src={photoPreview} alt="Profile" className="h-full w-full object-cover" />
                         )}
                       </div>
-                      <label className="absolute bottom-0 right-0 bg-pink-400 rounded-full p-1 cursor-pointer">
+                      <label className={`absolute bottom-0 right-0 ${isMale ? 'bg-blue-400' : 'bg-pink-400'}  rounded-full p-1 cursor-pointer`}>
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           className="h-6 w-6 text-white"
@@ -280,7 +284,9 @@ export default function Account() {
                 <button
                   onClick={handleSignOut}
                   disabled={loading}
-                  className="px-2 py-2 sm:px-5 sm:py-3 bg-pink-400 text-white rounded-[5px] text-sm font-medium uppercase hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-pink-500 disabled:opacity-50"
+                  className={`px-2 py-2 sm:px-5 sm:py-3 disabled:opacity-50 text-white rounded-[5px] text-sm font-medium uppercase  focus:outline-none focus:ring-2
+                    ${isMale ? 'focus:ring-blue-500  bg-blue-400 hover:bg-blue-500' : 'focus:ring-pink-500  bg-pink-400 hover:bg-pink-500' } 
+                  `}
                 >
                   Sign Out
                   <svg

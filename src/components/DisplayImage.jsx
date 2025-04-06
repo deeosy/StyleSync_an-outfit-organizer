@@ -15,9 +15,9 @@ export default function DisplayImage() {
   return (
     <Stack >
       <Avatar
-        alt={avatarAltText}
-        src={user?.photoURL || defaultDP}
-        sx={{ width: 60, height: 60, position:'relative'}}
+        alt={avatarAltText}  // Use the descriptive alt text
+        src={user?.photoURL || defaultDP}  // Use the user's photo if available, otherwise use default image
+        sx={{ width: 60, height: 60, position:'relative'}}   // Set the width and height of the Avatar using sx prop
         className='md:!h-[80px] md:!w-[80px] xl:!h-[100px] xl:!w-[100px]'
       />
     </Stack>
