@@ -11,6 +11,7 @@ const clothingItems = [
     { id: 1, image: heroImage1 },
     { id: 1, image: heroImage1 },
   ];
+  
 
 export default function SliderHeroSection() {
     const settings = {
