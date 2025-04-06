@@ -1,8 +1,13 @@
 import React from 'react';
 import { sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '../config/firebase';
+import useAuthenticationStore from '../store/userStore';
 
 export default function ProfileForm({ profile, handleChange, handleSubmit, handleResetPassword, loading }) {
+  const { user  } = useAuthenticationStore();   // Access user from the Zustand store
+
+  const isMale = user?.gender === 'male'
+
   return (
     <form onSubmit={handleSubmit} className="bg-white rounded-sm py-8 px-10 sm:py-12 sm:px-18">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -17,7 +22,8 @@ export default function ProfileForm({ profile, handleChange, handleSubmit, handl
             name="firstName"
             value={profile.firstName}
             onChange={handleChange}
-            className="w-full border-0 border-b outline-none border-gray-300 focus:border-pink-500 focus:ring-0 p-2 text-gray-900"
+            className={`w-full border-0 border-b outline-none border-gray-300  focus:ring-0 p-2 text-gray-900
+            ${isMale ? 'focus:border-blue-400' : 'focus:border-pink-500'}  `}
             disabled={loading}
           />
         </div>
@@ -32,7 +38,8 @@ export default function ProfileForm({ profile, handleChange, handleSubmit, handl
             name="lastName"
             value={profile.lastName}
             onChange={handleChange}
-            className="w-full border-0 border-b outline-none border-gray-300 focus:border-pink-500 focus:ring-0 p-2 text-gray-900"
+            className={`w-full border-0 border-b outline-none border-gray-300  focus:ring-0 p-2 text-gray-900
+            ${isMale ? 'focus:border-blue-400' : 'focus:border-pink-500'}  `} 
             disabled={loading}
           />
         </div>
@@ -47,7 +54,8 @@ export default function ProfileForm({ profile, handleChange, handleSubmit, handl
             name="username"
             value={profile.username}
             onChange={handleChange}
-            className="w-full border-0 border-b outline-none border-gray-300 focus:border-pink-500 focus:ring-0 p-2 text-gray-900"
+            className={`w-full border-0 border-b outline-none border-gray-300  focus:ring-0 p-2 text-gray-900
+            ${isMale ? 'focus:border-blue-400' : 'focus:border-pink-500'}  `}
             disabled={loading}
           />
         </div>
@@ -62,7 +70,8 @@ export default function ProfileForm({ profile, handleChange, handleSubmit, handl
             name="email"
             value={profile.email}
             onChange={handleChange}
-            className="w-full border-0 border-b outline-none border-gray-300 focus:border-pink-500 focus:ring-0 p-2 text-gray-900"
+            className={`w-full border-0 border-b outline-none border-gray-300  focus:ring-0 p-2 text-gray-900
+            ${isMale ? 'focus:border-blue-400' : 'focus:border-pink-500'}  `}
             disabled={loading}
           />
         </div>
@@ -77,7 +86,8 @@ export default function ProfileForm({ profile, handleChange, handleSubmit, handl
             name="country"
             value={profile.country || ''}
             onChange={handleChange}
-            className="w-full border-0 border-b outline-none border-gray-300 focus:border-pink-500 focus:ring-0 p-2 text-gray-900"
+            className={`w-full border-0 border-b outline-none border-gray-300  focus:ring-0 p-2 text-gray-900
+            ${isMale ? 'focus:border-blue-400' : 'focus:border-pink-500'}  `}
             disabled={loading}
           />
         </div>
@@ -92,7 +102,8 @@ export default function ProfileForm({ profile, handleChange, handleSubmit, handl
             name="dateOfBirth"
             value={profile.dateOfBirth}
             onChange={handleChange}
-            className="w-full border-0 hover:cursor-text border-b border-gray-300 focus:border-pink-500 focus:ring-0 p-2 text-gray-900 outline-none "
+            className={`w-full border-0 hover:cursor-text border-b border-gray-300  focus:ring-0 p-2 text-gray-900 outline-none
+            ${isMale ? 'focus:border-blue-400' : 'focus:border-pink-500' } `}
             disabled={loading}
           />
         </div>
@@ -102,7 +113,7 @@ export default function ProfileForm({ profile, handleChange, handleSubmit, handl
           <button
             type="button"
             onClick={handleResetPassword}
-            className="text-pink-500 text-sm underline hover:text-pink-700 hover:cursor-pointer"
+            className={` text-sm underline  hover:cursor-pointer ${ isMale ? 'hover:text-blue-600 text-blue-400' : 'hover:text-pink-700 text-pink-500'}`}
             disabled={loading}
           >
             send reset email
@@ -113,7 +124,9 @@ export default function ProfileForm({ profile, handleChange, handleSubmit, handl
         <button
           type="submit"
           disabled={loading}
-          className="hover:cursor-pointer w-full py-3 bg-pink-400 text-white rounded-lg font-medium uppercase hover:bg-pink-500 focus:outline-none focus:ring-2 focus:ring-pink-400 disabled:opacity-50"
+          className={`hover:cursor-pointer w-full py-3  text-white rounded-lg font-medium uppercase  focus:outline-none focus:ring-2  disabled:opacity-50
+            ${isMale ? 'bg-blue-300 hover:bg-blue-400 focus:ring-blu-400' : 'bg-pink-400 hover:bg-pink-500 focus:ring-pink-400'}
+          `}
         >
           {loading ? 'Saving...' : 'Save Changes'}
         </button>

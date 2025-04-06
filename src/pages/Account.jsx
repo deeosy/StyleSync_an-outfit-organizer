@@ -1,41 +1,44 @@
-import React, { useState, useEffect } from 'react';
-import { doc, getDoc, updateDoc, setDoc } from 'firebase/firestore';
-import { auth, db, storage } from '../config/firebase';
-import { updateEmail, sendPasswordResetEmail } from 'firebase/auth';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { useNavigate } from 'react-router-dom';
-import ProfileForm from '../components/ProfileForm';
-import useAuthenticationStore from '../store/userStore';
+import React, { useState, useEffect } from 'react';  // Import React and necessary hooks for state and side effects
+import { doc, getDoc, updateDoc, setDoc } from 'firebase/firestore';   // Import Firestore functions for database operations
 
-const CLIENT_ID = '387ee19ec8efbf6'; //  Imgur Client ID
+// Import Firebase Auth functions
+import { auth, db } from '../config/firebase';
+import { updateEmail, sendPasswordResetEmail, updateProfile } from 'firebase/auth';
+
+import { useNavigate } from 'react-router-dom';  // Import routing hook for navigation
+import ProfileForm from '../components/ProfileForm';  // Import the ProfileForm component for rendering the form
+import useAuthenticationStore from '../store/userStore';   // Import Zustand store for authentication state management
+
+const CLIENT_ID = '387ee19ec8efbf6'; // Imgur Client ID for image uploads
 
 export default function Account() {
-  const { user  } = useAuthenticationStore();   // Access user from the Zustand store
-  const navigate = useNavigate();
-  const [profile, setProfile] = useState({
+  const { user, updateUser  } = useAuthenticationStore();   // Access user data and update function from the Zustand store
+
+  const navigate = useNavigate();  // Hook for programmatic navigation
+
+  const [profile, setProfile] = useState({   // State to manage the profile form data
     firstName: '',
     lastName: '',
     username: '',
     email: '',
     dateOfBirth: '',
-    country: '', // Added country field to match the form
+    country: '', 
   });
-  const [photoPreview, setPhotoPreview] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
-  const [passwordData, setPasswordData] = useState({
-    currentPassword: '',
-    newPassword: '',
-    confirmPassword: '',
-  });
-  const [showPasswordModal, setShowPasswordModal] = useState(false);
 
-  useEffect(() => {
+  const [photoPreview, setPhotoPreview] = useState(null);   // State to manage the profile photo preview
+  const [loading, setLoading] = useState(true);  // State to track loading status for async operations
+  const [error, setError] = useState('');  // State to store error messages
+  const [success, setSuccess] = useState('');   // State to store success messages
+  const [signOutLoading, setSignOutLoading] = useState('');   // Added: State to track loading status specifically for sign-out  
+
+  const isMale = user?.gender === 'male';  // Determine if the user is male for dynamic styling
+
+  useEffect(() => {   // Fetch user data on component mount
     const fetchUserData = async () => {
       try {
         const currentUser = auth.currentUser;
-        if (!currentUser) {
+
+        if (!currentUser) {   // Redirect to sign-in if no user is authenticated
           navigate('/authentication/sign-in');
           return;
         }
@@ -43,7 +46,7 @@ export default function Account() {
         const userDocRef = doc(db, 'users', currentUser.uid);
         const userDoc = await getDoc(userDocRef);
 
-        if (!userDoc.exists()) {
+        if (!userDoc.exists()) {   // If user document doesn't exist, create a new one with default values
           const initialData = {
             firstName: '',
             lastName: '',
@@ -57,17 +60,21 @@ export default function Account() {
           await setDoc(userDocRef, initialData);
           setProfile(initialData);
           setPhotoPreview(initialData.photoURL || null);
+          updateUser(initialData);   // Update Zustand store with initial data
         } else {
+          // If user document exists, populate the profile state with the data
           const userData = userDoc.data();
-          setProfile({
+          const profileData = {
             firstName: userData.firstName || '',
             lastName: userData.lastName || '',
             username: userData.username || '',
             email: currentUser.email || '',
             dateOfBirth: userData.dateOfBirth || '',
             country: userData.country || '',
-          });
+          };
+          setProfile(profileData);
           setPhotoPreview(userData.photoURL || null);
+          updateUser(profileData)  // Sync Zustand store with fetched data
         }
         setLoading(false);
       } catch (err) {
@@ -77,29 +84,38 @@ export default function Account() {
       }
     };
     fetchUserData();
-  }, [navigate]);
+  }, [navigate, updateUser]);
 
-  const handleChange = (e) => {
+  const handleChange = (e) => {   // Handle changes to form inputs
     const { name, value } = e.target;
     setProfile((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {  // Handle form submission to update profile data
     e.preventDefault();
+    if(loading) return;   //Prevent multiple submissions
     setLoading(true);
     setError('');
     setSuccess('');
     try {
       const currentUser = auth.currentUser;
       if (!currentUser) throw new Error('You must be logged in to update your profile');
-      await updateDoc(doc(db, 'users', currentUser.uid), {
+      
+      const updatedProfile ={
         firstName: profile.firstName,
         lastName: profile.lastName,
         username: profile.username,
         dateOfBirth: profile.dateOfBirth,
-        country: profile.country, // Save country
-      });
-      if (profile.email !== currentUser.email) await updateEmail(currentUser, profile.email);
+        country: profile.country,
+      }
+
+      await updateDoc(doc(db, 'users', currentUser.uid), updatedProfile);  // Update Firestore with the new profile data
+
+      if (profile.email !== currentUser.email) {   // Update email in Firebase Auth if it has changed
+        await updateEmail(currentUser, profile.email);
+      }
+
+      updateUser(updatedProfile)  // Update Zustand store with the new profile data
       setSuccess('Profile updated successfully!');
       setTimeout(() => setSuccess(''), 3000);
     } catch (err) {
@@ -114,7 +130,7 @@ export default function Account() {
     }
   };
 
-  const handlePhotoChange = async (e) => {
+  const handlePhotoChange = async (e) => {   // Handle profile photo upload to Imgur
     const file = e.target.files[0];
     if (!file) return;
     
@@ -133,9 +149,6 @@ export default function Account() {
     setError('');
     
     try {
-      
-      
-       
      // Upload to Imgur
       const formData = new FormData();
       formData.append('image', file);
@@ -166,9 +179,9 @@ export default function Account() {
       const currentUser = auth.currentUser;
       await updateDoc(doc(db, 'users', currentUser.uid), { photoURL });
       setPhotoPreview(photoURL);
+      updateUser({ photoURL });   // Update Zustand store with the new photo URL
       setSuccess('Profile photo updated!');
       setTimeout(() => setSuccess(''), 3000);
-      
     } catch (err) {
       console.error('Error uploading photo:', err);
       setError('Failed to upload photo: ' + (err.message || 'Unknown error'));
@@ -177,19 +190,24 @@ export default function Account() {
     }
   };
 
-  const handleSignOut = async () => {
+  const handleSignOut = async () => {  // Handle user sign-out
+    if (signOutLoading) return;   // Prevent multiple sign-out attempts
     if (window.confirm('Are you sure you want to sign out?')) {
+      setSignOutLoading(true);
+      setError('');
       try {
         await auth.signOut();
         navigate('/authentication/sign-in');
       } catch (err) {
         console.error('Error signing out:', err);
         setError('Failed to sign out: ' + err.message);
+      } finally {
+        setSignOutLoading(false);
       }
     }
   };
 
-  const handleResetPassword = async () => {
+  const handleResetPassword = async () => {  // Handle sending a password reset email
     if (loading) return; // Prevent multiple resets
     setLoading(true);
     setError('');
@@ -214,34 +232,35 @@ export default function Account() {
       setLoading(false);
     }
   };
-
-  const getProfileInitials = () =>
+  
+  const getProfileInitials = () =>  // Function to get profile initials for display if no photo is available
     !profile.firstName && !profile.lastName
       ? '?'
       : (profile.firstName.charAt(0) + profile.lastName.charAt(0)).toUpperCase();
 
-  if (loading && !profile.email && !photoPreview) {
+  if (loading && !profile.email && !photoPreview) {  // Display a loading spinner while fetching user data
     return (
       <div className="min-h-screen bg-gray-100 font-sans flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-pink-500 mx-auto"></div>
+          <div className={`animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 ${isMale ? 'border-blue-400' : 'border-pink-500'} mx-auto`}></div>
           <p className="mt-4">Loading your profile...</p>
         </div>
       </div>
     );
   }
 
-  const isMale = user?.gender === 'male';
 
   return (
     <div className="min-h-screen bg-gray-100 font-sans">
       <main className="flex-grow">
         <div className="max-w-3xl mx-auto py-6 sm:px-6 lg:px-8">
+          {/* Display error message if present */}
           {error && (
             <div className="mb-4 bg-red-100 border border-red-400 text-red-500 px-4 py-3 rounded">
               {error}
             </div>
           )}
+          {/* Display success message if present */}
           {success && (
             <div className="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
               {success}
@@ -251,6 +270,7 @@ export default function Account() {
             <div className="bg-white rounded-sm shadow p-3 sm:p-6">
               <div className="flex justify-between items-center">
                 <div className="flex flex-col-reverse gap-2.5 sm:flex-row items-center ">
+                  {/* Profile photo or initials */}
                   <div className="flex-shrink-0 mr-4">
                     <div className="relative">
                       <div className="relative h-[120px] w-[120px] rounded-full overflow-hidden bg-gray-200 flex items-center justify-center">
@@ -260,7 +280,8 @@ export default function Account() {
                           <img src={photoPreview} alt="Profile" className="h-full w-full object-cover" />
                         )}
                       </div>
-                      <label className={`absolute bottom-0 right-0 ${isMale ? 'bg-blue-400' : 'bg-pink-400'}  rounded-full p-1 cursor-pointer`}>
+                      {/* Label for uploading a new profile photo */}
+                      <label className={`absolute bottom-0 right-0 ${isMale ? 'bg-blue-300' : 'bg-pink-400'}  rounded-full p-1 cursor-pointer`}>
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           className="h-6 w-6 text-white"
@@ -285,7 +306,7 @@ export default function Account() {
                   onClick={handleSignOut}
                   disabled={loading}
                   className={`px-2 py-2 sm:px-5 sm:py-3 disabled:opacity-50 text-white rounded-[5px] text-sm font-medium uppercase  focus:outline-none focus:ring-2
-                    ${isMale ? 'focus:ring-blue-500  bg-blue-400 hover:bg-blue-500' : 'focus:ring-pink-500  bg-pink-400 hover:bg-pink-500' } 
+                    hover:cursor-pointer ${isMale ? 'focus:ring-blue-300  bg-blue-300 hover:bg-blue-400' : 'focus:ring-pink-500  bg-pink-400 hover:bg-pink-500' } 
                   `}
                 >
                   Sign Out
@@ -304,6 +325,7 @@ export default function Account() {
                 </button>
               </div>
             </div>
+            {/* Profile form for editing user details */}
             <ProfileForm
               profile={profile}
               handleChange={handleChange}
