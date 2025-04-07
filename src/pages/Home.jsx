@@ -6,10 +6,10 @@ import wardrobe from "../icons/wardrobe-outline.png";
 import brain from "../icons/brain-outline.png";
 import camera from "../icons/camera-outline.png";
 import SmartFeaturesCard from "../components/SmartFeaturesCard";
-import howItWorksImage from "../images/image2.png"; // Use one of your existing images
 import { Link } from "react-router-dom";
 import Aos from "aos";
 import "aos/dist/aos.css";
+import HowSSyncWorks from "../components/HowSSyncWorks";
 
 export default function Home() {
   useEffect(() => {
@@ -94,86 +94,10 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div className="bg-[#F8F9FA] w-full py-[60px] px-10 lg:px-20">
-        <h2 className="font-bold text-[18px] md:text-[22px] xl:text-[30px] text-center">
-          How Style Sync Works
-        </h2>
-        <p className="text-[14px] py-[20px] lg:py-[30px] md:text-[20px] xl:text-[24px] text-center">
-          Three simple steps to revolutionize your wardrobe experience
-        </p>
 
-        <div className="flex flex-col lg:flex-row max-w-[1300px] mx-auto gap-8 py-8 items-center">
-          {/* Left side - Image */}
-          <div className="w-full lg:w-1/2">
-            <img
-              src={howItWorksImage}
-              alt="How Style Sync Works"
-              className="rounded-lg shadow-md w-full h-auto"
-            />
-          </div>
-
-          {/* Right side - Steps */}
-          <div className="w-full lg:w-1/2 space-y-8">
-            <div
-              data-aos="fade-up"
-              data-aos-delay="0"
-              className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-all hover:border-blue-500 border border-transparent"
-            >
-              <div className="flex items-center mb-4">
-                <div className="bg-pink-500 rounded-full w-10 h-10 flex items-center justify-center mr-4">
-                  <span className="font-bold text-lg">1</span>
-                </div>
-                <h3 className="font-bold text-lg hover:text-blue-500 transition-colors">
-                  Curate your closet, easily
-                </h3>
-              </div>
-              <p className="text-[14px] md:text-[16px]">
-                Add to your wardrobe by taking pictures of your clothes
-                with/without the background. Or search our database and add
-                items similar to the clothing in your closet.
-              </p>
-            </div>
-
-            <div
-              data-aos="fade-up"
-              data-aos-delay="200"
-              className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-all hover:border-blue-500 border border-transparent"
-            >
-              <div className="flex items-center mb-4">
-                <div className="bg-pink-500 rounded-full w-10 h-10 flex items-center justify-center mr-4">
-                  <span className="font-bold text-lg">2</span>
-                </div>
-                <h3 className="font-bold text-lg hover:text-blue-500 transition-colors">
-                  Organize and visualize
-                </h3>
-              </div>
-              <p className="text-[14px] md:text-[16px]">
-                See everything pictured at your finger tips. Search, filter and
-                view your wardrobe, however you like, whenever you like.
-              </p>
-            </div>
-
-            <div
-              data-aos="fade-up"
-              data-aos-delay="400"
-              className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-all hover:border-blue-500 border border-transparent"
-            >
-              <div className="flex items-center mb-4">
-                <div className="bg-pink-500 rounded-full w-10 h-10 flex items-center justify-center mr-4">
-                  <span className="font-bold text-lg">3</span>
-                </div>
-                <h3 className="font-bold text-lg hover:text-blue-500 transition-colors">
-                  AI Styling
-                </h3>
-              </div>
-              <p className="text-[14px] md:text-[16px]">
-                Get personalized outfit recommendations powered by AI for any
-                occasion, season, or mood.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
+      <>
+        <HowSSyncWorks />
+      </>
 
       {/* Testimonials Section */}
       <div className="bg-white w-full py-[60px] px-10 lg:px-20">
@@ -269,8 +193,6 @@ export default function Home() {
 
         <div className="max-w-[900px] mx-auto py-8">
           <div
-            data-aos="fade-up"
-            data-aos-delay="0"
             className="mb-6 p-4 border border-transparent hover:border-blue-500 rounded-lg hover:bg-white transition-all"
           >
             <h3 className="font-bold text-lg mb-2 hover:text-blue-500 transition-colors">
@@ -284,8 +206,6 @@ export default function Home() {
           </div>
 
           <div
-            data-aos="fade-up"
-            data-aos-delay="100"
             className="mb-6 p-4 border border-transparent hover:border-blue-500 rounded-lg hover:bg-white transition-all"
           >
             <h3 className="font-bold text-lg mb-2 hover:text-blue-500 transition-colors">
@@ -300,8 +220,6 @@ export default function Home() {
           </div>
 
           <div
-            data-aos="fade-up"
-            data-aos-delay="200"
             className="mb-6 p-4 border border-transparent hover:border-blue-500 rounded-lg hover:bg-white transition-all"
           >
             <h3 className="font-bold text-lg mb-2 hover:text-blue-500 transition-colors">
