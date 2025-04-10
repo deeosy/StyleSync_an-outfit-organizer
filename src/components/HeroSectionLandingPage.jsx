@@ -1,7 +1,7 @@
-import React from 'react'
-import { Link } from "react-router-dom";
-import nextArrow from "../icons/right-arrow.png";
-import SliderHeroSection from "../components/SliderHeroSection";
+import React from 'react'  // Import React for creating the component
+import { Link } from "react-router-dom";   // Import Link from react-router-dom for navigation
+import nextArrow from "../icons/right-arrow.png";   // Import the right arrow icon for the "Get Started" button
+import SliderHeroSection from "../components/SliderHeroSection";    // Import the SliderHeroSection component to display the image slider
 
 export default function HeroSectionLandingPage() {
   return (
@@ -11,26 +11,18 @@ export default function HeroSectionLandingPage() {
 					YOUR SMART DIGITAL WARDROBE ASSISTANT
 				</h1>
 				<p className="text-[14px] py-[22px] md:text-[20px] xl:text-[24px]">
-					Organise your clothing collection, get AI powered outfit
-					recommendations and revolutionize your style game
+					Organise your clothing collection, get AI powered outfit recommendations and revolutionize your style game
 				</p>
 				<button className="bg-white rounded-[5px] md:text-[20px] hover:cursor-pointer">
-					<Link
-						to="/authentication"
-						className="flex gap-3 items-center py-2 px-5"
-					>
+					{/* Link to the authentication page */}
+					<Link	to="/authentication" className="flex gap-3 items-center py-2 px-5">
 						Get Started
-						<img
-							src={nextArrow}
-							alt="next-page icon"
-							className="h-[14px] pt-[2px] "
-						/>
+						<img src={nextArrow} alt="next-page icon"	className="h-[14px] pt-[2px] "/>
 					</Link>
 				</button>
 			</div>
-			{/* <div className=""> */}
-				<SliderHeroSection />
-			{/* </div> */}
+			{/* Right side: Image slider */}
+			<SliderHeroSection />
 		</div>
   )
 }

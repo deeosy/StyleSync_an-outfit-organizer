@@ -195,7 +195,7 @@ export default function HowSSyncWorks() {
                 >
                   <span className="font-bold text-lg">1</span>
                 </div>
-                <h3 className="font-bold text-lg transition-colors">Create your closet, easily</h3>
+                <h3 className="font-bold text-lg transition-colors">Curate your closet, easily</h3>
               </div>
               <p className="text-[14px] md:text-[16px]">
                 Add to your wardrobe by taking pictures of your clothes with/without the background. Or search our database and add items similar to the clothing in your closet.
