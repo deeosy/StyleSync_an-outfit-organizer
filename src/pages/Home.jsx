@@ -11,6 +11,9 @@ import Aos from "aos";
 import "aos/dist/aos.css";
 import HowSSyncWorks from "../components/HowSSyncWorks";
 import FAQSection from "../components/FAQSection";
+import Testimonials from "../components/TestimonialSection";
+import TestimonialSection from "../components/TestimonialSection";
+import SubscribtionSection from "../components/SubscribtionSection";
 
 export default function Home() {
   useEffect(() => {
@@ -95,121 +98,20 @@ export default function Home() {
           </div>
         </div>
       </div>
-
+      {/* How to use the app section */}
       <>
         <HowSSyncWorks />
       </>
-
-      {/* Testimonials Section */}
-      <div className="bg-white w-full py-[60px] px-10 lg:px-20">
-        <h2 className="font-bold text-[18px] md:text-[22px] xl:text-[30px] text-center">
-          Join our club and use Style Sync to manage your wardrobe
-        </h2>
-        <p className="text-[14px] py-[20px] lg:py-[30px] md:text-[20px] xl:text-[22px] text-center">
-          Hear from some of our users using Style Sync to manage their wardrobe
-        </p>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-[1300px] mx-auto py-8">
-          {/* Testimonial cards with hover effect */}
-          <div
-            data-aos="fade-up"
-            data-aos-delay="0"
-            className="border border-gray-200 hover:border-blue-500 rounded-lg p-4 flex flex-col transition-all hover:shadow-md"
-          >
-            <div className="mb-4">
-              <img
-                src="src/images/testimonial1.jpg" // Replace with actual image path
-                alt="User testimonial"
-                className="rounded-lg w-full h-auto"
-              />
-            </div>
-            <h3 className="font-bold text-lg hover:text-blue-500 transition-colors">
-              Alicza
-            </h3>
-            <div className="flex mb-2">
-              <span>★★★★★</span>
-            </div>
-            <p className="text-[14px] flex-grow">
-            I used to forget what clothes I had — now I can create outfits on the go. Love it!
-            </p>
-          </div>
-          <div
-            data-aos="fade-up"
-            data-aos-delay="0"
-            className="border border-gray-200 hover:border-blue-500 rounded-lg p-4 flex flex-col transition-all hover:shadow-md"
-          >
-            <div className="mb-4">
-              <img
-                src="src/images/testimonial2.jpg" // Replace with actual image path
-                alt="User testimonial"
-                className="rounded-lg w-full h-auto"
-              />
-            </div>
-            <h3 className="font-bold text-lg hover:text-blue-500 transition-colors">
-              Walter
-            </h3>
-            <div className="flex mb-2">
-              <span>★★★★★</span>
-            </div>
-            <p className="text-[14px] flex-grow">
-              Style Sync is such an easy web-app to use. It has helped me see
-              the good clothing that I own out of the pile in my real wardrobe.
-              And I am able to style my outfits for the day!
-            </p>
-          </div>
-          <div
-            data-aos="fade-up"
-            data-aos-delay="0"
-            className="border border-gray-200 hover:border-blue-500 rounded-lg p-4 flex flex-col transition-all hover:shadow-md"
-          >
-            <div className="mb-4">
-              <img
-                src="https://images.pexels.com/photos/3851309/pexels-photo-3851309.jpeg?auto=compress&cs=tinysrgb&w=600" // Replace with actual image path
-                alt="User testimonial"
-                className="rounded-lg w-full h-auto"
-              />
-            </div>
-            <h3 className="font-bold text-lg hover:text-blue-500 transition-colors">
-              Alliana
-            </h3>
-            <div className="flex mb-2">
-              <span>★★★★★</span>
-            </div>
-            <p className="text-[14px] flex-grow">
-            This website made my wardrobe 100x more organized. Clients are impressed with how I plan outfits!
-            </p>
-          </div>
-        </div>
-      </div>
-
+      {/* Testimonials Section component*/}
+      <>
+        <TestimonialSection />
+      </>
       {/* FAQ Section placed in a component */}
       <>
         <FAQSection />
       </>
-
-      {/* Newsletter Subscription */}
-      <div className="bg-[#E5E5E5] w-full py-[60px] px-10 lg:px-20 ">
-        <div className="max-w-[800px] mx-auto text-center">
-          <h2 className="font-bold text-[18px] md:text-[22px] xl:text-[30px]">
-            Stay Updated with Style Tips
-          </h2>
-          <p className="text-[14px] py-[20px] md:text-[16px]">
-            Subscribe to our newsletter for style inspiration, updates, and
-            exclusive content
-          </p>
-
-          <div className="flex flex-col md:flex-row gap-4 justify-center mt-4">
-            <input
-              type="email"
-              placeholder="Your email address"
-              className="px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 md:min-w-[300px]"
-            />
-            <button className="bg-[#212529] text-white px-6 py-3 rounded-md hover:bg-blue-500 transition-all">
-              Subscribe
-            </button>
-          </div>
-        </div>
-      </div>
+      {/* Newsletter Subscription placed in a component*/}
+      <SubscribtionSection />
 
      {/* Tutorial Section */}
 <div className="bg-white w-full py-[60px] px-10 lg:px-20">

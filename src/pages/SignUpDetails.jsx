@@ -305,7 +305,8 @@ export default function SignUpDetails() {
         </Link>
         {/* Title: centered, 20px font on small screens and above, bold */}
         <p className="text-center sm:text-[20px] font-bold">Tell us who you are</p>
-        {/* Removed empty div that was used as a placeholder */}
+        {/* Placed an empty div below for stlying purposes */}
+        <div className=""></div>
       </div>
       {/* Progress bar with animation: flex layout, 3-unit gap, 27px vertical margin, full width, z-index 10 */}
       <div className="flex gap-3 my-[27px] w-full z-10">
