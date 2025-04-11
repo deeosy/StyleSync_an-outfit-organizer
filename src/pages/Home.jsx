@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import Aos from "aos";
 import "aos/dist/aos.css";
 import HowSSyncWorks from "../components/HowSSyncWorks";
+import FAQSection from "../components/FAQSection";
 
 export default function Home() {
   useEffect(() => {
@@ -181,66 +182,13 @@ export default function Home() {
         </div>
       </div>
 
-      {/* FAQ Section */}
-      <div className="bg-[#F8F9FA] w-full py-[60px] px-10 lg:px-20">
-        <h2 className="font-bold text-[18px] md:text-[22px] xl:text-[30px] text-center">
-          Frequently Asked Questions
-        </h2>
-
-        <div className="max-w-[900px] mx-auto py-8">
-          <div
-            className="mb-6 p-4 border border-transparent hover:border-blue-500 rounded-lg hover:bg-white transition-all"
-          >
-            <h3 className="font-bold text-lg mb-2 hover:text-blue-500 transition-colors">
-              How do I add my clothes?
-            </h3>
-            <p className="text-[14px] md:text-[16px]">
-              You can either take photos of your clothing items or search our
-              extensive database to find similar items. Our intelligent system
-              makes categorizing and organizing simple.
-            </p>
-          </div>
-
-          <div
-            className="mb-6 p-4 border border-transparent hover:border-blue-500 rounded-lg hover:bg-white transition-all"
-          >
-            <h3 className="font-bold text-lg mb-2 hover:text-blue-500 transition-colors">
-              Is the AI styling feature really personalized?
-            </h3>
-            <p className="text-[14px] md:text-[16px]">
-              Yes! Our AI analyzes your preferences, clothing collection, and
-              follows style principles to create outfits specifically for you.
-              The more you use Style Sync, the better the recommendations
-              become.
-            </p>
-          </div>
-
-          <div
-            className="mb-6 p-4 border border-transparent hover:border-blue-500 rounded-lg hover:bg-white transition-all"
-          >
-            <h3 className="font-bold text-lg mb-2 hover:text-blue-500 transition-colors">
-              Can I use Style Sync on my phone?
-            </h3>
-            <p className="text-[14px] md:text-[16px]">
-              Absolutely! Style Sync is fully responsive and works great on
-              mobile devices, tablets, and desktops.
-            </p>
-          </div>
-
-          <div className="text-center mt-8">
-            <Link
-              to="/faq"
-              className="text-[#212529] font-semibold hover:text-blue-500 transition-colors flex items-center justify-center gap-2"
-            >
-              See all FAQs
-              <img src={nextArrow} alt="arrow" className="h-[12px]" />
-            </Link>
-          </div>
-        </div>
-      </div>
+      {/* FAQ Section placed in a component */}
+      <>
+        <FAQSection />
+      </>
 
       {/* Newsletter Subscription */}
-      <div className="bg-[#E5E5E5] w-full py-[60px] px-10 lg:px-20">
+      <div className="bg-[#E5E5E5] w-full py-[60px] px-10 lg:px-20 ">
         <div className="max-w-[800px] mx-auto text-center">
           <h2 className="font-bold text-[18px] md:text-[22px] xl:text-[30px]">
             Stay Updated with Style Tips
