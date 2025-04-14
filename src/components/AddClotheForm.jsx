@@ -187,11 +187,9 @@ function AddClotheForm({ onSave }) {
 
       {/* Preview Section */}
       <div className="mb-6">
-        {/* Section label: medium font, 2-unit bottom margin */}
         <h3 className="font-medium mb-2">Preview</h3>
-        {/* Preview card: flex layout, light gray background, rounded, 4-unit padding */}
+        {/* Preview card*/}
         <div className="flex items-center gap-4 bg-[#F5F5F5] rounded-sm p-4">
-          {/* Placeholder image: gray square, 16-unit width and height, with color background */}
           <div
             className="w-30 h-30 bg-[#D9D9D9] rounded-sm flex items-center justify-center"
             style={{ backgroundColor: newItem.color }}
