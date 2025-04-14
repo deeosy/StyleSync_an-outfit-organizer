@@ -9,11 +9,11 @@ import useWardrobeStore from '../store/wardrobeStore';
 import useAuthenticationStore from '../store/userStore';
 
 export default function QuickActionBtn() {
-    const navigate = useNavigate() // call navigate from router dom
-    const toggleAddForm = useWardrobeStore( state => state.toggleAddForm)
-    const { user, isAuthenticated } = useAuthenticationStore()    
+    const navigate = useNavigate()   // Hook for navigation
+    const toggleAddForm = useWardrobeStore( state => state.toggleAddForm)   // Get toggleAddForm from store
+    const { user, isAuthenticated } = useAuthenticationStore()    // Get user authentication state
     
-    if(!isAuthenticated){
+    if(!isAuthenticated){   // If user is not authenticated, show a login prompt
       return <p className="text-center mt-10">Please log in to access your wardrobe.</p>;
     }
 
@@ -23,7 +23,7 @@ export default function QuickActionBtn() {
     ];
 
   return (
-    <SpeedDial
+    <SpeedDial  // SpeedDial component for quick actions
     ariaLabel="SpeedDial basic example"
     sx={{ position: 'absolute', bottom: -10, right: 20, 
       "& .MuiFab-primary": { 
