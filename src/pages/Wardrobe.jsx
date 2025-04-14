@@ -514,7 +514,7 @@ function Wardrobe() {
             {/* Modal header: flex layout, justified between, items centered */}
             <div className="flex justify-between items-center mb-6">
               {/* Modal title: large font, bold, centered within its flex space */}
-              <h2 id="add-clothe-modal" className="text-lg font-bold flex-1 text-center">
+              <h2 id="add-clothe-modal" className="text-lg font-bold flex-1">
                 Add New Item
               </h2>
               {/* Cancel button: pink background, white text, small font, rounded, 2-unit padding */}
