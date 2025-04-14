@@ -299,7 +299,7 @@ export default function SignUpDetails() {
     <div className="mx-4 sm:mx-10 py-[30px]">
       {/* Header with back button and title: flex layout, centered items, space-between justification */}
       <div className="flex items-center justify-between w-full">
-        <Link to="/authentication/sign-up-language">
+        <Link to="/authentication">
           {/* Back button image: 30px height, 0.5-unit padding */}
           <img src={prevArrow} alt="previous button" className="h-[30px] p-0.5" />
         </Link>

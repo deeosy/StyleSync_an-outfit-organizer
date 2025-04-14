@@ -5,13 +5,13 @@ import SliderHeroSection from "../components/SliderHeroSection";
 import wardrobe from "../icons/wardrobe-outline.png";
 import brain from "../icons/brain-outline.png";
 import camera from "../icons/camera-outline.png";
+import outfit from "../icons/female-dress.png"
 import SmartFeaturesCard from "../components/SmartFeaturesCard";
 import { Link } from "react-router-dom";
 import Aos from "aos";
 import "aos/dist/aos.css";
 import HowSSyncWorks from "../components/HowSSyncWorks";
 import FAQSection from "../components/FAQSection";
-import Testimonials from "../components/TestimonialSection";
 import TestimonialSection from "../components/TestimonialSection";
 import SubscribtionSection from "../components/SubscribtionSection";
 
@@ -91,9 +91,9 @@ export default function Home() {
             />
             <SmartFeaturesCard
               delay={600}
-              icon={wardrobe}
-              title="Wardrobe Organization"
-              description="Categorize and manage your wardrobe efficiently"
+              icon={outfit}
+              title="Create Outfits"
+              description="Create your own outfits . with clothing you own or yet to own"
             />
           </div>
         </div>

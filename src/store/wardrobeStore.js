@@ -20,6 +20,7 @@ const useWardrobeStore = create((set) => ({
       color: "#0e4f8b",
       lastWorn: "Yesterday",
       imageUrl: blueJeansTrousers,
+      favorite: '',
       notes: "Slim fit, size 32",
     },
     {
@@ -29,6 +30,7 @@ const useWardrobeStore = create((set) => ({
       color: "#ffffff",
       lastWorn: "2 days ago",
       imageUrl: offShoulderMaxiDress,
+      favorite: '',
       notes: "",
     },
     {
@@ -38,6 +40,7 @@ const useWardrobeStore = create((set) => ({
       color: "#222222",
       lastWorn: "Last week",
       imageUrl: blackSlipperHeels,
+      favorite: '',
       notes: "From H&M",
     },
     {
@@ -47,6 +50,7 @@ const useWardrobeStore = create((set) => ({
       color: "#663300",
       lastWorn: "3 days ago",
       imageUrl: brownMules,
+      favorite: '',
       notes: "Size 10",
     },
     {
@@ -56,6 +60,7 @@ const useWardrobeStore = create((set) => ({
       color: "#cc0000",
       lastWorn: "Never",
       imageUrl: blackSilkVest,
+      favorite: '',
       notes: "",
     },
     {
@@ -65,6 +70,7 @@ const useWardrobeStore = create((set) => ({
       color: "#c3b091",
       lastWorn: "5 days ago",
       imageUrl: grayShortSkirt,
+      favorite: '',
       notes: "",
     },
     {
@@ -74,6 +80,7 @@ const useWardrobeStore = create((set) => ({
       color: "#444444",
       lastWorn: "Last month",
       imageUrl: shortSkirt,
+      favorite: '',
       notes: "A-Lined, very short",
     },
     {
@@ -83,6 +90,7 @@ const useWardrobeStore = create((set) => ({
       color: "#ffd700",
       lastWorn: "Yesterday",
       imageUrl: blackBlouse,
+      favorite: '',
       notes: "blouse with ribbon",
     },
     {
@@ -92,6 +100,7 @@ const useWardrobeStore = create((set) => ({
       color: "#0e4f8b",
       lastWorn: "Yesterday",
       imageUrl: longSkirt,
+      favorite: '',
       notes: "long skirts, size 28",
     },
   ],
