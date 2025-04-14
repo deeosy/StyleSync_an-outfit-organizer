@@ -178,7 +178,7 @@ function AddClotheForm({ onSave }) {
               value={newItem.notes}
               onChange={(e) => setNewItem({ ...newItem, notes: e.target.value })}
               placeholder="Add more details about this item, brand, fabric type, size."
-              className="w-full border border-gray-300 focus:border-black outline-none py-1 text-sm md:text-md resize-none"
+              className="w-full border border-gray-300 focus:border-black outline-none py-1 px-3 text-sm md:text-md resize-none"
               rows={3}
             />
           </div>
