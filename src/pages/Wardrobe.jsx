@@ -512,7 +512,7 @@ function Wardrobe() {
           {/* Modal content: white background, rounded, 6-unit padding, centered, max width 800px */}
           <div className="bg-white rounded-lg p-6 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-[800px] max-h-[95vh] overflow-y-auto no-scrollbar">
             {/* Modal header: flex layout, justified between, items centered */}
-            <div className="flex justify-between items-center mb-6">
+            <div className="flex justify-between items-center mb-6 md:px-20">
               {/* Modal title: large font, bold, centered within its flex space */}
               <h2 id="add-clothe-modal" className="text-lg font-bold flex-1">
                 Add New Item
