@@ -1,6 +1,8 @@
 // components/AddClotheForm.jsx
 import React, { useState, useRef } from 'react';
 import addPic from '../icons/add-picture-icon.png';
+import { storage } from '../config/firebase';
+import {ref, uploadBytes, getDownloadURL } from 'firebase/storage'
 
 // Component to handle adding a new clothing item with a form
 function AddClotheForm({ onSave }) {
@@ -22,7 +24,7 @@ function AddClotheForm({ onSave }) {
       const reader = new FileReader();
       reader.onloadend = () => {
         setImagePreview(reader.result); // Update image preview
-        setNewItem({ ...newItem, imageUrl: reader.result }); // Update image URL in state
+        setNewItem({ ...newItem, imageUrl: file }); // Update image URL in state
       };
       reader.readAsDataURL(file);
     }
@@ -36,22 +38,30 @@ function AddClotheForm({ onSave }) {
   };
 
   // Handle form submission with validation
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (newItem.name.trim()) { // Validate that the name field is not empty
+      let imageUrl = null;
+      if (newItem.imageUrl) {  //upload image to firebase Storage
+        const storageRef = ref(storage, `wardrobeImages/${newItem.imageUrl.name}-${Date.now()}`);
+        await uploadBytes(storageRef, newItem.imageUrl);
+        imageUrl = await getDownloadURL(storageRef);  //get the download URL
+      }
+      
       const formData = {
         itemName: newItem.name,
         category: newItem.category,
         color: newItem.color,
         notes: newItem.notes,
-        imageUrl: newItem.imageUrl,
+        imageUrl: imageUrl,   // use the download URL
       };
+
       onSave(formData); // Pass form data to parent component
       // Reset form state after submission
       setNewItem({
         name: '',
         category: 'tops',
-        color: '#ffffff',
+        color: '',
         imageUrl: null,
         notes: '',
       });
@@ -60,20 +70,19 @@ function AddClotheForm({ onSave }) {
   };
 
   return (
-    // Form container: flex column layout, 20-unit horizontal padding on medium screens
     <form onSubmit={handleSubmit} className="flex flex-col md:px-20">
       {/* Photo Section */}
       <div className="mb-6">
-        {/* Section label: medium font, 2-unit bottom margin */}
+        {/* Section label*/}
         <h3 className="font-medium mb-2">Photo</h3>
-        {/* Upload area: dashed border, light gray background, rounded, 4-unit padding, centered content */}
+        {/* Upload area*/}
         <div className="border-2 border-dashed border-gray-300 bg-[#F5F5F5] rounded-lg p-4 flex flex-col items-center justify-center h-[200px]">
           {!imagePreview ? (
             <>
               {/* Cloud icon and upload text */}
               <label className="flex flex-col items-center justify-center cursor-pointer">
                 <img src={addPic} alt="Upload icon" className="h-[30px] mb-2" />
-                {/* Upload text: small font, gray-600 text, centered */}
+                {/* Upload text*/}
                 <p className="text-sm text-gray-600 text-center">
                   <span className="font-semibold">Click to upload</span> or drag and drop
                   <br />
@@ -122,9 +131,9 @@ function AddClotheForm({ onSave }) {
 
       {/* About Section */}
       <div className="mb-6">
-        {/* Section label: medium font, 2-unit bottom margin */}
+        {/* Section label*/}
         <h3 className="font-medium mb-2">About</h3>
-        {/* Form fields container: flex column layout, 4-unit gap, light gray background, light border, 4-unit padding, rounded */}
+        {/* Form fields container*/}
         <div className="flex flex-col gap-4 bg-[#F5F5F5] border border-[#21252933] p-4 rounded-sm">
           {/* Item Name field */}
           <div>
@@ -225,3 +234,4 @@ function AddClotheForm({ onSave }) {
 }
 
 export default AddClotheForm;
+
