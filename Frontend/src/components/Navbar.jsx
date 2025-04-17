@@ -26,6 +26,11 @@ export default function Navbar() {
                   Outfit Builder
                 </Link>
               </li>
+              <li>
+                <Link to='/userprofile' className='hover:bg-[#F06D99] px-3 py-2 rounded transition-colors' >
+                  Accounts
+                </Link>
+              </li>
             </ul>
           </div>
           <button className='rounded-[3px] bg-[#F06D99] manrope h-[57px] w-[140px] ' >Sign In</button>

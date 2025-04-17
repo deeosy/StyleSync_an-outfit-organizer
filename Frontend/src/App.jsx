@@ -10,6 +10,7 @@ import SignUpLanguage from './pages/SignUpLanguage';
 import SignIn from './pages/SignIn';
 import SignUpDetails from './pages/SignUpDetails';
 import SignUpReason from './pages/SignUpReason';
+import UserProfile from './pages/UserProfile';
 
 
 
@@ -35,6 +36,7 @@ function App() {
               <Route path='/dashboard' element={<Home />} />
               <Route path='/wardrobe' element={<Wardrobe />} />
               <Route path='/outfits' element={<Outfits />} />
+              <Route path='/userprofile' element={<UserProfile />} />
             </Routes>
           </div>
         </div>
