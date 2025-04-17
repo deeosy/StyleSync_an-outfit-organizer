@@ -242,14 +242,17 @@ function Wardrobe() {
       return;
     }
 
+    // Ensure all required fields are present
     const newItem = {
-      imageUrl: formData.imageUrl, // Uploaded image URL
-      name: formData.itemName,
+      name: formData.name,
       category: formData.category,
       color: formData.color,
+      imageUrl: formData.imageUrl,
       notes: formData.notes,
-      lastWorn: 'Never', // Default value for new items
+      lastWorn: formData.lastWorn || 'Never',
+      createdAt: formData.createdAt
     };
+
     console.log('Adding New Item:', newItem);
     addClothingItem(newItem, user.uid);
     toggleAddForm(false); // Close the form after saving
