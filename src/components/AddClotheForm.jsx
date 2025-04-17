@@ -46,55 +46,31 @@ function AddClotheForm({ onSave }) {
         const formData = new FormData();
         formData.append('image', newItem.imageUrl);
         
-        let retryCount = 0;
-        const maxRetries = 3;
-        const retryDelay = 5000; // 5 seconds delay between retries
-
-        while (retryCount < maxRetries) {
-          try {
-            // Add a longer delay to prevent rate limiting
-            await new Promise(resolve => setTimeout(resolve, retryDelay));
-            
-            const response = await fetch('https://api.imgur.com/3/upload', {
-              method: 'POST',
-              headers: {
-                'Authorization': 'Client-ID 387ee19ec8efbf6',
-                'Accept': 'application/json'
-              },
-              body: formData
-            });
-            
-            if (!response.ok) {
-              if (response.status === 429) {
-                retryCount++;
-                if (retryCount < maxRetries) {
-                  console.log(`Rate limit hit, retrying in ${retryDelay/1000} seconds... (Attempt ${retryCount + 1}/${maxRetries})`);
-                  continue;
-                }
-                throw new Error('Rate limit exceeded. Please try again in a few minutes.');
-              }
-              throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            
-            const data = await response.json();
-            console.log('Imgur response:', data);
-            
-            if (data.success) {
-              imageUrl = data.data.link;
-              console.log('Image URL:', imageUrl);
-              break; // Success, exit retry loop
-            } else {
-              console.error('Imgur upload failed:', data);
-              break; // Non-rate-limit error, exit retry loop
-            }
-          } catch (error) {
-            console.error('Error uploading to Imgur:', error);
-            if (retryCount < maxRetries - 1) {
-              retryCount++;
-              continue;
-            }
-            break; // Exit retry loop after max retries
+        try {
+          const response = await fetch('https://api.imgur.com/3/upload', {
+            method: 'POST',
+            headers: {
+              'Authorization': 'Client-ID 387ee19ec8efbf6',
+              'Accept': 'application/json'
+            },
+            body: formData
+          });
+          
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
           }
+          
+          const data = await response.json();
+          console.log('Imgur response:', data);
+          
+          if (data.success) {
+            imageUrl = data.data.link;
+            console.log('Image URL:', imageUrl);
+          } else {
+            console.error('Imgur upload failed:', data);
+          }
+        } catch (error) {
+          console.error('Error uploading to Imgur:', error);
         }
       }
       
