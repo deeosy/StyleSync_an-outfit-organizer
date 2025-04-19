@@ -1,23 +1,29 @@
 import React, { useState } from 'react'
 
+
+
 export default function Theme() {
-  const [color, setColor] = useState('pink-300')
-  const [secondaryColor, setSecondaryColor] = useState('pink-400')
+  const [color, setColor] = useState('bg-pink-300')
+  const [secondaryColor, setSecondaryColor] = useState('bg-pink-400')
   
   const handleTheme = (event) => {
     const selectedColor = event.target.value
     switch (selectedColor) {
       case 'pink':
-        setColor('pink-300')
-        setSecondaryColor('pink-400')
+        setColor('bg-pink-300')
+        setSecondaryColor('hover:bg-pink-400')
         break
-      case 'green':
-        setColor('green-300')
-        setSecondaryColor('green-400')
+      case 'gray':
+        setColor('bg-gray-300')
+        setSecondaryColor('hover:bg-gray-400')
         break
       case 'blue':
-        setColor('blue-300')
-        setSecondaryColor('blue-400')
+        setColor('bg-blue-300')
+        setSecondaryColor('hover:bg-blue-400')
+        break
+      case 'red':
+        setColor('bg-red-300')
+        setSecondaryColor('hover:bg-red-400')
         break
       default:
         break
@@ -34,12 +40,13 @@ export default function Theme() {
         defaultValue="pink"
       >
         <option value="pink">Pink Theme</option>
-        <option value="green">Green Theme</option>
+        <option value="gray">Gray Theme</option>
         <option value="blue">Blue Theme</option>
+        <option value="red">Red Theme</option>
       </select>
 
       <div className="mt-4">
-        <button className={`bg-${color} hover:bg-${secondaryColor} text-white font-bold py-2 px-4 rounded mr-2`}>
+        <button className={`${color} ${secondaryColor} text-white font-bold py-2 px-4 rounded mr-2`}>
           Primary Button
         </button>
       </div>
