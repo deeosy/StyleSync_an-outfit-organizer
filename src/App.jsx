@@ -10,7 +10,7 @@ import Footer from "./components/Footer";   // Footer component
 import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
 import Wardrobe from "./pages/Wardrobe";
-// import Outfits from "./components/Outfits";
+import Outfits from "./components/Outfits";
 import Account from "./pages/Account";
 import Authentication from "./pages/Authentication";
 import SignUpLanguage from "./pages/SignUpLanguage";
@@ -43,7 +43,7 @@ function App() {
               </Route>
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/wardrobe" element={<Wardrobe />} />
-              {/* <Route path="/outfits" element={<Outfits />} /> */}
+              <Route path="/outfits" element={<Outfits />} />
               <Route path="/account" element={<Account />} /> 
 
               {/* Fallback route for handling 404 errors (when no route matches) */}
