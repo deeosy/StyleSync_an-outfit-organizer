@@ -105,7 +105,7 @@
 import { create } from 'zustand';
 import { v4 as uuid } from 'uuid';
 import { db } from '../config/firebase'; // Import Firestore instance
-import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc, setDoc } from 'firebase/firestore';
+import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc, query, where } from 'firebase/firestore';
 
 // Create Zustand store for managing wardrobe state with Firebase
 const useWardrobeStore = create((set) => ({
@@ -125,15 +125,12 @@ const useWardrobeStore = create((set) => ({
       return;
     }
     try {
-      // Based on your Firebase structure, try direct collection access
-      // Your second image shows wardrobe collection structure
       const wardrobeCollection = collection(db, 'wardrobe');
-      const wardrobeSnapshot = await getDocs(wardrobeCollection);
+      const q = query(wardrobeCollection, where('userId', '==', userId));
+      const wardrobeSnapshot = await getDocs(q);
       
-      // Filter items that belong to the current user if needed
-      // or adjust the query path based on your actual Firebase structure
       const wardrobeList = wardrobeSnapshot.docs.map((doc) => ({
-        id: doc.id, // Use Firestore document ID
+        id: doc.id,
         ...doc.data(),
       }));
       
@@ -141,7 +138,7 @@ const useWardrobeStore = create((set) => ({
       set({ wardrobeItems: wardrobeList });
     } catch (error) {
       console.error('Error fetching wardrobe items:', error);
-      throw error; // Throw error to handle in the component
+      throw error;
     }
   },
 
@@ -152,21 +149,15 @@ const useWardrobeStore = create((set) => ({
       return;
     }
     try {
-      // Generate a new ID for the item
-      const newItemId = uuid();
       const newItem = { 
         ...item, 
-        userId: userId, // Store userId with the item for filtering
+        userId: userId,
         createdAt: new Date().toISOString()
       };
       
-      // Add to the wardrobe collection
-      // Option 1: Use auto-generated document ID
       const wardrobeCollection = collection(db, 'wardrobe');
       const docRef = await addDoc(wardrobeCollection, newItem);
 
-      
-      // Update local state with the new item
       set((state) => ({
         wardrobeItems: [...state.wardrobeItems, { ...newItem, id: docRef.id }],
       }));
