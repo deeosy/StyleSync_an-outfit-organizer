@@ -11,7 +11,7 @@ import TopsIcon from '../images/Wardrobe-Filter-Images/Tops.png';
 import AllIcon from '../images/Wardrobe-Filter-Images/All.png';
 import BottomsIcon from '../images/Wardrobe-Filter-Images/Bottoms.png';
 import JumpSuitIcon from '../images/Wardrobe-Filter-Images/Jump-suit.png';
-import ShoesIcon from '../images/Wardrobe-Filter-Images/Shoes.png';
+import ShoesIcon from '../images/Wardrobe-Filter-Images/shoes.png';
 import AccessoriesIcon from '../images/Wardrobe-Filter-Images/Accessories.png';
 import OuterwearIcon from '../images/Wardrobe-Filter-Images/Outerwear.png';
 
