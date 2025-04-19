@@ -30,7 +30,7 @@ function Dashboard() {
   console.log("User data:", user);    // Log the user object for debugging purposes
 
   const hasWardrobeItems = wardrobeItems && wardrobeItems.length > 0;     // Added: Check if wardrobeItems is empty and display a message
-
+  
   return (
     <>
       {/* Header section with dynamic background color based on user gender */}
@@ -49,10 +49,10 @@ function Dashboard() {
       <div className="my-6">
         {/* Display the user's username from the database */}
         <p className="text-center font-semibold">
-          {user?.username || "Anonymous"}
+          {user?.username || user?.firstName || "Anonymous"}
         </p>
         {/* Display the username with a handle format */}
-        <p className="text-center">{`@${user?.username || "anonymous"}_`}</p>
+        <p className="text-center">{`@${user?.username || user?.firstName || "anonymous"}_`}</p>
       </div>
 
       {/* Main content section with tabs and recent items */}

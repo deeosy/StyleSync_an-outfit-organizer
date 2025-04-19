@@ -130,7 +130,7 @@ export default function Home() {
         HOW TO ADD CLOTHES
       </h3>
       <img
-        src="https://images.pexels.com/photos/15647643/pexels-photo-15647643/free-photo-of-a-woman-with-an-afro-sitting-on-a-bench-with-a-dog.jpeg?auto=compress&cs=tinysrgb&w=600"
+        src="https://images.pexels.com/photos/5705490/pexels-photo-5705490.jpeg?auto=compress&cs=tinysrgb&w=600"
         alt="How to add clothes"
         className="mb-4 w-full h-auto"
       />
@@ -153,7 +153,7 @@ export default function Home() {
         HOW TO CREATE OUTFITS
       </h3>
       <img
-        src="https://images.pexels.com/photos/16354625/pexels-photo-16354625/free-photo-of-woman-walking-in-city-in-jacket-and-pants.jpeg?auto=compress&cs=tinysrgb&w=600"
+        src="https://images.pexels.com/photos/1233648/pexels-photo-1233648.jpeg?auto=compress&cs=tinysrgb&w=600"
         alt="How to create outfits"
         className="mb-4 w-full h-auto"
       />
@@ -176,7 +176,7 @@ export default function Home() {
         AI STYLING FEATURES
       </h3>
       <img
-        src="https://images.pexels.com/photos/15183047/pexels-photo-15183047/free-photo-of-young-woman-with-tattoos-wearing-futuristic-glasses.jpeg?auto=compress&cs=tinysrgb&w=600"
+        src="https://images.pexels.com/photos/8728382/pexels-photo-8728382.jpeg?auto=compress&cs=tinysrgb&w=600"
         alt="AI styling features"
         className="mb-4 w-full h-auto"
       />
