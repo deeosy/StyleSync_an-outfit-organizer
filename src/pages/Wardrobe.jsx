@@ -1,185 +1,3 @@
-// import React, { useState, useEffect } from 'react';   // Import React and useState for managing filter state
-// import useWardrobeStore from '../store/wardrobeStore';   // Import Zustand store for managing wardrobe state
-// import useAuthenticationStore from '../store/userStore';    // Import Zustand store for managing user state
-// import SearchBar from '../components/SearchBar';    // Import search bar component
-// import FavoriteIcon from '../components/FavoriteIcon';   // Import favorite icon component
-
-// // Import Material-UI components for the floating action button, modal, tooltip, and zoom transition
-// import { Fab, Modal, Tooltip, Zoom } from '@mui/material';
-// import AddIcon from '@mui/icons-material/Add';
-// import AddClotheForm from '../components/AddClotheForm';
-
-// function Wardrobe() {
-//   const [filter, setFilter] = useState('all');     // State to manage the current filter category (default: 'all')
-//   const [fabVisible, setFabVisible] = useState(true);    // State to control the visibility of the Fab button for the zoom effect
-//   const { user } = useAuthenticationStore();     // Get user data from the authentication store
-//   const { wardrobeItems, addClothingItem, showAddForm, toggleAddForm, fetchWardrobeItems } = useWardrobeStore();     // Get from the wardrobe store
-
-//   // Fetch wardrobe items from Firebase when the component mounts
-//   useEffect(() => {
-//     fetchWardrobeItems();
-//   }, [fetchWardrobeItems]);
-
-//   // Log wardrobeItems to verify updates
-//   useEffect(() => {
-//     console.log('Wardrobe Items Updated:', wardrobeItems);
-//   }, [wardrobeItems]);
-
-//   // Filter wardrobe items based on the selected category
-//   const filteredItems = filter === 'all'
-//     ? wardrobeItems
-//     : wardrobeItems.filter(item => item.category === filter);
-
-//   // Handle form submission by adding the new item to the wardrobe store
-//   const handleSave = (formData) => {
-//     const newItem = {
-//       imageUrl: formData.imageUrl, // Uploaded image URL
-//       name: formData.itemName,
-//       category: formData.category,
-//       color: formData.color,
-//       notes: formData.notes,
-//       lastWorn: 'Never', // Default value for new items
-//     };
-//     console.log('Adding New Item:', newItem);
-//     addClothingItem(newItem);
-//     toggleAddForm(false); // Close the form after saving
-//   };
-
-//   return (
-//     <div className="px-3 py-10 bg-white text-[#212529]">
-//       {/* Search Bar */}
-//       <div className="flex justify-between items-center gap-8 mb-6 mx-auto max-w-[1200px]">
-//         <SearchBar />
-//         <FavoriteIcon />
-//       </div>
-
-//       {/* Wardrobe items container*/}
-//       <div className="p-6 w-full h-full mx-auto max-w-[1100px]">
-//         {/* Filter buttons */}
-//         <div className="flex sm:justify-center mb-6 overflow-x-auto no-scrollbar">
-//           {/* All filter button */}
-//           <button
-//             className={`px-4 py-2 font-medium transition-colors whitespace-nowrap 
-//               ${filter === 'all' ? 'text-gray-900 md:text-xl border-b-2' : 'text-gray-500 md:text-xl hover:cursor-pointer' }
-//               ${user?.gender === 'male' ? 'border-blue-300' : 'border-pink-400'}`}
-//             onClick={() => setFilter('all')}
-//           >
-//             All
-//           </button>
-//           {/* Category filter buttons*/}
-//           {['tops', 'bottoms', 'outerwear', 'shoes', 'jump suit', 'accessories'].map(category => (
-//             <button
-//               key={category}
-//               className={`px-4 py-2 font-medium transition-colors whitespace-nowrap 
-//                 ${filter === category ? 'text-gray-900 md:text-xl border-b-2' : 'text-gray-500 md:text-xl hover:cursor-pointer' }
-//                 ${user?.gender === 'male' ? 'border-blue-300' : 'border-pink-400'}`}
-//               onClick={() => setFilter(category)}
-//             >
-//               {category.charAt(0).toUpperCase() + category.slice(1)}
-//             </button>
-//           ))}
-//         </div>
-
-//         {/* Items grid container*/}
-//         <div className="sm:h-[70vh] h-[100vh] overflow-scroll no-scrollbar">
-//           {/* Grid layout*/}
-//           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8 my-5">
-//             {/* Map over filtered items to display each wardrobe item */}
-//             {filteredItems.map(item => (
-//               // Item card
-//               <div key={item.id} className="bg-gray-50 p-3 flex flex-col rounded-[5px] border border-gray-200">
-//                 <div className="h-full rounded-[5px] mb-2 md:mb-4 flex text-xs">
-//                   {item.imageUrl ? (
-//                     <img
-//                       src={item.imageUrl}
-//                       alt={item.name}
-//                       className="w-full h-[full] object-cover rounded"
-//                     />
-//                   ) : (
-//                     // Fallback item name
-//                     <span>{item.name}</span>
-//                   )}
-//                 </div>
-//                 {/* Item name */}
-//                 <p className="text-sm font-medium pb-2 truncate">{item.name}</p>
-//                 {/* Item details*/}
-//                 <div className="flex justify-between">
-//                   <p className="text-xs text-gray-600 capitalize">{item.category}</p>
-//                   <p className="text-xs text-gray-600">Last worn: {item.lastWorn || 'Never'}</p>
-//                 </div>
-//                 {item.notes && <p className="text-xs pb-2 truncate text-gray-500">{item.notes}</p>}
-//               </div>
-//             ))}
-
-//             {/* Empty state*/}
-//             {filteredItems.length === 0 && (
-//               <div className="col-span-full h-[60vh] py-8 text-center text-gray-500">
-//                 No items found in this category.
-//               </div>
-//             )}
-//           </div>
-//         </div>
-
-//         {/* Sticky button container*/}
-//         <div className="sticky bottom-3 flex justify-end xl:-mr-20 lg:-mr-6">
-//           {/* Zoom transition wrapper for the Fab button */}
-//           <Zoom in={fabVisible} timeout={200}>
-//             {/* Tooltip for the "Add Item" label*/}
-//             <Tooltip title="Add Item" placement="left">
-//               {/* Floating action button*/}
-//               <Fab
-//                 sx={{
-//                   backgroundColor: user?.gender === 'male' ? '#bedbff' : '#fc64b6',
-//                   '&:hover': { 
-//                     backgroundColor: user?.gender === 'male' ? '#8ec5ff' : '#e054a3',
-//                   },
-//                 }}
-//                 aria-label="add"
-//                 onClick={() => toggleAddForm(true)} // Use toggleAddForm to open the form
-//               >
-//                 <AddIcon />
-//               </Fab>
-//             </Tooltip>
-//           </Zoom>
-//         </div>
-
-//         {/* Modal for adding a new clothing item */}
-//         <Modal
-//           open={showAddForm} // Use showAddForm from the store
-//           onClose={() => toggleAddForm(false)} // Use toggleAddForm to close the form
-//           aria-labelledby="add-clothe-modal"
-//           aria-describedby="modal-to-add-new-clothing-item"
-//         >
-//           {/* Modal content*/}
-//           <div className="bg-white rounded-lg p-6 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-[800px] max-h-[95vh] overflow-y-auto no-scrollbar">
-//             {/* Modal header*/}
-//             <div className="flex justify-between items-center mb-6 md:px-20">
-//               {/* Modal title*/}
-//               <h2 id="add-clothe-modal" className="text-lg font-bold flex-1">
-//                 Add New Item
-//               </h2>
-//               {/* Cancel button*/}
-//               <button
-//                 onClick={() => toggleAddForm(false)} // Use toggleAddForm to close the form
-//                 className="bg-pink-400 text-white text-sm font-medium px-4 py-2 rounded hover:bg-pink-500 transition-colors"
-//               >
-//                 Cancel
-//               </button>
-//             </div>
-//             <AddClotheForm onSave={handleSave} />
-//           </div>
-//         </Modal>
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default Wardrobe;
-
-
-
-
-
 // components/Wardrobe.jsx
 import React, { useState, useEffect } from 'react'; // Import React and useState for managing filter state
 import useWardrobeStore from '../store/wardrobeStore'; // Import Zustand store for managing wardrobe state
@@ -189,6 +7,14 @@ import FavoriteIcon from '../components/FavoriteIcon'; // Import favorite icon c
 import { Fab, Modal, Tooltip, Zoom } from '@mui/material'; // Import Material-UI components
 import AddIcon from '@mui/icons-material/Add';
 import AddClotheForm from '../components/AddClotheForm';
+import TopsIcon from '../images/Wardrobe-Filter-Images/Tops.png';
+import AllIcon from '../images/Wardrobe-Filter-Images/All.png';
+import BottomsIcon from '../images/Wardrobe-Filter-Images/Bottoms.png';
+import JumpSuitIcon from '../images/Wardrobe-Filter-Images/Jump-suit.png';
+import ShoesIcon from '../images/Wardrobe-Filter-Images/Shoes.png';
+import AccessoriesIcon from '../images/Wardrobe-Filter-Images/Accessories.png';
+import OuterwearIcon from '../images/Wardrobe-Filter-Images/Outerwear.png';
+
 
 // Define the Wardrobe component
 function Wardrobe() {
@@ -276,42 +102,48 @@ function Wardrobe() {
   }
 
   return (
-    <div className="px-3 py-10 bg-white text-[#212529]">
-      {/* Search Bar */}
-      <div className="flex justify-between items-center gap-8 mb-6 mx-auto max-w-[1200px]">
-        <SearchBar />
-        <FavoriteIcon />
+    <div className="px-3 py-1 bg-white text-[#212529] overflow-hidden  ">
+      <div className="flex gap-6 lg:justify-center mb-6 overflow-x-scroll no-scrollbar">
+        {/* All filter button */}
+        <button
+          className={`px-2 py-2 font-medium flex gap-2 items-center transition-colors whitespace-nowrap min-w-fit
+            ${filter === 'all' ? 'text-gray-900 md:text-xl border-b-2' : 'text-gray-500 md:text-xl hover:cursor-pointer'}
+            ${user?.gender === 'male' ? 'border-blue-300' : 'border-pink-400'}`}
+          onClick={() => setFilter('all')}
+        >
+          <img src={AllIcon} alt="tops filter icon" className="h-6 w-6 mr-1 sm:h-8 sm:w-8 md:h-10 md:w-10" />
+          <span className="inline-block">All</span>
+        </button>
+        {/* Category filter buttons */}
+        {[{name:'tops', icon: TopsIcon}, {name:'bottoms', icon: BottomsIcon}, {name:'outerwear', icon: OuterwearIcon}, {name:'shoes', icon: ShoesIcon}, {name:'jump suit', icon: JumpSuitIcon}, {name:'accessories', icon: AccessoriesIcon}].map((category) => (
+          <button
+            key={category.name}
+            className={`px-2 py-2 font-medium flex gap-2 items-center transition-colors whitespace-nowrap min-w-fit
+              ${filter === category.name ? 'text-gray-900 md:text-xl border-b-2' : 'text-gray-500 md:text-xl hover:cursor-pointer'}
+              ${user?.gender === 'male' ? 'border-blue-300' : 'border-pink-400'}`}
+            onClick={() => setFilter(category.name)}
+          >
+            <img 
+              src={category.icon} 
+              alt={category + ' filter icon'} 
+              className="h-6 w-6 mr-1 sm:h-8 sm:w-8 md:h-10 md:w-10" 
+            />
+            <span className="inline-block">{category.name.charAt(0).toUpperCase() + category.name.slice(1)}</span>
+          </button>
+        ))}
       </div>
 
       {/* Wardrobe items container */}
       <div className="p-6 w-full h-full mx-auto max-w-[1100px]">
         {/* Filter buttons */}
-        <div className="flex sm:justify-center mb-6 overflow-x-auto no-scrollbar">
-          {/* All filter button */}
-          <button
-            className={`px-4 py-2 font-medium transition-colors whitespace-nowrap 
-              ${filter === 'all' ? 'text-gray-900 md:text-xl border-b-2' : 'text-gray-500 md:text-xl hover:cursor-pointer'}
-              ${user?.gender === 'male' ? 'border-blue-300' : 'border-pink-400'}`}
-            onClick={() => setFilter('all')}
-          >
-            All
-          </button>
-          {/* Category filter buttons */}
-          {['tops', 'bottoms', 'outerwear', 'shoes', 'jump suit', 'accessories'].map((category) => (
-            <button
-              key={category}
-              className={`px-4 py-2 font-medium transition-colors whitespace-nowrap 
-                ${filter === category ? 'text-gray-900 md:text-xl border-b-2' : 'text-gray-500 md:text-xl hover:cursor-pointer'}
-                ${user?.gender === 'male' ? 'border-blue-300' : 'border-pink-400'}`}
-              onClick={() => setFilter(category)}
-            >
-              {category.charAt(0).toUpperCase() + category.slice(1)}
-            </button>
-          ))}
+        {/* Search Bar */}
+        <div className="flex justify-between items-center gap-8 mb-6 mx-auto ">
+          <SearchBar />
+          <FavoriteIcon />
         </div>
 
         {/* Items grid container */}
-        <div className="sm:h-[70vh] h-[100vh] overflow-scroll no-scrollbar">
+        <div className="h-[60vh] overflow-scroll no-scrollbar">
           {/* Grid layout */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8 my-5">
             {/* Map over filtered items to display each wardrobe item */}

@@ -191,6 +191,7 @@ function AddClotheForm({ onSave }) {
               <option value="bottoms">Bottoms</option>
               <option value="outerwear">Outerwear</option>
               <option value="shoes">Shoes</option>
+              <option value="jump suit">Jump suit</option>
               <option value="accessories">Accessories</option>
             </select>
           </div>
