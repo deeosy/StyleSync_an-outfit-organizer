@@ -14,6 +14,7 @@ import JumpSuitIcon from '../images/Wardrobe-Filter-Images/Jump-suit.png';
 import ShoesIcon from '../images/Wardrobe-Filter-Images/shoes.png';
 import AccessoriesIcon from '../images/Wardrobe-Filter-Images/Accessories.png';
 import OuterwearIcon from '../images/Wardrobe-Filter-Images/Outerwear.png';
+import DeleteClothingBtn from '../components/DeleteClothingBtn';
 
 
 // Define the Wardrobe component
@@ -149,7 +150,8 @@ function Wardrobe() {
             {/* Map over filtered items to display each wardrobe item */}
             {filteredItems.map((item) => (
               // Item card
-              <div key={item.id} className="bg-gray-50 p-3 flex flex-col rounded-[5px] border border-gray-200">
+              <div key={item.id} className="bg-gray-200 p-3 flex flex-col rounded-[5px]  border border-gray-200">
+                <DeleteClothingBtn id={item.id} />
                 <div className="h-full rounded-[5px] mb-2 md:mb-4 flex text-xs">
                   {item.imageUrl ? (
                     <img
