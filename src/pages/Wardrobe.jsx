@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'; // Import React and useState
 import useWardrobeStore from '../store/wardrobeStore'; // Import Zustand store for managing wardrobe state
 import useAuthenticationStore from '../store/userStore'; // Import Zustand store for managing user state
 import SearchBar from '../components/SearchBar'; // Import search bar component
-import FavoriteIcon from '../components/FavoriteIcon'; // Import favorite icon component
+import FavoriteIcon from '../components/FavoriteIconCategory'; // Import favorite icon component
 import { Fab, Modal, Tooltip, Zoom } from '@mui/material'; // Import Material-UI components
 import AddIcon from '@mui/icons-material/Add';
 import AddClotheForm from '../components/AddClotheForm';
@@ -15,6 +15,8 @@ import ShoesIcon from '../images/Wardrobe-Filter-Images/shoes.png';
 import AccessoriesIcon from '../images/Wardrobe-Filter-Images/Accessories.png';
 import OuterwearIcon from '../images/Wardrobe-Filter-Images/Outerwear.png';
 import DeleteClothingBtn from '../components/DeleteClothingBtn';
+import FavoriteIconBtn from '../components/FavoriteIconBtn';
+import FavoriteIconCategory from '../components/FavoriteIconCategory';
 
 
 // Define the Wardrobe component
@@ -27,7 +29,7 @@ function Wardrobe() {
   // Get user data and authentication status from the authentication store
   const { user, isAuthenticated } = useAuthenticationStore();
   // Get wardrobe items, addClothingItem, showAddForm, toggleAddForm, and fetchWardrobeItems from the wardrobe store
-  const { wardrobeItems, addClothingItem, showAddForm, toggleAddForm, fetchWardrobeItems } = useWardrobeStore();
+  const { wardrobeItems, showFavoritesOnly, addClothingItem, showAddForm, toggleAddForm, fetchWardrobeItems } = useWardrobeStore();
 
   // Fetch wardrobe items from Firebase when the component mounts and user is authenticated
   useEffect(() => {
@@ -58,9 +60,13 @@ function Wardrobe() {
   }, [wardrobeItems]);
 
   // Filter wardrobe items based on the selected category
-  const filteredItems = filter === 'all'
+  let filteredItems = filter === 'all'
     ? wardrobeItems
     : wardrobeItems.filter((item) => item.category === filter);
+
+  if(showFavoritesOnly){ // apply favorites filter if needed
+    filteredItems = filteredItems.filter(item => item.isFavorite);
+  }
 
   // Handle form submission by adding the new item to the wardrobe store
   const handleSave = (formData) => {
@@ -104,7 +110,7 @@ function Wardrobe() {
 
   return (
     <div className="px-3 py-1 bg-white text-[#212529] overflow-hidden  ">
-      <div className="flex gap-6 lg:justify-center mb-6 overflow-x-scroll no-scrollbar">
+      <div className="flex gap-6 lg:justify-center mb-3 overflow-x-scroll no-scrollbar">
         {/* All filter button */}
         <button
           className={`px-2 py-2 font-medium flex gap-2 items-center transition-colors whitespace-nowrap min-w-fit
@@ -140,7 +146,7 @@ function Wardrobe() {
         {/* Search Bar */}
         <div className="flex justify-between items-center gap-8 mb-6 mx-auto ">
           <SearchBar />
-          <FavoriteIcon />
+          <FavoriteIconCategory  />
         </div>
 
         {/* Items grid container */}
@@ -150,8 +156,12 @@ function Wardrobe() {
             {/* Map over filtered items to display each wardrobe item */}
             {filteredItems.map((item) => (
               // Item card
-              <div key={item.id} className="bg-gray-200 p-3 flex flex-col rounded-[5px]  border border-gray-200">
-                <DeleteClothingBtn id={item.id} />
+              <div key={item.id} className="bg-gray-100 px-3 py-2 flex flex-col rounded-[5px] shadow-sm shadow-slate-400   ">
+                {/* favorite and delete icon */}
+                <div className="flex justify-between mb-1">
+                  <FavoriteIconBtn id={item.id} isFavorite={item.isFavorite} />
+                  <DeleteClothingBtn id={item.id} />
+                </div>
                 <div className="h-full rounded-[5px] mb-2 md:mb-4 flex text-xs">
                   {item.imageUrl ? (
                     <img
@@ -241,7 +251,8 @@ function Wardrobe() {
               {/* Cancel button */}
               <button
                 onClick={() => toggleAddForm(false)} // Use toggleAddForm to close the form
-                className="bg-pink-400 text-white text-sm font-medium px-4 py-2 rounded hover:bg-pink-500 transition-colors"
+                className={` text-white text-sm font-medium px-4 py-2 rounded transition-colors
+                  ${user.gender === 'male' ? 'bg-blue-200 hover:bg-blue-300' : 'bg-pink-400 hover:bg-pink-500' }`}
               >
                 Cancel
               </button>

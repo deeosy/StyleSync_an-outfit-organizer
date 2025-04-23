@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import useWardrobeStore, {} from '../store/wardrobeStore'
 import useAuthenticationStore from '../store/userStore'
-import { Modal } from '@mui/material'
+import { Modal, Tooltip } from '@mui/material'
 import delBtn from '../icons/delete-btn-icon.svg'
+import confirmBtn from '../icons/correct-icon.svg'
 
 export default function DeleteClothingBtn({id}) {
     const {deleteClothingItem} = useWardrobeStore()  // get delete function 
@@ -22,7 +23,9 @@ export default function DeleteClothingBtn({id}) {
     <div className="">
         { !showConfirm ? (
             <button  onClick={()=>{setShowConfirm(true)}} className='hover:cursor-pointer' >
-                <img src={delBtn} alt="Delete" />
+              <Tooltip title="Delete" placement="left">
+                <img src={delBtn} alt="Delete" className='h-4 w-4' />
+              </Tooltip>
             </button>
 
         ) : (
@@ -41,15 +44,15 @@ export default function DeleteClothingBtn({id}) {
                 <div className="flex gap-4">
                     <button
                     onClick={() => setShowConfirm(false)} // Use toggleAddForm to close the form
-                    className="bg-gray-300 text-sm font-medium px-4 py-2 rounded hover:bg-gray-400 transition-colors"
+                    className="bg-gray-300 text-sm font-medium px-4 py-2 rounded hover:cursor-pointer hover:bg-gray-400 transition-colors"
                     >
-                      <img src={delBtn} alt="Delete" />
+                      <img src={delBtn} alt="Cancel delete" className='h-4 w-4 ' />
                     </button>
                     <button
                     onClick={handleDelete} // Use toggleAddForm to close the form
-                    className={`text-sm font-medium px-4 py-2 rounded ${user?.gender === 'male' ? 'bg-blue-300 hover:bg-blue-400' : 'bg-pink-400 hover:bg-pink-500'} transition-colors`}
+                    className={`text-sm font-medium px-4 py-2 rounded hover:cursor-pointer ${user?.gender === 'male' ? 'bg-blue-300 hover:bg-blue-400' : 'bg-pink-400 hover:bg-pink-500'} transition-colors`}
                     >
-                    Yes
+                      <img src={confirmBtn} alt="Confirm delete" className='h-4 w-4 ' />
                     </button>
 
                 </div>

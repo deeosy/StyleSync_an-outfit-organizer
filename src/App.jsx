@@ -20,7 +20,7 @@ import SignUpDetails from "./pages/SignUpDetails";
 import SignUpReason from "./pages/SignUpReason";
 
 import "./App.css";   // Import global styles for the app
-import Theme from "./components/Theme";
+// import Theme from "./components/Theme";
 
 
 function App() {

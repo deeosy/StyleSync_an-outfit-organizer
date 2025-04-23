@@ -108,7 +108,7 @@ import { db } from '../config/firebase'; // Import Firestore instance
 import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc, query, where } from 'firebase/firestore';
 
 // Create Zustand store for managing wardrobe state with Firebase
-const useWardrobeStore = create((set) => ({
+const useWardrobeStore = create((set, get) => ({
   // State to hold wardrobe items fetched from Firebase
   wardrobeItems: [],
 
@@ -205,6 +205,45 @@ const useWardrobeStore = create((set) => ({
       console.error('Error deleting clothing item:', error);
     }
   },
+
+  // Toggle favorite status for a clothing item
+  toggleFavorite: async (id, userId) => {
+    if(!userId){
+      console.error('No user ID provided for toggling favorite status.');
+      return;
+    }
+
+    try {
+      const currentItem = get().wardrobeItems.find(item => item.id === id);  //get the current item to check its favorite status
+
+      if(!currentItem) {
+        console.error('Item not found');
+        return;
+      }
+      
+      const updatedItem = { //Toggle the favorite status
+        ...currentItem, isFavorite: !currentItem.isFavorite
+      }
+
+      const itemRef = doc(db, 'wardrobe', id);  //update in Firebase
+      await updateDoc(itemRef, {isFavorite: updatedItem.isFavorite});
+
+      set((state) => ({
+        wardrobeItems: state.wardrobeItems.map((item) => 
+          item.id === id ? {...item, isFavorite: updatedItem.isFavorite} : item
+        ),
+      }));
+    } catch (error) {
+      console.error('Error toggling favorite status:', error);
+    }
+  },
+
+  //Toggle favorite filter
+  toggleFavoritesFilter: () => 
+    set((state) => ({
+      showFavoritesOnly: !state.showFavoritesOnly
+    })),
+
 
 
   // Update current outfit

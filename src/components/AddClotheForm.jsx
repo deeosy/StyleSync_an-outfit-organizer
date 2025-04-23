@@ -1,8 +1,6 @@
 // components/AddClotheForm.jsx
 import React, { useState, useRef } from 'react';
 import addPic from '../icons/add-picture-icon.png';
-import { db } from '../config/firebase';
-import { collection, addDoc } from 'firebase/firestore';
 
 // Component to handle adding a new clothing item with a form
 function AddClotheForm({ onSave }) {
