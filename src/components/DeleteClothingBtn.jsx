@@ -22,7 +22,7 @@ export default function DeleteClothingBtn({id}) {
     <div className="">
         { !showConfirm ? (
             <button  onClick={()=>{setShowConfirm(true)}} className='hover:cursor-pointer' >
-                {delBtn}
+                <img src={delBtn} alt="Delete" />
             </button>
 
         ) : (
@@ -43,7 +43,7 @@ export default function DeleteClothingBtn({id}) {
                     onClick={() => setShowConfirm(false)} // Use toggleAddForm to close the form
                     className="bg-gray-300 text-sm font-medium px-4 py-2 rounded hover:bg-gray-400 transition-colors"
                     >
-                    {delBtn}
+                      <img src={delBtn} alt="Delete" />
                     </button>
                     <button
                     onClick={handleDelete} // Use toggleAddForm to close the form
