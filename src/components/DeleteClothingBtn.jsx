@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import useWardrobeStore, {} from '../store/wardrobeStore'
 import useAuthenticationStore from '../store/userStore'
 import { Modal } from '@mui/material'
+import delBtn from '../icons/delete-btn-icon.svg'
 
 export default function DeleteClothingBtn({id}) {
     const {deleteClothingItem} = useWardrobeStore()  // get delete function 
@@ -21,7 +22,7 @@ export default function DeleteClothingBtn({id}) {
     <div className="">
         { !showConfirm ? (
             <button  onClick={()=>{setShowConfirm(true)}} className='hover:cursor-pointer' >
-                del
+                {delBtn}
             </button>
 
         ) : (
@@ -42,7 +43,7 @@ export default function DeleteClothingBtn({id}) {
                     onClick={() => setShowConfirm(false)} // Use toggleAddForm to close the form
                     className="bg-gray-300 text-sm font-medium px-4 py-2 rounded hover:bg-gray-400 transition-colors"
                     >
-                    No
+                    {delBtn}
                     </button>
                     <button
                     onClick={handleDelete} // Use toggleAddForm to close the form
