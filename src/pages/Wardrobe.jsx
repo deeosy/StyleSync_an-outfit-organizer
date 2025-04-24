@@ -156,18 +156,18 @@ function Wardrobe() {
             {/* Map over filtered items to display each wardrobe item */}
             {filteredItems.map((item) => (
               // Item card
-              <div key={item.id} className="bg-gray-100 px-3 py-2 mx-1.5 flex flex-col rounded-[5px] shadow-sm shadow-slate-400 h-[350px]  ">
+              <div key={item.id} className="bg-gray-100 px-3 py-2 mx-1.5 flex flex-col rounded-[5px] shadow-sm shadow-slate-400 h-[350px] ">
                 {/* favorite and delete icon */}
                 <div className="flex justify-between mb-1">
                   <FavoriteIconBtn id={item.id} isFavorite={item.isFavorite} />
                   <DeleteClothingBtn id={item.id} />
                 </div>
-                <div className="h-full rounded-[5px] mb-2 md:mb-4 flex text-xs">
+                <div className="h-full overflow-hidden rounded-[5px] mb-2 md:mb-4 flex text-xs">
                   {item.imageUrl ? (
                     <img
                       src={item.imageUrl}
                       alt={item.name}
-                      className="w-full h-[full] object-cover rounded"
+                      className="w-full h-full object-cover rounded"
                     />
                   ) : (
                     // Fallback item name

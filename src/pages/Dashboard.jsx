@@ -72,7 +72,7 @@ function Dashboard() {
               No wardrobe items found. Add some items to get started!
             </p>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-3 h-full gap-4 md:gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8 my-5">
               {/* Display the 3 most recently added wardrobe items in reverse order */}
               {wardrobeItems
                 .slice(-3) // Get the last 3 items
@@ -80,11 +80,11 @@ function Dashboard() {
                 .map((item) => (
                   <div
                     key={item.id} // Unique key for each item
-                    className="bg-gray-50 p-3 flex flex-col rounded-[5px] border border-gray-200"
+                    className="bg-gray-100 px-3 py-2 mx-1.5 flex flex-col rounded-[5px] shadow-sm shadow-slate-400 h-[350px]"
                   >
                     {/* Item image with background color */}
                     <div
-                      className="h-full rounded-[5px] mb-2 md:mb-4 flex text-xs"
+                      className="h-full overflow-hidden rounded-[5px] mb-2 md:mb-4 flex text-xs"
                       style={{ backgroundColor: item.color }}
                     >
                       <img
