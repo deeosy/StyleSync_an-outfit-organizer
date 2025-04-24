@@ -150,13 +150,13 @@ function Wardrobe() {
         </div>
 
         {/* Items grid container */}
-        <div className="h-[60vh] overflow-scroll no-scrollbar">
+        <div className="h-[62vh] overflow-scroll no-scrollbar">
           {/* Grid layout */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8 my-5">
             {/* Map over filtered items to display each wardrobe item */}
             {filteredItems.map((item) => (
               // Item card
-              <div key={item.id} className="bg-gray-100 px-3 py-2 flex flex-col rounded-[5px] shadow-sm shadow-slate-400   ">
+              <div key={item.id} className="bg-gray-100 px-3 py-2 mx-1.5 flex flex-col rounded-[5px] shadow-sm shadow-slate-400 h-[350px]  ">
                 {/* favorite and delete icon */}
                 <div className="flex justify-between mb-1">
                   <FavoriteIconBtn id={item.id} isFavorite={item.isFavorite} />
