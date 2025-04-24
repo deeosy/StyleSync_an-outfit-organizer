@@ -97,6 +97,7 @@ function AddClotheForm({ onSave }) {
         notes: '',
       });
       setImagePreview(null);
+      
     }
   };
 
