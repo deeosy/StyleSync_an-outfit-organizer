@@ -29,7 +29,7 @@ function Wardrobe() {
   // Get user data and authentication status from the authentication store
   const { user, isAuthenticated } = useAuthenticationStore();
   // Get wardrobe items, addClothingItem, showAddForm, toggleAddForm, and fetchWardrobeItems from the wardrobe store
-  const { wardrobeItems, showFavoritesOnly, addClothingItem, showAddForm, toggleAddForm, fetchWardrobeItems } = useWardrobeStore();
+  const { wardrobeItems, showFavoritesOnly, addClothingItem, showAddForm, toggleAddForm, fetchWardrobeItems, searchQuery, getFilteredItems } = useWardrobeStore();
 
   // Fetch wardrobe items from Firebase when the component mounts and user is authenticated
   useEffect(() => {
@@ -57,16 +57,11 @@ function Wardrobe() {
   // Log wardrobeItems to verify updates
   useEffect(() => {
     console.log('Wardrobe Items Updated:', wardrobeItems);
-  }, [wardrobeItems]);
+    console.log('Current search query:', searchQuery);
+    
+  }, [wardrobeItems, searchQuery]);
 
-  // Filter wardrobe items based on the selected category
-  let filteredItems = filter === 'all'
-    ? wardrobeItems
-    : wardrobeItems.filter((item) => item.category === filter);
-
-  if(showFavoritesOnly){ // apply favorites filter if needed
-    filteredItems = filteredItems.filter(item => item.isFavorite);
-  }
+  const filteredItems = getFilteredItems(filter)
 
   // Handle form submission by adding the new item to the wardrobe store
   const handleSave = (formData) => {
@@ -122,7 +117,14 @@ function Wardrobe() {
           <span className="inline-block">All</span>
         </button>
         {/* Category filter buttons */}
-        {[{name:'tops', icon: TopsIcon}, {name:'bottoms', icon: BottomsIcon}, {name:'outerwear', icon: OuterwearIcon}, {name:'shoes', icon: ShoesIcon}, {name:'jump suit', icon: JumpSuitIcon}, {name:'accessories', icon: AccessoriesIcon}].map((category) => (
+        {[
+          {name:'tops', icon: TopsIcon}, 
+          {name:'bottoms', icon: BottomsIcon}, 
+          {name:'outerwear', icon: OuterwearIcon}, 
+          {name:'shoes', icon: ShoesIcon}, 
+          {name:'jump suit', icon: JumpSuitIcon}, 
+          {name:'accessories', icon: AccessoriesIcon}
+        ].map((category) => (
           <button
             key={category.name}
             className={`px-2 py-2 font-medium flex gap-2 items-center transition-colors whitespace-nowrap min-w-fit
@@ -142,8 +144,7 @@ function Wardrobe() {
 
       {/* Wardrobe items container */}
       <div className="p-6 w-full h-full mx-auto max-w-[1100px]">
-        {/* Filter buttons */}
-        {/* Search Bar */}
+        {/* Favorite Filter button and SearchBar */}
         <div className="flex justify-between items-center gap-8 mb-6 mx-auto ">
           <SearchBar />
           <FavoriteIconCategory  />
@@ -203,8 +204,17 @@ function Wardrobe() {
             ) : filteredItems.length === 0 ? (
               // Has items but none in this category
               <div className="col-span-full h-[60vh] py-8 text-center text-gray-500">
-                <p className="mb-2">No items found in the "{filter}" category.</p>
-                <p>Try selecting a different category or add new items to this category.</p>
+                {searchQuery ? (
+                  <>
+                    <p className="mb-2">No items found with the name "{searchQuery}" or in the "{searchQuery}" category.</p>
+                    <p>Try searching for a different item or selecting a different category.</p>
+                  </>
+                ) : (
+                  <>
+                    <p className="mb-2">No items found in the "{filter}" category.</p>
+                    <p>Try selecting a different category or add new items to this category.</p>
+                  </>
+                )}
               </div>
             ) : null}
           </div>

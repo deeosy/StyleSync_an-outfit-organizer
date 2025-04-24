@@ -1,107 +1,3 @@
-// import { create } from "zustand";
-// import { v4 as uuid } from "uuid";
-// import { db } from '../config/firebase'  // import firestore instance
-// import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc } from "firebase/firestore";
-
-
-// const useWardrobeStore = create((set) => ({  // create Zustand store for managing wardrobe state with Firebase
-//   // Wardrobe items
-//   wardrobeItems: [ ],
-
-//   // Show add clothing form
-//   showAddForm: false, //Shared state for add form visibility
-//   toggleAddForm: (value) => set({ showAddForm: value }), // function to update state
-
-//   // // Current outfit
-//   // currentOutfit: {
-//   //   top: null,
-//   //   bottom: null,
-//   //   outerwear: null,
-//   //   shoes: null,
-//   //   accessories: null,
-//   // },
-
-//   // fetch wardrobe items from Firebase
-//   fetchWardrobeItems:  async () => {
-//     try {
-//       const wardrobeCollection = collection(db, 'wardrobe');
-//       const wardrobeSnapshot = await getDocs(wardrobeCollection);
-//       const wardrobeList = wardrobeSnapshot.docs.map((doc)=> ({
-//         id: doc.id,   //use firestore document ID
-//         ...doc.data(),
-//       }));
-//       set({wardrobeItems: wardrobeList})
-//     } catch (error) {
-//       console.error('Error fetching wardrobe items: ', error);
-//     }
-//   },
-
-
-//   // Add new clothing item
-//   addClothingItem: async (item) =>{
-//     try {
-//       const newItem = { ...item, id: uuid() }  // generate a uuid for the item
-//       const wardrobeCollection = collection(db, 'wardrobe');
-//       const docRef = await addDoc(wardrobeCollection, newItem)
-
-//       set((state) => ({   // update locat state with the new item
-//         wardrobeItems: [...state.wardrobeItems, { ...newItem, id: docRef.id }],
-//       }));
-//     } catch (error) {
-//       console.error('Error adding clothing item: ', error);
-//     }
-//   },
-
-//   // Update an existing clothing item in firebase
-//   updateClothingItem: async (id, updatedItem) => {
-//     try {
-//         const itemRef = doc(db, 'wardrobe', id);
-//         await updateDoc(itemRef, updatedItem);
-
-//       set((state) => ({  // update local state
-//         wardrobeItems: state.wardrobeItems.map((item) =>
-//           item.id === id ? { ...item, ...updatedItem } : item
-//         ),
-//       }));
-//     } catch (error) {
-//       console.error('Error updating clothing item: ', error);
-//     }
-//   },
-
-//   // Delete clothing item
-//   deleteClothingItem: async (id) => {
-//     try {
-//         const itemRef = doc((db, 'wardrobe', id));
-//         await deleteDoc(itemRef);
-        
-//       set((state) => ({   // update local state
-//         wardrobeItems: state.wardrobeItems.filter((item) => item.id !== id),
-//         // Also remove from current outfit if it's there
-//         currentOutfit: Object.entries(state.currentOutfit).reduce(
-//           (acc, [key, item]) => {
-//             acc[key] = item && item.id === id ? null : item;
-//             return acc;
-//           },
-//           { ...state.currentOutfit }
-//         ),
-//       }))
-//     } catch (error) {
-//       console.error('Error deleting clothing item: ', error);
-      
-//     }
-//   },
-
-
-
-
-
-
-// }));
-
-// export default useWardrobeStore;
-
-
-
 import { create } from 'zustand';
 import { v4 as uuid } from 'uuid';
 import { db } from '../config/firebase'; // Import Firestore instance
@@ -115,8 +11,43 @@ const useWardrobeStore = create((set, get) => ({
   // State to control visibility of the add item form
   showAddForm: false,
 
+  searchQuery: '',   // state for search functionality
+
+  setSearchQuery: (query) => set({searchQuery: query}),   // set search query based on user input
+  
   // Function to toggle the visibility of the add item form
   toggleAddForm: (value) => set({ showAddForm: value }),
+
+  // state for favorites filter
+  showFavoritesOnly: false,  
+
+  //Toggle favorite filter
+  toggleFavoritesFilter: () => set((state) => ({
+      showFavoritesOnly: !state.showFavoritesOnly
+    })),
+
+  //  Get filtered items based on category, favorites and search query
+  getFilteredItems: (category = 'all') => {
+    const {wardrobeItems, showFavoritesOnly, searchQuery} = get()
+
+    let filteredItems = category === 'all'  //first filter by category
+    ? wardrobeItems : wardrobeItems.filter(item => item.category === category);
+    
+    if(showFavoritesOnly) {   // filter by favorites if needed
+      filteredItems = filteredItems.filter(item => item.isFavorite)
+    }
+
+    if(searchQuery.trim()){  // filter by search query if present
+      const query = searchQuery.toLowerCase();
+      filteredItems = filteredItems.filter(item =>
+        item.name?.toLowerCase().includes(query) || 
+        item.category?.toLowerCase().includes(query) ||
+        item.notes?.toLowerCase().includes(query)
+      );
+    }
+    return filteredItems;
+  },
+
 
   // Fetch wardrobe items from Firebase for the authenticated user
   fetchWardrobeItems: async (userId) => {
@@ -238,11 +169,6 @@ const useWardrobeStore = create((set, get) => ({
     }
   },
 
-  //Toggle favorite filter
-  toggleFavoritesFilter: () => 
-    set((state) => ({
-      showFavoritesOnly: !state.showFavoritesOnly
-    })),
 
 
 
