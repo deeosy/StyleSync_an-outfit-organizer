@@ -19,6 +19,7 @@ import ResetPassword from "./pages/ResetPassword";
 import SignUpDetails from "./pages/SignUpDetails";
 import SignUpReason from "./pages/SignUpReason";
 import FAQfull from "./components/FAQfull"; 
+import AddClothesCard from "./components/AddClothesCard";
 
 import "./App.css";   // Import global styles for the app
 import FAQPage from "./components/FAQfull";
@@ -49,6 +50,7 @@ function App() {
               <Route path="/outfits" element={<Outfits />} />
               <Route path="/account" element={<Account />} /> 
               <Route path="/faq" element={<FAQfull />} />  {/* Route for the outfits page */}
+              <Route path="/add-clothes" element={<AddClothesCard />} />  {/* Route for the add clothes page */}
 
               {/* Fallback route for handling 404 errors (when no route matches) */}
               <Route path="*" element={<div className="text-center py-10">404 - Page Not Found</div>} />

@@ -14,6 +14,8 @@ import HowSSyncWorks from "../components/HowSSyncWorks";
 import FAQSection from "../components/FAQSection";
 import TestimonialSection from "../components/TestimonialSection";
 import SubscribtionSection from "../components/SubscribtionSection";
+import AddClothesCard from "../components/AddClothesCard";
+import CardCover from "../images/Card-cover.jpg";
 
 export default function Home() {
   useEffect(() => {
@@ -119,77 +121,46 @@ export default function Home() {
     Learn How to Use Style Sync
   </h2>
 
-  <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-[1300px] mx-auto py-8">
+  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-[1300px] mx-auto py-8">
     {/* Tutorial card 1 */}
-    <div
-      data-aos="fade-up"
-      data-aos-delay="0"
-      className="bg-[#F0E6FF] rounded-lg p-6 flex flex-col items-center hover:shadow-lg transition-all hover:transform hover:scale-105"
-    >
-      <h3 className="font-bold text-lg mb-4 hover:text-blue-500 transition-colors">
-        HOW TO ADD CLOTHES
+    <div className="bg-[#EADCF8] p-6 w-full flex flex-col justify-end h-[300px] relative">
+      <h3 className="font-bold text-[18px] text-left z-10">
+        How To Add Clothes
       </h3>
       <img
-        src="https://images.pexels.com/photos/5705490/pexels-photo-5705490.jpeg?auto=compress&cs=tinysrgb&w=600"
+        src={CardCover}
         alt="How to add clothes"
-        className="mb-4 w-full h-auto"
+        className="w-[150px] h-auto absolute bottom-4 right-4"
       />
-      <Link
-        to="/tutorials/add-clothes"
-        className="mt-4 flex items-center gap-2 text-[#212529] font-semibold hover:text-blue-500 transition-colors"
-      >
-        Learn more
-        <img src={nextArrow} alt="arrow" className="h-[12px]" />
-      </Link>
     </div>
-    
-    {/* Tutorial card 2 */}
-    <div
-      data-aos="fade-up"
-      data-aos-delay="0"
-      className="bg-[#F0E6FF] rounded-lg p-6 flex flex-col items-center hover:shadow-lg transition-all hover:transform hover:scale-105"
-    >
-      <h3 className="font-bold text-lg mb-4 hover:text-blue-500 transition-colors">
-        HOW TO CREATE OUTFITS
-      </h3>
-      <img
-        src="https://images.pexels.com/photos/1233648/pexels-photo-1233648.jpeg?auto=compress&cs=tinysrgb&w=600"
-        alt="How to create outfits"
-        className="mb-4 w-full h-auto"
-      />
-      <Link
-        to="/tutorials/create-outfits"
-        className="mt-4 flex items-center gap-2 text-[#212529] font-semibold hover:text-blue-500 transition-colors"
-      >
-        Learn more
-        <img src={nextArrow} alt="arrow" className="h-[12px]" />
-      </Link>
-    </div>
-    
+
+    {/* Tutorial card 2 with thick blue border */}
+    <div className="bg-[#B3D4FC] p-6 w-full flex flex-col justify-end h-[300px] relative">
+  <h3 className="font-bold text-[18px] text-left z-10">
+    Using Our AI Feature
+  </h3>
+  <img
+    src={CardCover}
+    alt="Using AI Feature"
+    className="w-[150px] h-auto absolute bottom-4 right-4"
+  />
+</div>
+
+
     {/* Tutorial card 3 */}
-    <div
-      data-aos="fade-up"
-      data-aos-delay="0"
-      className="bg-[#F0E6FF] rounded-lg p-6 flex flex-col items-center hover:shadow-lg transition-all hover:transform hover:scale-105"
-    >
-      <h3 className="font-bold text-lg mb-4 hover:text-blue-500 transition-colors">
-        AI STYLING FEATURES
+    <div className="bg-[#D5F5C7] p-6 w-full flex flex-col justify-end h-[300px] relative">
+      <h3 className="font-bold text-[18px] text-left z-10">
+        How To Create an <br />Outfit
       </h3>
       <img
-        src="https://images.pexels.com/photos/8728382/pexels-photo-8728382.jpeg?auto=compress&cs=tinysrgb&w=600"
-        alt="AI styling features"
-        className="mb-4 w-full h-auto"
+        src={CardCover}
+        alt="How to create an outfit"
+        className="w-[150px] h-auto absolute bottom-4 right-4"
       />
-      <Link
-        to="/tutorials/ai-styling"
-        className="mt-4 flex items-center gap-2 text-[#212529] font-semibold hover:text-blue-500 transition-colors"
-      >
-        Learn more
-        <img src={nextArrow} alt="arrow" className="h-[12px]" />
-      </Link>
     </div>
   </div>
 </div>
+
     </div>
   );
 }

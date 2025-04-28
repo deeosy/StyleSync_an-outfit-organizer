@@ -101,7 +101,7 @@ export default function FAQPage() {
     <div className="bg-gradient-to-br from-white via-gray-50 to-gray-100 min-h-screen py-16 px-4">
       <div className="max-w-5xl mx-auto">
         <header className="text-center mb-14">
-          <h1 className="text-5xl font-extrabold text-gray-900">FAQs</h1>
+          <h1 className="text-5xl font-extrabold text-gray-900 font-[Manrope]">FAQs</h1>
           <p className="text-lg text-gray-500 mt-4 max-w-2xl mx-auto">
             Find answers to your questions about StyleSync — your digital wardrobe companion.
           </p>
