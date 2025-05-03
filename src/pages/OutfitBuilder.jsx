@@ -146,9 +146,9 @@ export default function OutfitBuilder() {
         </Button>
       </div>
 
-      <div className="flex flex-col md:flex-row gap-8">
+      <div className="flex flex-col-reverse md:flex-row gap-8">
         {/* Left side: Wardrobe items */}
-        <div className="flex-1">
+        <div className="flex-1 overflow-hidden ">
           {/* Category Tabs */}
           <div className="flex overflow-x-auto no-scrollbar border-b border-gray-200 mb-6">
             {['tops', 'bottoms', 'outerwear', 'shoes', 'accessories', 'jump suit'].map((category) => (
@@ -169,7 +169,7 @@ export default function OutfitBuilder() {
           </div>
 
           {/* Grid of clothing items for the selected category */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
             {filteredItems.map((item) => (
               <ClothingItem key={item.id} item={item} onDragStart={handleDragStart} />
             ))}
@@ -183,7 +183,7 @@ export default function OutfitBuilder() {
 
         {/* Right side: Flat-lay outfit display */}
         <div 
-          className={`flex-1 bg-gray-50 rounded-lg p-6 border-2 border-dashed ${
+          className={`md:w-[300px] md:flex-1 bg-gray-50 rounded-lg p-6 border-2 border-dashed ${
             isDraggingOver ? 'border-purple-500 bg-purple-50' : 'border-gray-300'
           } overflow-hidden`}
           onDrop={handleDrop}
