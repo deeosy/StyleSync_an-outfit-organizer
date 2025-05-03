@@ -20,10 +20,7 @@ import SignUpDetails from "./pages/SignUpDetails";
 import SignUpReason from "./pages/SignUpReason";
 import FAQfull from "./components/FAQfull"; 
 import AddClothesCard from "./components/AddClothesCard";
-
 import "./App.css";   // Import global styles for the app
-import FAQPage from "./components/FAQfull";
-import FAQSection from "./components/FAQSection";
 // import Theme from "./components/Theme";
 
 
@@ -49,7 +46,7 @@ function App() {
               <Route path="/wardrobe" element={<Wardrobe />} />
               <Route path="/outfits" element={<Outfits />} />
               <Route path="/account" element={<Account />} /> 
-              <Route path="/faq" element={<FAQfull />} />  {/* Route for the outfits page */}
+              <Route path="/faq" element={<FAQfull />} />  {/* Route for the FAQs page */}
               <Route path="/add-clothes" element={<AddClothesCard />} />  {/* Route for the add clothes page */}
 
               {/* Fallback route for handling 404 errors (when no route matches) */}

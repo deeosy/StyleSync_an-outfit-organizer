@@ -28,6 +28,7 @@ const Footer = () => {
               <Link to="/seasonal-trends" className="text-gray-300 hover:text-white">Seasonal Trends</Link>
               <Link to="/personal-shopper" className="text-gray-300 hover:text-white">Personal Shopper</Link>
               <Link to="/style-quiz" className="text-gray-300 hover:text-white">Style Quiz</Link>
+              <Link to="/faq" className="text-gray-300 hover:text-white">FAQs</Link>
             </div>
           </div>
           

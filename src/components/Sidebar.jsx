@@ -1,5 +1,5 @@
 import React, { useState } from 'react';  // Import React and useState hook for managing component state
-import { Menu, X, Home, Shirt, Palette, UserCircle2 } from 'lucide-react';   // Import icons from lucide-react for navigation links
+import { Menu, X, Home, Shirt, Palette, UserCircle2, HelpCircle } from 'lucide-react';   // Import icons from lucide-react for navigation links
 import useAuthenticationStore from '../store/userStore';  // Import Zustand store for authentication state management
 import { Link, useNavigate, useLocation } from 'react-router-dom';  // Import routing utilities from react-router-dom
 import { auth } from '../config/firebase';   // Import Firebase auth instance
@@ -42,6 +42,7 @@ const Sidebar = () => {
     { to: '/wardrobe', label: 'Wardrobe', icon: <Shirt className="w-5 h-5 mr-3" /> },
     { to: '/outfits', label: 'Outfit Builder', icon: <Palette className="w-5 h-5 mr-3" /> },
     { to: '/account', label: 'Account', icon: <UserCircle2 className="w-5 h-5 mr-3" /> },
+    { to: '/faq', label: 'FAQs', icon: <HelpCircle className="w-5 h-5 mr-3" /> },
   ];
 
   const handleSignOut = () =>  // Function to handle sign-out action

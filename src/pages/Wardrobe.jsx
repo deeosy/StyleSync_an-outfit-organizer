@@ -31,6 +31,8 @@ function Wardrobe() {
   // Get wardrobe items, addClothingItem, showAddForm, toggleAddForm, and fetchWardrobeItems from the wardrobe store
   const { wardrobeItems, showFavoritesOnly, addClothingItem, showAddForm, toggleAddForm, fetchWardrobeItems, searchQuery, getFilteredItems } = useWardrobeStore();
 
+  const isMale = user?.gender === 'male';  // Determine if the user is male for dynamic styling
+
   // Fetch wardrobe items from Firebase when the component mounts and user is authenticated
   useEffect(() => {
     const loadWardrobeItems = async () => {
@@ -90,6 +92,7 @@ function Wardrobe() {
   if (loading) {
     return (
       <div className="px-3 py-10 bg-white text-[#212529] text-center">
+        <div className={`animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 ${isMale ? 'border-blue-400' : 'border-pink-500'} mx-auto`}></div>
         Loading wardrobe items...
       </div>
     );
