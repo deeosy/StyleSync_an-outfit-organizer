@@ -21,8 +21,9 @@ import SignUpReason from "./pages/SignUpReason";
 import FAQfull from "./components/FAQfull"; 
 import AddClothesCard from "./components/AddClothesCard";
 import "./App.css";   // Import global styles for the app
+import OutfitRecommender from "./components/OutfitRecommender";
+import FloatingButton from "./components/FloatingButton";
 // import Theme from "./components/Theme";
-
 
 function App() {
   return (
@@ -31,7 +32,8 @@ function App() {
         <div className="min-h-screen bg-gray-50">
           {/* Render the Navbar component at the top of every page */}
           <Navbar />  
-          <div className="container max-w-screen bg-[#f5f5f5] ">
+         
+          <div className="container max-w-screen bg-[#f5f5f5]">
             <Routes>
               {/* Route for the home page (root path) */}
               <Route path="/" element={<Home />} />
@@ -47,12 +49,18 @@ function App() {
               <Route path="/outfits" element={<Outfits />} />
               <Route path="/account" element={<Account />} /> 
               <Route path="/faq" element={<FAQfull />} />  {/* Route for the FAQs page */}
-              <Route path="/add-clothes" element={<AddClothesCard />} />  {/* Route for the add clothes page */}
+              <Route path="/add-clothes" element={<AddClothesCard />} /> 
+              <Route path="/outfit-recommender" element={<OutfitRecommender />} />
+              {/* Route for the add clothes page */}
 
               {/* Fallback route for handling 404 errors (when no route matches) */}
               <Route path="*" element={<div className="text-center py-10">404 - Page Not Found</div>} />
             </Routes>
           </div>
+          
+          {/* FloatingButton should be OUTSIDE of Routes but INSIDE Router */}
+          <FloatingButton />
+          
           <Footer />   {/* Render the Footer component at the bottom of every page */}
         </div>
       </Router>
