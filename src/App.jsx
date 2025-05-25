@@ -32,7 +32,6 @@ function App() {
         <div className="min-h-screen bg-gray-50">
           {/* Render the Navbar component at the top of every page */}
           <Navbar />  
-         
           <div className="container max-w-screen bg-[#f5f5f5]">
             <Routes>
               {/* Route for the home page (root path) */}
