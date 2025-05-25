@@ -71,7 +71,7 @@ export default function OutfitRecommender() {
   // Get AI recommendations with images
   const getAIRecommendations = async () => {
     if (!selectedOption && !customPrompt) {
-      alert("Please select an option or enter a custom prompt!");
+      alert("Please select an option or enter a custom prompt");
       return;
     }
     
@@ -226,7 +226,7 @@ Format your response clearly with outfit numbers.
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-gray-800 mb-2">
-            Hi, I'm <span className="text-purple-600">StyleSync</span>
+            Hi, I'm <span className="text-pink-600">StyleSync</span>
           </h1>
           <h2 className="text-xl text-gray-700 mb-4">What would you like to wear?</h2>
           <p className="text-gray-500">Use one of the most common prompts below or use your own to begin</p>
