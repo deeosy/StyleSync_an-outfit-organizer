@@ -1,22 +1,117 @@
-import React, { useState, useEffect } from 'react';  // Import React and necessary hooks for state and side effects
-import { doc, getDoc, updateDoc, setDoc } from 'firebase/firestore';   // Import Firestore functions for database operations
-
-// Import Firebase Auth functions
+import React, { useState, useEffect } from 'react';
+import { doc, getDoc, updateDoc, setDoc } from 'firebase/firestore';
 import { auth, db } from '../config/firebase';
 import { updateEmail, sendPasswordResetEmail, updateProfile } from 'firebase/auth';
+import { useNavigate } from 'react-router-dom';
+import ProfileForm from '../components/ProfileForm';
+import useAuthenticationStore from '../store/userStore';
+import useThemeStore from '../store/themeStore';
 
-import { useNavigate } from 'react-router-dom';  // Import routing hook for navigation
-import ProfileForm from '../components/ProfileForm';  // Import the ProfileForm component for rendering the form
-import useAuthenticationStore from '../store/userStore';   // Import Zustand store for authentication state management
+// Try importing theme components, but provide fallbacks
+let ThemeSelector, ThemePreview, DarkModeToggle;
 
-const CLIENT_ID = '387ee19ec8efbf6'; // Imgur Client ID for image uploads
+try {
+  ThemeSelector = require('../components/ThemeSelector').default;
+  ThemePreview = require('../components/ThemePreview').default;
+  DarkModeToggle = require('../components/DarkModeToggle').default;
+} catch (error) {
+  console.log('Theme components not found, using fallbacks');
+  
+  // Fallback Theme Selector
+  ThemeSelector = () => {
+    const { currentColorTheme, setColorTheme, getTheme } = useThemeStore();
+    const theme = getTheme();
+    const themes = [
+      { key: 'pink', name: 'Rose' },
+      { key: 'blue', name: 'Ocean' },
+      { key: 'purple', name: 'Lavender' },
+      { key: 'green', name: 'Mint' },
+      { key: 'orange', name: 'Sunset' },
+      { key: 'teal', name: 'Aqua' },
+      { key: 'red', name: 'Cherry' },
+      { key: 'gray', name: 'Slate' }
+    ];
+
+    return (
+      <select
+        value={currentColorTheme}
+        onChange={(e) => setColorTheme(e.target.value)}
+        className={`w-full px-3 py-2 border ${theme.border} rounded-lg ${theme.surface} ${theme.textPrimary} focus:outline-none ${theme.ring} focus:border-transparent transition-colors`}
+      >
+        {themes.map((theme) => (
+          <option key={theme.key} value={theme.key}>
+            {theme.name}
+          </option>
+        ))}
+      </select>
+    );
+  };
+
+  // Fallback Theme Preview
+  ThemePreview = () => {
+    const { currentColorTheme, setColorTheme, getTheme } = useThemeStore();
+    const theme = getTheme();
+    const themes = [
+      { key: 'pink', name: 'Rose', color: 'bg-pink-400' },
+      { key: 'blue', name: 'Ocean', color: 'bg-blue-400' },
+      { key: 'purple', name: 'Lavender', color: 'bg-purple-400' },
+      { key: 'green', name: 'Mint', color: 'bg-green-400' },
+      { key: 'orange', name: 'Sunset', color: 'bg-orange-400' },
+      { key: 'teal', name: 'Aqua', color: 'bg-teal-400' },
+      { key: 'red', name: 'Cherry', color: 'bg-red-400' },
+      { key: 'gray', name: 'Slate', color: 'bg-gray-400' }
+    ];
+
+    return (
+      <div className="grid grid-cols-2 gap-3">
+        {themes.map((themeOption) => (
+          <button
+            key={themeOption.key}
+            onClick={() => setColorTheme(themeOption.key)}
+            className={`p-3 rounded-lg border-2 transition-all duration-200 ${theme.surface} ${theme.surfaceHover} ${
+              currentColorTheme === themeOption.key ? `${theme.border} border-2` : `border-gray-200 ${theme.border}`
+            }`}
+          >
+            <div className={`w-8 h-8 rounded-full ${themeOption.color} mx-auto mb-2`}></div>
+            <p className={`text-sm ${theme.textPrimary}`}>{themeOption.name}</p>
+          </button>
+        ))}
+      </div>
+    );
+  };
+
+  // Fallback Dark Mode Toggle
+  DarkModeToggle = () => {
+    const { isDarkMode, toggleDarkMode, getTheme } = useThemeStore();
+    const theme = getTheme();
+    
+    return (
+      <button
+        onClick={toggleDarkMode}
+        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 ${
+          isDarkMode ? theme.primary : 'bg-gray-200'
+        }`}
+      >
+        <span
+          className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-200 ${
+            isDarkMode ? 'translate-x-6' : 'translate-x-1'
+          }`}
+        />
+      </button>
+    );
+  };
+}
+
+const CLIENT_ID = '387ee19ec8efbf6';
 
 export default function Account() {
-  const { user, updateUser  } = useAuthenticationStore();   // Access user data and update function from the Zustand store
+  const { user, updateUser } = useAuthenticationStore();
+  const { getTheme, isDarkMode } = useThemeStore();
+  const theme = getTheme();
 
-  const navigate = useNavigate();  // Hook for programmatic navigation
+  const navigate = useNavigate();
 
-  const [profile, setProfile] = useState({   // State to manage the profile form data
+  const [profile, setProfile] = useState({
     firstName: '',
     lastName: '',
     username: '',
@@ -25,20 +120,19 @@ export default function Account() {
     country: '', 
   });
 
-  const [photoPreview, setPhotoPreview] = useState(null);   // State to manage the profile photo preview
-  const [loading, setLoading] = useState(true);  // State to track loading status for async operations
-  const [error, setError] = useState('');  // State to store error messages
-  const [success, setSuccess] = useState('');   // State to store success messages
-  const [signOutLoading, setSignOutLoading] = useState('');   // Added: State to track loading status specifically for sign-out  
+  const [photoPreview, setPhotoPreview] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [signOutLoading, setSignOutLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState('profile');
 
-  const isMale = user?.gender === 'male';  // Determine if the user is male for dynamic styling
-
-  useEffect(() => {   // Fetch user data on component mount
+  useEffect(() => {
     const fetchUserData = async () => {
       try {
         const currentUser = auth.currentUser;
 
-        if (!currentUser) {   // Redirect to sign-in if no user is authenticated
+        if (!currentUser) {
           navigate('/authentication/sign-in');
           return;
         }
@@ -46,7 +140,7 @@ export default function Account() {
         const userDocRef = doc(db, 'users', currentUser.uid);
         const userDoc = await getDoc(userDocRef);
 
-        if (!userDoc.exists()) {   // If user document doesn't exist, create a new one with default values
+        if (!userDoc.exists()) {
           const initialData = {
             firstName: '',
             lastName: '',
@@ -60,9 +154,8 @@ export default function Account() {
           await setDoc(userDocRef, initialData);
           setProfile(initialData);
           setPhotoPreview(initialData.photoURL || null);
-          updateUser(initialData);   // Update Zustand store with initial data
+          updateUser(initialData);
         } else {
-          // If user document exists, populate the profile state with the data
           const userData = userDoc.data();
           const profileData = {
             firstName: userData.firstName || '',
@@ -74,7 +167,7 @@ export default function Account() {
           };
           setProfile(profileData);
           setPhotoPreview(userData.photoURL || null);
-          updateUser(profileData)  // Sync Zustand store with fetched data
+          updateUser(profileData)
         }
         setLoading(false);
       } catch (err) {
@@ -86,14 +179,14 @@ export default function Account() {
     fetchUserData();
   }, [navigate, updateUser]);
 
-  const handleChange = (e) => {   // Handle changes to form inputs
+  const handleChange = (e) => {
     const { name, value } = e.target;
     setProfile((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (e) => {  // Handle form submission to update profile data
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if(loading) return;   //Prevent multiple submissions
+    if(loading) return;
     setLoading(true);
     setError('');
     setSuccess('');
@@ -109,13 +202,13 @@ export default function Account() {
         country: profile.country,
       }
 
-      await updateDoc(doc(db, 'users', currentUser.uid), updatedProfile);  // Update Firestore with the new profile data
+      await updateDoc(doc(db, 'users', currentUser.uid), updatedProfile);
 
-      if (profile.email !== currentUser.email) {   // Update email in Firebase Auth if it has changed
+      if (profile.email !== currentUser.email) {
         await updateEmail(currentUser, profile.email);
       }
 
-      updateUser(updatedProfile)  // Update Zustand store with the new profile data
+      updateUser(updatedProfile)
       setSuccess('Profile updated successfully!');
       setTimeout(() => setSuccess(''), 3000);
     } catch (err) {
@@ -130,11 +223,10 @@ export default function Account() {
     }
   };
 
-  const handlePhotoChange = async (e) => {   // Handle profile photo upload to Imgur
+  const handlePhotoChange = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
     
-    // File validation
     if (file.size > 5 * 1024 * 1024) {
       setError('File size exceeds 5MB limit');
       return;
@@ -149,7 +241,6 @@ export default function Account() {
     setError('');
     
     try {
-     // Upload to Imgur
       const formData = new FormData();
       formData.append('image', file);
       
@@ -175,11 +266,10 @@ export default function Account() {
       
       const photoURL = data.data.link;
       
-      // Update Firestore with the new photo URL
       const currentUser = auth.currentUser;
       await updateDoc(doc(db, 'users', currentUser.uid), { photoURL });
       setPhotoPreview(photoURL);
-      updateUser({ photoURL });   // Update Zustand store with the new photo URL
+      updateUser({ photoURL });
       setSuccess('Profile photo updated!');
       setTimeout(() => setSuccess(''), 3000);
     } catch (err) {
@@ -190,8 +280,8 @@ export default function Account() {
     }
   };
 
-  const handleSignOut = async () => {  // Handle user sign-out
-    if (signOutLoading) return;   // Prevent multiple sign-out attempts
+  const handleSignOut = async () => {
+    if (signOutLoading) return;
     if (window.confirm('Are you sure you want to sign out?')) {
       setSignOutLoading(true);
       setError('');
@@ -207,8 +297,8 @@ export default function Account() {
     }
   };
 
-  const handleResetPassword = async () => {  // Handle sending a password reset email
-    if (loading) return; // Prevent multiple resets
+  const handleResetPassword = async () => {
+    if (loading) return;
     setLoading(true);
     setError('');
     setSuccess('');
@@ -233,55 +323,56 @@ export default function Account() {
     }
   };
   
-  const getProfileInitials = () =>  // Function to get profile initials for display if no photo is available
+  const getProfileInitials = () =>
     !profile.firstName && !profile.lastName
       ? '?'
       : (profile.firstName.charAt(0) + profile.lastName.charAt(0)).toUpperCase();
 
-  if (loading && !profile.email && !photoPreview) {  // Display a loading spinner while fetching user data
+  if (loading && !profile.email && !photoPreview) {
     return (
-      <div className="min-h-screen bg-gray-100 font-sans flex items-center justify-center">
+      <div className={`min-h-screen ${theme.background} font-sans flex items-center justify-center transition-colors duration-200`}>
         <div className="text-center">
-          <div className={`animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 ${isMale ? 'border-blue-400' : 'border-pink-500'} mx-auto`}></div>
-          <p className="mt-4">Loading your profile...</p>
+          <div className={`animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-current ${theme.text} mx-auto`}></div>
+          <p className={`mt-4 ${theme.textSecondary}`}>Loading your profile...</p>
         </div>
       </div>
     );
   }
 
-
   return (
-    <div className="min-h-screen bg-gray-100 font-sans">
+    <div className={`min-h-screen ${theme.background} font-sans transition-colors duration-200`}>
       <main className="flex-grow">
-        <div className="max-w-3xl mx-auto py-6 sm:px-6 lg:px-8">
-          {/* Display error message if present */}
+        <div className="max-w-4xl mx-auto py-6 sm:px-6 lg:px-8">
           {error && (
-            <div className="mb-4 bg-red-100 border border-red-400 text-red-500 px-4 py-3 rounded">
+            <div className={`mb-4 border border-red-400 text-red-500 px-4 py-3 rounded transition-colors duration-200 ${
+              isDarkMode ? 'bg-red-900/20' : 'bg-red-100'
+            }`}>
               {error}
             </div>
           )}
-          {/* Display success message if present */}
           {success && (
-            <div className="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
+            <div className={`mb-4 border border-green-400 text-green-700 px-4 py-3 rounded transition-colors duration-200 ${
+              isDarkMode ? 'bg-green-900/20' : 'bg-green-100'
+            }`}>
               {success}
             </div>
           )}
+          
           <div className="flex flex-col gap-6 px-3">
-            <div className="bg-white rounded-sm shadow p-3 sm:p-6">
-              <div className="flex justify-between items-center">
-                <div className="flex flex-col-reverse gap-2.5 sm:flex-row items-center ">
-                  {/* Profile photo or initials */}
-                  <div className="flex-shrink-0 mr-4">
+            {/* Header Section */}
+            <div className={`${theme.surface} rounded-lg shadow border ${theme.border} p-4 sm:p-6 transition-colors duration-200`}>
+              <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+                <div className="flex flex-col sm:flex-row items-center gap-4">
+                  <div className="flex-shrink-0">
                     <div className="relative">
-                      <div className="relative h-[120px] w-[120px] rounded-full overflow-hidden bg-gray-200 flex items-center justify-center">
+                      <div className={`relative h-[120px] w-[120px] rounded-full overflow-hidden ${theme.light} border-2 ${theme.border} flex items-center justify-center transition-colors duration-200`}>
                         {!photoPreview ? (
-                          <span className="text-3xl text-gray-600">{getProfileInitials()}</span>
+                          <span className={`text-3xl ${theme.textMuted}`}>{getProfileInitials()}</span>
                         ) : (
                           <img src={photoPreview} alt="Profile" className="h-full w-full object-cover" />
                         )}
                       </div>
-                      {/* Label for uploading a new profile photo */}
-                      <label className={`absolute bottom-0 right-0 ${isMale ? 'bg-blue-300' : 'bg-pink-400'}  rounded-full p-1 cursor-pointer`}>
+                      <label className={`absolute bottom-0 right-0 ${theme.secondary} rounded-full p-1 cursor-pointer ${theme.secondaryHover} transition-colors duration-200`}>
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           className="h-6 w-6 text-white"
@@ -300,39 +391,248 @@ export default function Account() {
                       </label>
                     </div>
                   </div>
-                  <h2 className="text-xl font-semibold text-gray-900">My Personal Info</h2>
+                  <div className="text-center sm:text-left">
+                    <h1 className={`text-2xl font-bold ${theme.textPrimary}`}>Account Settings</h1>
+                    <p className={`${theme.textSecondary}`}>Manage your profile and preferences</p>
+                  </div>
                 </div>
+                
                 <button
                   onClick={handleSignOut}
-                  disabled={loading}
-                  className={`px-2 py-2 sm:px-5 sm:py-3 disabled:opacity-50 text-white rounded-[5px] text-sm font-medium uppercase  focus:outline-none focus:ring-2
-                    hover:cursor-pointer ${isMale ? 'focus:ring-blue-300  bg-blue-300 hover:bg-blue-400' : 'focus:ring-pink-500  bg-pink-400 hover:bg-pink-500' } 
-                  `}
+                  disabled={signOutLoading}
+                  className={`px-4 py-2 sm:px-6 sm:py-3 disabled:opacity-50 text-white rounded-lg text-sm font-medium uppercase focus:outline-none ${theme.ring} focus:ring-2
+                    hover:cursor-pointer ${theme.secondary} ${theme.secondaryHover} transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] flex items-center gap-2 shadow-sm hover:shadow-md`}
                 >
-                  Sign Out
+                  {signOutLoading ? 'Signing Out...' : 'Sign Out'}
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-4 w-4 ml-2 inline-block"
+                    className="h-4 w-4"
                     viewBox="0 0 20 20"
                     fill="currentColor"
                   >
                     <path
                       fillRule="evenodd"
-                      d="M3 3a1 1 0 00-1 1v12a1 1 0 001 1h12a1 1 0 001-1V7.414l-5-5H3zM2 4a2 2 0 012-2h7.586a1 1 0 01.707.293l5 5A1 1 0 0118 8v8a2 2 0 01-2 2H4a2 2 0 01-2-2V4z"
+                      d="M3 3a1 1 0 00-1 1v12a1 1 0 001 1h12a1 1 0 001-1V4a1 1 0 00-1-1H3z"
                       clipRule="evenodd"
                     />
                   </svg>
                 </button>
               </div>
             </div>
-            {/* Profile form for editing user details */}
-            <ProfileForm
-              profile={profile}
-              handleChange={handleChange}
-              handleSubmit={handleSubmit}
-              handleResetPassword={handleResetPassword}
-              loading={loading}
-            />
+
+            {/* Tab Navigation */}
+            <div className={`${theme.surface} rounded-lg shadow border ${theme.border} transition-colors duration-200`}>
+              <div className={`border-b ${theme.border}`}>
+                <nav className="flex space-x-8 px-6">
+                  <button
+                    onClick={() => setActiveTab('profile')}
+                    className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200 ${
+                      activeTab === 'profile'
+                        ? `border-current ${theme.text}`
+                        : `border-transparent ${theme.textSecondary} ${theme.surfaceHover.replace('hover:', 'hover:text-')} hover:${theme.textPrimary.replace('text-', '')}`
+                    }`}
+                  >
+                    Personal Info
+                  </button>
+                  <button
+                    onClick={() => setActiveTab('appearance')}
+                    className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200 ${
+                      activeTab === 'appearance'
+                        ? `border-current ${theme.text}`
+                        : `border-transparent ${theme.textSecondary} ${theme.surfaceHover.replace('hover:', 'hover:text-')} hover:${theme.textPrimary.replace('text-', '')}`
+                    }`}
+                  >
+                    Appearance
+                  </button>
+                </nav>
+              </div>
+
+              {/* Tab Content */}
+              <div className="p-6">
+                {activeTab === 'profile' && (
+                  <div>
+                    <h2 className={`text-xl font-semibold mb-6 ${theme.textPrimary}`}>Personal Information</h2>
+                    
+                    {/* Inline ProfileForm to ensure theme consistency */}
+                    <form onSubmit={handleSubmit} className="space-y-6">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                          <label className={`block text-sm font-medium ${theme.textSecondary} mb-2`}>
+                            First Name
+                          </label>
+                          <input
+                            type="text"
+                            name="firstName"
+                            value={profile.firstName}
+                            onChange={handleChange}
+                            className={`w-full px-3 py-2 border ${theme.border} rounded-lg ${theme.surface} ${theme.textPrimary} focus:outline-none ${theme.ring} focus:border-transparent transition-colors duration-200`}
+                            disabled={loading}
+                          />
+                        </div>
+                        
+                        <div>
+                          <label className={`block text-sm font-medium ${theme.textSecondary} mb-2`}>
+                            Last Name
+                          </label>
+                          <input
+                            type="text"
+                            name="lastName"
+                            value={profile.lastName}
+                            onChange={handleChange}
+                            className={`w-full px-3 py-2 border ${theme.border} rounded-lg ${theme.surface} ${theme.textPrimary} focus:outline-none ${theme.ring} focus:border-transparent transition-colors duration-200`}
+                            disabled={loading}
+                          />
+                        </div>
+                        
+                        <div>
+                          <label className={`block text-sm font-medium ${theme.textSecondary} mb-2`}>
+                            Username
+                          </label>
+                          <input
+                            type="text"
+                            name="username"
+                            value={profile.username}
+                            onChange={handleChange}
+                            className={`w-full px-3 py-2 border ${theme.border} rounded-lg ${theme.surface} ${theme.textPrimary} focus:outline-none ${theme.ring} focus:border-transparent transition-colors duration-200`}
+                            disabled={loading}
+                          />
+                        </div>
+                        
+                        <div>
+                          <label className={`block text-sm font-medium ${theme.textSecondary} mb-2`}>
+                            Email
+                          </label>
+                          <input
+                            type="email"
+                            name="email"
+                            value={profile.email}
+                            onChange={handleChange}
+                            className={`w-full px-3 py-2 border ${theme.border} rounded-lg ${theme.surface} ${theme.textPrimary} focus:outline-none ${theme.ring} focus:border-transparent transition-colors duration-200`}
+                            disabled={loading}
+                          />
+                        </div>
+                        
+                        <div>
+                          <label className={`block text-sm font-medium ${theme.textSecondary} mb-2`}>
+                            Date of Birth
+                          </label>
+                          <input
+                            type="date"
+                            name="dateOfBirth"
+                            value={profile.dateOfBirth}
+                            onChange={handleChange}
+                            className={`w-full px-3 py-2 border ${theme.border} rounded-lg ${theme.surface} ${theme.textPrimary} focus:outline-none ${theme.ring} focus:border-transparent transition-colors duration-200`}
+                            disabled={loading}
+                          />
+                        </div>
+                        
+                        <div>
+                          <label className={`block text-sm font-medium ${theme.textSecondary} mb-2`}>
+                            Country
+                          </label>
+                          <input
+                            type="text"
+                            name="country"
+                            value={profile.country}
+                            onChange={handleChange}
+                            className={`w-full px-3 py-2 border ${theme.border} rounded-lg ${theme.surface} ${theme.textPrimary} focus:outline-none ${theme.ring} focus:border-transparent transition-colors duration-200`}
+                            disabled={loading}
+                          />
+                        </div>
+                      </div>
+                      
+                      <div className="flex flex-col sm:flex-row gap-4">
+                        <button
+                          type="submit"
+                          disabled={loading}
+                          className={`flex-1 px-6 py-3 ${theme.primary} ${theme.primaryHover} text-white font-medium rounded-lg transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] shadow-sm hover:shadow-md focus:outline-none ${theme.ring} focus:ring-2 disabled:opacity-50 disabled:cursor-not-allowed`}
+                        >
+                          {loading ? 'Saving Changes...' : 'Save Changes'}
+                        </button>
+                        
+                        <button
+                          type="button"
+                          onClick={handleResetPassword}
+                          disabled={loading}
+                          className={`px-6 py-3 ${theme.secondary} ${theme.secondaryHover} text-white font-medium rounded-lg transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] shadow-sm hover:shadow-md focus:outline-none ${theme.ring} focus:ring-2 disabled:opacity-50 disabled:cursor-not-allowed`}
+                        >
+                          Reset Password
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                )}
+
+                {activeTab === 'appearance' && (
+                  <div className="space-y-8">
+                    <div>
+                      <h2 className={`text-xl font-semibold mb-6 ${theme.textPrimary}`}>Appearance Settings</h2>
+                      <p className={`${theme.textSecondary} mb-6`}>
+                        Customize how your wardrobe app looks and feels. Changes are saved automatically.
+                      </p>
+                    </div>
+
+                    {/* Dark Mode Toggle */}
+                    <div>
+                      <h3 className={`text-lg font-medium mb-4 ${theme.textPrimary}`}>Display Mode</h3>
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className={`${theme.textSecondary} text-sm mb-2`}>
+                            Choose between light and dark mode
+                          </p>
+                          <p className={`${theme.textMuted} text-xs`}>
+                            Current: {theme.isDark ? 'Dark Mode' : 'Light Mode'}
+                          </p>
+                        </div>
+                        <DarkModeToggle />
+                      </div>
+                    </div>
+
+                    {/* Theme Selector */}
+                    <div>
+                      <h3 className={`text-lg font-medium mb-4 ${theme.textPrimary}`}>Color Theme</h3>
+                      <p className={`${theme.textSecondary} text-sm mb-3`}>
+                        Select your preferred color scheme.
+                      </p>
+                      <div className="max-w-md">
+                        <ThemeSelector />
+                      </div>
+                    </div>
+                    
+                    {/* Theme Preview */}
+                    <div>
+                      <h3 className={`text-lg font-medium mb-4 ${theme.textPrimary}`}>Theme Preview</h3>
+                      <p className={`${theme.textSecondary} text-sm mb-3`}>
+                        Click on any theme to apply it instantly.
+                      </p>
+                      <ThemePreview />
+                    </div>
+
+                    {/* Component Preview */}
+                    <div>
+                      <h3 className={`text-lg font-medium mb-4 ${theme.textPrimary}`}>Preview</h3>
+                      <div className={`${theme.backgroundSecondary || theme.light} rounded-lg p-6 border ${theme.border} space-y-4 transition-colors duration-200`}>
+                        <div className="flex flex-wrap gap-3">
+                          <button className={`px-4 py-2 rounded-lg ${theme.primary} ${theme.primaryHover} text-white font-medium transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] shadow-sm hover:shadow-md`}>
+                            Primary Button
+                          </button>
+                          <button className={`px-4 py-2 rounded-lg ${theme.secondary} ${theme.secondaryHover} text-white font-medium transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] shadow-sm hover:shadow-md`}>
+                            Secondary Button
+                          </button>
+                        </div>
+                        
+                        <div className={`p-4 rounded-lg ${theme.light} border ${theme.border} transition-colors duration-200`}>
+                          <h4 className={`${theme.textPrimary} font-medium mb-2`}>Sample Card</h4>
+                          <p className={`${theme.textSecondary} text-sm`}>
+                            This shows how content looks with your current theme.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         </div>
       </main>

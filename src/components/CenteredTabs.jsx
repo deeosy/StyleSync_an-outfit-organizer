@@ -1,179 +1,271 @@
-import * as React from 'react';  // Import React and necessary hooks for state management
-
-// Import Material-UI components for tab functionality and layout
+import * as React from 'react';
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 
-// Import custom hooks for accessing wardrobe and authentication state
+// Import custom hooks
 import useWardrobeStore from "../store/wardrobeStore";
 import useAuthenticationStore from '../store/userStore';
+import useThemeStore from '../store/themeStore'; // Import theme store
 
-import QuickActionBtn from './QuickActionBtn';  // Import custom component for quick actions
-import { Plus, Layers } from 'lucide-react'; // Import icons from lucide-react
-import { useNavigate } from 'react-router-dom';   // Import useNavigate for programmatic navigation
+import QuickActionBtn from './QuickActionBtn';
+import { Plus, Layers } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+
+// Helper function to convert Tailwind color classes to CSS color values
+const getColorValue = (colorClass, isDark = false) => {
+  const colorMap = {
+    // Pink colors
+    'bg-pink-400': '#f472b6',
+    'bg-pink-500': '#ec4899',
+    'text-pink-400': '#f472b6',
+    'text-pink-600': '#db2777',
+    // Blue colors
+    'bg-blue-400': '#60a5fa',
+    'bg-blue-500': '#3b82f6',
+    'text-blue-400': '#60a5fa',
+    'text-blue-600': '#2563eb',
+    // Purple colors
+    'bg-purple-400': '#c084fc',
+    'bg-purple-500': '#a855f7',
+    'text-purple-400': '#c084fc',
+    'text-purple-600': '#9333ea',
+    // Green colors
+    'bg-green-400': '#4ade80',
+    'bg-green-500': '#22c55e',
+    'text-green-400': '#4ade80',
+    'text-green-600': '#16a34a',
+    // Orange colors
+    'bg-orange-400': '#fb923c',
+    'bg-orange-500': '#f97316',
+    'text-orange-400': '#fb923c',
+    'text-orange-600': '#ea580c',
+    // Teal colors
+    'bg-teal-400': '#2dd4bf',
+    'bg-teal-500': '#14b8a6',
+    'text-teal-400': '#2dd4bf',
+    'text-teal-600': '#0d9488',
+    // Red colors
+    'bg-red-400': '#f87171',
+    'bg-red-500': '#ef4444',
+    'text-red-400': '#f87171',
+    'text-red-600': '#dc2626',
+    // Gray colors
+    'bg-gray-400': '#9ca3af',
+    'bg-gray-500': '#6b7280',
+    'text-gray-400': '#9ca3af',
+    'text-gray-600': '#4b5563',
+    'text-gray-300': '#d1d5db',
+    'text-gray-900': '#111827',
+    'text-white': '#ffffff'
+  };
+  
+  return colorMap[colorClass] || (isDark ? '#ffffff' : '#111827');
+};
 
 export default function CenteredTabs() {
+  const [value, setValue] = React.useState('1');
 
-  const [value, setValue] = React.useState('1');   // State to manage the currently active tab (default is '1')
-
-  // Access wardrobe items and saved outfits from the wardrobe store
+  // Wardrobe and auth stores
   const wardrobeItems = useWardrobeStore((state) => state.wardrobeItems);
   const savedOutfits = useWardrobeStore((state) => state.savedOutfits);
   const toggleAddForm = useWardrobeStore(state => state.toggleAddForm);
+  const { user, isAuthenticated } = useAuthenticationStore();
+  
+  // Theme store
+  const { getTheme, isDarkMode } = useThemeStore();
+  const theme = getTheme();
+  
+  const navigate = useNavigate();
 
-  const { user, isAuthenticated } = useAuthenticationStore();     // Access user authentication state and user details from the authentication store
-  const navigate = useNavigate();    // Hook for navigating programmatically
-
-  if(!isAuthenticated){   // If the user is not authenticated, display a login prompt
-    return <p className="text-center mt-10">Please log in to access your wardrobe.</p>;
+  if (!isAuthenticated) {
+    return (
+      <p className={`text-center mt-10 ${theme.textPrimary}`}>
+        Please log in to access your wardrobe.
+      </p>
+    );
   }
   
-  const handleChange = (event, newValue) => {   // Handler for changing tabs
+  const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  const handleAddItem = () => {   // Handler for the "Add New Item" button: navigates to the wardrobe page and opens the add form
+  const handleAddItem = () => {
     navigate('/wardrobe');
     toggleAddForm(true);
   };
 
-  const handleCreateOutfit = () => {   // Handler for the "Create Outfit" button: navigates to the outfits page
+  const handleCreateOutfit = () => {
     navigate('/outfits');
   };
 
-  const categoryCounts = wardrobeItems.reduce((acc, item) => {   // Count wardrobe items by category (e.g., shirts, pants) for display in the "Wardrobe Stats" tab
+  const categoryCounts = wardrobeItems.reduce((acc, item) => {
     acc[item.category] = (acc[item.category] || 0) + 1;
     return acc;
   }, {});
 
-  // Filter wardrobe items to find those that have never been worn (for the "Unworn Items" tab)
   const unusedItems = wardrobeItems.filter((item) => item.lastWorn === "Never");
 
-  // Determine button background color based on user gender
-  const buttonBgClass = user?.gender === 'male' ? "bg-blue-200 hover:bg-blue-300" : "bg-pink-300 hover:bg-pink-400";
+  // Use theme colors instead of hardcoded gender-based colors
+  const buttonClasses = `${theme.primary} ${theme.primaryHover} text-white`;
+
+  // Enhanced MUI theme styling with proper color integration
+  const muiTabStyles = {
+    "& .MuiTabs-root": {
+      minHeight: '48px',
+    },
+    "& .MuiTab-root": {
+      color: getColorValue(theme.textSecondary, isDarkMode),
+      fontSize: '0.875rem',
+      fontWeight: '500',
+      textTransform: 'none',
+      minHeight: '48px',
+      transition: 'all 0.2s ease-in-out',
+      '&:hover': {
+        color: getColorValue(theme.textPrimary, isDarkMode),
+        backgroundColor: isDarkMode ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.04)',
+      }
+    },
+    "& .Mui-selected": { 
+      color: `${getColorValue(theme.primary, isDarkMode)} !important`,
+      fontWeight: '600',
+      '&:hover': {
+        color: `${getColorValue(theme.primary, isDarkMode)} !important`,
+      }
+    },
+    "& .MuiTabs-indicator": { 
+      backgroundColor: getColorValue(theme.primary, isDarkMode),
+      height: '3px',
+      borderRadius: '2px',
+      transition: 'all 0.2s ease-in-out',
+    },
+    "& .MuiTabs-flexContainer": {
+      gap: '8px'
+    }
+  };
 
   return (
-    <Box sx={{ width: '100%', typography: 'body1',  }} className='mx-auto !max-w-[1200px] '>
-      {/* TabContext to manage the state of the tabs */}
-      <TabContext value={value} >
-        {/* TabList container for the tab headers */}
-        <Box>
-          <TabList  
-            centered onChange={handleChange} aria-label="lab API tabs example"
-            sx={{
-              "& .Mui-selected": { color: '#030200 !important'  }, // Black text for selected tab
-              "& .MuiTabs-indicator":{ backgroundColor: user?.gender === 'male' ? "#bedbff" : "#fc64b6" } // Pink underline
-            }}
-          >
-            {/* Tab headers */}
-            <Tab label="Wardrobe Stats" value="1"  />
-            <Tab label="Unworn Items" value="2" />
-            <Tab label="Quick Actions" value="3" />
-          </TabList>
-        </Box>
-        {/* TabPanel for "Wardrobe Stats" */}
-        <TabPanel value="1" sx={{padding: '16px 0px', position: 'relative'}} >
-          {/* Quick action button component */}
-          <QuickActionBtn />
-
-          {/* Container for wardrobe stats with a fixed height and shadow */}
-          <div className="h-[300px] drop-shadow-xl ">
-            <div className="bg-white rounded-[5px] shadow-sm p-8 h-full overflow-scroll no-scrollbar ">
-              <div className="space-y-3 md:space-y-4">
-                {/* Display total number of wardrobe items */}
-                <p className="text-sm md:text-md text-gray-600">
-                  Total Items:{" "}
-                  <span className="font-medium md:text-md text-gray-900">
-                    {wardrobeItems.length}
-                  </span>
-                </p>
-                {/* Display total number of saved outfits */}
-                <p className="text-sm md:text-md text-gray-600">
-                  Saved Outfits:{" "}
-                  <span className="font-medium md:text-md text-gray-900">
-                    {savedOutfits.length}
-                  </span>
-                </p>
-                {/* Display item count for each category */}
-                {Object.entries(categoryCounts).map(([category, count]) => (
-                  <p key={category} className="text-sm md:text-md text-gray-600">
-                    {category.charAt(0).toUpperCase() + category.slice(1)}:{" "}
-                    <span className="font-medium md:text-md text-gray-900">{count}</span>
+    <div className={`w-full ${theme.background} transition-colors duration-200`}>
+      <Box sx={{ width: '100%', typography: 'body1' }} className='mx-auto !max-w-[1200px]'>
+        <TabContext value={value}>
+          <Box className={`${theme.surface} rounded-t-lg shadow-sm border-b ${theme.border}`}>
+            <TabList  
+              centered 
+              onChange={handleChange} 
+              aria-label="wardrobe tabs"
+              sx={muiTabStyles}
+            >
+              <Tab label="Wardrobe Stats" value="1" />
+              <Tab label="Unworn Items" value="2" />
+              <Tab label="Quick Actions" value="3" />
+            </TabList>
+          </Box>
+          
+          {/* Wardrobe Stats Tab */}
+          <TabPanel value="1" sx={{ padding: '16px 0px', position: 'relative' }}>
+            <QuickActionBtn />
+            <div className="h-[300px] drop-shadow-xl">
+              <div className={`${theme.surface} rounded-[5px] shadow-sm border ${theme.border} p-8 h-full overflow-scroll no-scrollbar transition-colors duration-200`}>
+                <div className="space-y-3 md:space-y-4">
+                  <p className={`text-sm md:text-md ${theme.textSecondary}`}>
+                    Total Items:{" "}
+                    <span className={`font-medium md:text-md ${theme.textPrimary}`}>
+                      {wardrobeItems.length}
+                    </span>
                   </p>
-                ))}
-              </div>
-            </div>
-          </div>
-        </TabPanel>
-        {/* TabPanel for "Unworn Items" */}
-        <TabPanel value="2" sx={{padding: '16px 0px', position: 'relative'}}>
-          {/* Quick action button component */}
-          <QuickActionBtn />
-          <div className="h-[300px] drop-shadow-xl">
-            <div className="bg-white rounded-lg shadow-sm p-8 h-full no-scrollbar overflow-scroll">
-              {/* Check if there are any wardrobe items */}
-              {wardrobeItems.length < 1 ? (
-                <p className="text-sm text-gray-600">Currently no clothes in your wardrobe</p>
-              ) : unusedItems.length > 0 ? (
-                // Display list of unworn items (up to 5)
-                <ul className="space-y-3">
-                  {unusedItems.slice(0, 5).map((item) => (
-                    <li key={item.id} className="text-sm flex items-center">
-                      <span
-                        className="w-4 h-4 rounded-full mr-2"
-                        style={{ backgroundColor: item.color }}
-                      ></span>
-                      {item.name}
-                    </li>
+                  <p className={`text-sm md:text-md ${theme.textSecondary}`}>
+                    Saved Outfits:{" "}
+                    <span className={`font-medium md:text-md ${theme.textPrimary}`}>
+                      {savedOutfits.length}
+                    </span>
+                  </p>
+                  {Object.entries(categoryCounts).map(([category, count]) => (
+                    <p key={category} className={`text-sm md:text-md ${theme.textSecondary}`}>
+                      {category.charAt(0).toUpperCase() + category.slice(1)}:{" "}
+                      <span className={`font-medium md:text-md ${theme.textPrimary}`}>{count}</span>
+                    </p>
                   ))}
-                  {/* Display a message if there are more than 5 unworn items */}
-                  {unusedItems.length > 8 && (
-                    <li className="text-sm text-gray-600">
-                      And {unusedItems.length - 5} more...
-                    </li>
-                  )}
-                </ul>
-              ) : (
-                // Display a message if all items have been worn
-                <p className="text-sm text-gray-600">
-                  Great job! You've worn all your items.
-                </p>
-              )}
-            </div>
-          </div>
-        </TabPanel>
-        
-        {/* New Tab Panel for Quick Actions */}
-        <TabPanel value="3" sx={{padding: '16px 0px', position: 'relative'}}>
-          <QuickActionBtn />
-          <div className="h-[300px] drop-shadow-xl">
-            <div className="bg-white rounded-lg shadow-sm p-8 h-full">
-              <h2 className="text-lg font-semibold mb-4 manrope">Quick Actions</h2>
-              
-              <div className="flex flex-col gap-4">
-                <button 
-                  className={`flex items-center justify-center w-full py-3 ${buttonBgClass} text-gray-800 font-medium rounded transition-colors`}
-                  onClick={handleAddItem}
-                >
-                  <Plus size={18} className="mr-2" />
-                  Add New Item
-                </button>
-                
-                <button 
-                  className={`flex items-center justify-center w-full py-3 ${buttonBgClass} text-gray-800 font-medium rounded transition-colors`}
-                  onClick={handleCreateOutfit}
-                >
-                  <Layers size={18} className="mr-2" />
-                  Create Outfit
-                </button>
+                </div>
               </div>
             </div>
-          </div>
-        </TabPanel>
-      </TabContext>
-    </Box>
+          </TabPanel>
+          
+          {/* Unworn Items Tab */}
+          <TabPanel value="2" sx={{ padding: '16px 0px', position: 'relative' }}>
+            <QuickActionBtn />
+            <div className="h-[300px] drop-shadow-xl">
+              <div className={`${theme.surface} rounded-lg shadow-sm border ${theme.border} p-8 h-full no-scrollbar overflow-scroll transition-colors duration-200`}>
+                {wardrobeItems.length < 1 ? (
+                  <p className={`text-sm ${theme.textSecondary}`}>
+                    Currently no clothes in your wardrobe
+                  </p>
+                ) : unusedItems.length > 0 ? (
+                  <ul className="space-y-3">
+                    {unusedItems.slice(0, 5).map((item) => (
+                      <li key={item.id} className={`text-sm flex items-center ${theme.textPrimary}`}>
+                        <span
+                          className="w-4 h-4 rounded-full mr-2 border border-gray-300"
+                          style={{ backgroundColor: item.color }}
+                        ></span>
+                        {item.name}
+                      </li>
+                    ))}
+                    {unusedItems.length > 5 && (
+                      <li className={`text-sm ${theme.textSecondary}`}>
+                        And {unusedItems.length - 5} more...
+                      </li>
+                    )}
+                  </ul>
+                ) : (
+                  <div className={`text-center py-8`}>
+                    <div className={`inline-flex items-center justify-center w-16 h-16 ${theme.light} rounded-full mb-4`}>
+                      <span className="text-2xl">🎉</span>
+                    </div>
+                    <p className={`text-sm ${theme.textPrimary} font-medium`}>
+                      Great job! You've worn all your items.
+                    </p>
+                    <p className={`text-xs ${theme.textSecondary} mt-1`}>
+                      Keep building your stylish wardrobe!
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+          </TabPanel>
+          
+          {/* Quick Actions Tab */}
+          <TabPanel value="3" sx={{ padding: '16px 0px', position: 'relative' }}>
+            <QuickActionBtn />
+            <div className="h-[300px] drop-shadow-xl">
+              <div className={`${theme.surface} rounded-lg shadow-sm border ${theme.border} p-8 h-full transition-colors duration-200`}>
+                <h2 className={`text-lg font-semibold mb-6 manrope ${theme.textPrimary}`}>
+                  Quick Actions
+                </h2>
+                
+                <div className="flex flex-col gap-4">
+                  <button 
+                    className={`flex items-center justify-center w-full py-4 px-6 ${buttonClasses} font-medium rounded-lg transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] shadow-sm hover:shadow-md`}
+                    onClick={handleAddItem}
+                  >
+                    <Plus size={20} className="mr-3" />
+                    Add New Item
+                  </button>
+                  
+                  <button 
+                    className={`flex items-center justify-center w-full py-4 px-6 ${theme.secondary} ${theme.secondaryHover} text-white font-medium rounded-lg transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] shadow-sm hover:shadow-md`}
+                    onClick={handleCreateOutfit}
+                  >
+                    <Layers size={20} className="mr-3" />
+                    Create Outfit
+                  </button>
+                </div>
+              </div>
+            </div>
+          </TabPanel>
+        </TabContext>
+      </Box>
+    </div>
   );
 }

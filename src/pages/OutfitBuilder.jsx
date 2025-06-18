@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import useWardrobeStore from '../store/wardrobeStore';
+import useThemeStore from '../store/themeStore';
 import ClothingItem from '../components/ClothingItem';
 import SavedOutfitsModal from '../components/SavedOutfitsModal';
 import { Close as CloseIcon } from '@mui/icons-material';
@@ -11,6 +12,10 @@ export default function OutfitBuilder() {
   const [outfitName, setOutfitName] = useState('');
   const [isDraggingOver, setIsDraggingOver] = useState(false);
   const [showSavedOutfits, setShowSavedOutfits] = useState(false);
+
+  // Theme store integration
+  const { getTheme } = useThemeStore();
+  const theme = getTheme();
 
   // Access wardrobe items, current outfit, and actions from the Zustand store
   const { 
@@ -130,9 +135,9 @@ export default function OutfitBuilder() {
   }, [currentOutfit.top, isJumpSuit]);
 
   return (
-    <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
+    <div className={`${theme.surface} rounded-lg shadow-sm p-6 mb-8 border ${theme.border} transition-colors duration-200`}>
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-semibold">Your Outfit</h2>
+        <h2 className={`text-2xl font-semibold ${theme.textPrimary}`}>Your Outfit</h2>
         
         {/* Saved Outfits Button */}
         <Button
@@ -140,7 +145,13 @@ export default function OutfitBuilder() {
           color="secondary"
           startIcon={<CollectionsIcon />}
           onClick={() => setShowSavedOutfits(true)}
-          className="bg-purple-600 hover:bg-purple-700"
+          className={`${theme.secondary} ${theme.secondaryHover} text-white font-medium transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] shadow-sm hover:shadow-md`}
+          sx={{
+            backgroundColor: 'black',
+            '&:hover': {
+              backgroundColor: 'black',
+            },
+          }}
         >
           Saved Outfits
         </Button>
@@ -148,16 +159,16 @@ export default function OutfitBuilder() {
 
       <div className="flex flex-col-reverse md:flex-row gap-8">
         {/* Left side: Wardrobe items */}
-        <div className="flex-1 overflow-hidden ">
+        <div className="flex-1 overflow-hidden">
           {/* Category Tabs */}
-          <div className="flex overflow-x-auto no-scrollbar border-b border-gray-200 mb-6">
+          <div className={`flex overflow-x-auto no-scrollbar border-b ${theme.border} mb-6 transition-colors duration-200`}>
             {['tops', 'bottoms', 'outerwear', 'shoes', 'accessories', 'jump suit'].map((category) => (
               <button
                 key={category}
-                className={`px-4 py-2 font-medium transition-colors whitespace-nowrap ${
+                className={`px-4 py-2 font-medium transition-colors duration-200 whitespace-nowrap ${
                   activeCategory === category
-                    ? 'text-purple-800 border-b-2 border-purple-800'
-                    : 'text-gray-600 hover:text-purple-600'
+                    ? `${theme.textPrimary} border-b-2 border-current`
+                    : `${theme.textSecondary} hover:${theme.textPrimary.replace('text-', '')}`
                 }`}
                 onClick={() => setActiveCategory(category)}
                 aria-label={`Select ${category} category`}
@@ -174,7 +185,7 @@ export default function OutfitBuilder() {
               <ClothingItem key={item.id} item={item} onDragStart={handleDragStart} />
             ))}
             {filteredItems.length === 0 && (
-              <div className="col-span-3 py-8 text-center text-gray-500">
+              <div className={`col-span-3 py-8 text-center ${theme.textSecondary}`}>
                 No items in this category yet.
               </div>
             )}
@@ -183,24 +194,26 @@ export default function OutfitBuilder() {
 
         {/* Right side: Flat-lay outfit display */}
         <div 
-          className={`md:w-[300px] md:flex-1 bg-gray-50 rounded-lg p-6 border-2 border-dashed ${
-            isDraggingOver ? 'border-purple-500 bg-purple-50' : 'border-gray-300'
-          } overflow-hidden`}
+          className={`md:w-[300px] md:flex-1 ${theme.backgroundSecondary || theme.light} rounded-lg p-6 border-2 border-dashed transition-all duration-200 overflow-hidden ${
+            isDraggingOver 
+              ? `border-current ${theme.light} opacity-80` 
+              : theme.border
+          }`}
           onDrop={handleDrop}
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
           role="region" 
           aria-label="Drop zone for creating outfit"
         >
-          <h3 className="text-lg font-medium text-center text-gray-700 mb-4">
+          <h3 className={`text-lg font-medium text-center ${theme.textSecondary} mb-4`}>
             Drag items here to create your outfit
           </h3>
 
           {/* Outfit display area styled like a flat-lay fashion board */}
-          <div className="relative w-full h-[450px] mx-auto bg-white rounded-lg shadow-sm">
+          <div className={`relative w-full h-[450px] mx-auto ${theme.surface} rounded-lg shadow-sm border ${theme.border} transition-colors duration-200`}>
             {/* Empty state message */}
             {!hasOutfitItems && (
-              <div className="absolute inset-0 flex items-center justify-center text-gray-400">
+              <div className={`absolute inset-0 flex items-center justify-center ${theme.textMuted}`}>
                 Your outfit will appear here
               </div>
             )}
@@ -216,7 +229,7 @@ export default function OutfitBuilder() {
                   <div className="relative group">
                     {isJumpSuit ? (
                       // Jump suit specific rendering
-                      <div className="bg-white p-1 border border-gray-200 rounded-md shadow-sm">
+                      <div className={`${theme.surface} p-1 border ${theme.border} rounded-md shadow-sm transition-colors duration-200`}>
                         <img 
                           src={currentOutfit.top.imageUrl} 
                           alt={`${currentOutfit.top.name} (Jump Suit)`}
@@ -238,7 +251,7 @@ export default function OutfitBuilder() {
                     )}
                     <button
                       onClick={() => handleRemoveItem('top', currentOutfit.top.id)}
-                      className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                      className="absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-all duration-200 transform hover:scale-110 active:scale-95 shadow-sm"
                       aria-label={`Remove ${isJumpSuit ? 'jump suit' : 'top'}`}
                     >
                       <CloseIcon fontSize="small" />
@@ -258,7 +271,7 @@ export default function OutfitBuilder() {
                     />
                     <button
                       onClick={() => handleRemoveItem('bottom', currentOutfit.bottom.id)}
-                      className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                      className="absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-all duration-200 transform hover:scale-110 active:scale-95 shadow-sm"
                       aria-label="Remove bottom"
                     >
                       <CloseIcon fontSize="small" />
@@ -279,7 +292,7 @@ export default function OutfitBuilder() {
                     />
                     <button
                       onClick={() => handleRemoveItem('outerwear', currentOutfit.outerwear.id)}
-                      className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                      className="absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-all duration-200 transform hover:scale-110 active:scale-95 shadow-sm"
                       aria-label="Remove outerwear"
                     >
                       <CloseIcon fontSize="small" />
@@ -299,7 +312,7 @@ export default function OutfitBuilder() {
                     />
                     <button
                       onClick={() => handleRemoveItem('shoes', currentOutfit.shoes.id)}
-                      className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                      className="absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-all duration-200 transform hover:scale-110 active:scale-95 shadow-sm"
                       aria-label="Remove shoes"
                     >
                       <CloseIcon fontSize="small" />
@@ -342,7 +355,7 @@ export default function OutfitBuilder() {
                       />
                       <button
                         onClick={() => handleRemoveItem('accessories', accessory.id)}
-                        className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                        className="absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-all duration-200 transform hover:scale-110 active:scale-95 shadow-sm"
                         aria-label={`Remove ${accessory.name}`}
                       >
                         <CloseIcon fontSize="small" />
@@ -357,7 +370,7 @@ export default function OutfitBuilder() {
           {/* Outfit name and save controls */}
           <div className="mt-4">
             <div className="mb-4">
-              <label htmlFor="outfitName" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="outfitName" className={`block text-sm font-medium ${theme.textSecondary} mb-1`}>
                 Outfit Name
               </label>
               <input
@@ -365,20 +378,20 @@ export default function OutfitBuilder() {
                 id="outfitName"
                 value={outfitName}
                 onChange={(e) => setOutfitName(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-purple-500"
+                className={`w-full px-3 py-2 border ${theme.border} rounded-md shadow-sm ${theme.surface} ${theme.textPrimary} focus:outline-none ${theme.ring} focus:ring-1 transition-colors duration-200 placeholder:${theme.textMuted}`}
                 placeholder="Summer casual"
               />
             </div>
             <div className="flex gap-3">
               <button
                 onClick={clearOutfit}
-                className="flex-1 px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 transition-colors"
+                className={`flex-1 px-4 py-2 ${theme.backgroundSecondary || theme.light} ${theme.textSecondary} rounded ${theme.surfaceHover} transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] shadow-sm hover:shadow-md border ${theme.border}`}
               >
                 Clear All
               </button>
               <button
                 onClick={handleSaveOutfit}
-                className="flex-1 px-4 py-2 bg-purple-700 text-white rounded hover:bg-purple-800 transition-colors disabled:bg-purple-300"
+                className={`flex-1 px-4 py-2 ${theme.primary} ${theme.primaryHover} text-white rounded transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none`}
                 disabled={!hasOutfitItems || !outfitName.trim()}
               >
                 Save Outfit
