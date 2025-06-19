@@ -4,7 +4,6 @@ import useWardrobeStore from '../store/wardrobeStore'; // Import Zustand store f
 import useAuthenticationStore from '../store/userStore'; // Import Zustand store for managing user state
 import useThemeStore from '../store/themeStore'; // Import theme store
 import SearchBar from '../components/SearchBar'; // Import search bar component
-import FavoriteIcon from '../components/FavoriteIconCategory'; // Import favorite icon component
 import { Fab, Modal, Tooltip, Zoom } from '@mui/material'; // Import Material-UI components
 import AddIcon from '@mui/icons-material/Add';
 import AddClotheForm from '../components/AddClotheForm';
